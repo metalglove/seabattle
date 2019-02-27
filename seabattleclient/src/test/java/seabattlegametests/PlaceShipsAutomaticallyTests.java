@@ -1,31 +1,34 @@
 package seabattlegametests;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import seabattlegui.SquareState;
-import seabattleunittests.SeaBattleGameTest;
+import seabattleunittests.SeaBattleGameTests;
 
-import static org.junit.Assert.assertEquals;
+/**
+ * Place ships automatically. Ships that are already placed will be removed.
+ * All ships will be placed such that they fit entirely within the grid
+ * and have no overlap with each other. The state of the ocean area in the
+ * player's application will be kept up-to-date by method calls of
+ * showSquarePlayer().
+ * param playerNr identification of player for which ships will be placed
+ */
+public class PlaceShipsAutomaticallyTests extends SeaBattleGameTests {
 
-public class PlaceShipsAutomaticallyTests extends SeaBattleGameTest {
-    /**
-     * Example test for method placeShipsAutomatically().
-     * Test whether the correct number of squares contain a ship in the
-     * ocean area of the player's application.
-     * @Author Nico Kuijpers
-     */
+    // TODO: check if previous ships are removed? (But how?..., placements are random so they could be on the same spot.)
+
+    //
     @Test
-    public void testPlaceShipsAutomatically() {
-
-        // Register player in single-player mode
-        game.registerPlayer("Some Name", "Some Password", applicationPlayer, true);
-
-        // Place ships automatically
+    public void should_Place_All_Ships_Successfully() {
+        // Arrange
         int playerNr = applicationPlayer.getPlayerNumber();
+        int expectedResult = 5 + 4 + 3 + 3 + 2;
+
+        // Act
         game.placeShipsAutomatically(playerNr);
 
-        // Count number of squares where ships are placed in player's application
-        int expectedResult = 5 + 4 + 3 + 3 + 2;
+        // Assert
         int actualResult = applicationPlayer.numberSquaresPlayerWithSquareState(SquareState.SHIP);
-        assertEquals("Wrong number of squares where ships are placed",expectedResult,actualResult);
+        Assertions.assertEquals(expectedResult, actualResult);
     }
 }
