@@ -20,8 +20,8 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SeaBattleStart" options="" />
-      <module name="seabattleclient" options="-bootclasspath &quot;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
-      <module name="seabattleserver" options="-bootclasspath &quot;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
+      <module name="seabattleclient" options="" />
+      <module name="seabattleserver" options="" />
     </option>
   </component>
 </project>
