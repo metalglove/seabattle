@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  */
 public class RegisterPlayerTests extends SeaBattleGameTests {
 
+    // TODO: register 2 same players
     // TODO: register 2 players without exceeding for multiplayer
     // TODO: de
     @Test()
