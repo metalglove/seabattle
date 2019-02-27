@@ -1,12 +1,12 @@
 package seabattlegametests;
 
 import org.junit.jupiter.api.Test;
-import seabattleunittests.SeaBattleGameTest;
+import seabattleunittests.SeaBattleGameTests;
 
-public class ShipSelectionTests extends SeaBattleGameTest {
+public class ShipSelectionTests extends SeaBattleGameTests {
 
     @Test
-    public void testChangeShipSelectionToCarrier() {
+    public void Should_Switch_To_Shiptype_Carrier() {
         throw new java.lang.UnsupportedOperationException("Not supported yet.");
     }
 

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import seabattlegui.ShipType;
 import seabattlegui.ShotType;
+import seabattlegui.SquareState;
 import seabattleunittests.SeaBattleGameTests;
 /**
  * Fire a shot at the opponent's square with given coordinates.
@@ -26,7 +27,6 @@ import seabattleunittests.SeaBattleGameTests;
  * param posY     y-coordinate of square
  */
 public class FireShotTests extends SeaBattleGameTests {
-    // TODO: add test for hitting a whole ship so it is SUNK
 
     // TODO: add a test for hitting all ships so it is ALLSUNK
 
@@ -62,5 +62,92 @@ public class FireShotTests extends SeaBattleGameTests {
         final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
         Assertions.assertEquals(ShotType.HIT, lastShotOpponent);
 
+    }
+
+    @Test
+    public void Should_Sink_Opponents_Ship_On_X1_Y1_When_Shot_On_All_Ship_Coordinates() {
+        // Arrange
+        game.startNewGame(1);
+        game.registerPlayer("player1", "sds", applicationPlayer, false);
+        game.registerPlayer("player2", "sds", applicationOpponent, false);
+        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
+        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
+        game.placeShip(1, ShipType.CRUISER, 1,3,true);
+        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
+        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+
+        game.placeShip(2, ShipType.AIRCRAFTCARRIER, 1,1,true);
+        game.placeShip(2, ShipType.BATTLESHIP, 1,2,true);
+        game.placeShip(2, ShipType.CRUISER, 1,3,true);
+        game.placeShip(2, ShipType.SUBMARINE, 1,4,true);
+        game.placeShip(2, ShipType.MINESWEEPER, 1,5,true);
+        game.notifyWhenReady(1);
+        game.notifyWhenReady(2);
+        applicationPlayer.notifyStartGame(1);
+        applicationPlayer.notifyStartGame(2);
+
+        // Act
+        game.fireShot(1, 1, 1);
+        game.fireShot(1, 2, 1);
+        game.fireShot(1, 3, 1);
+        game.fireShot(1, 4, 1);
+        game.fireShot(1, 5, 1);
+
+        // Assert
+        final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
+
+        Assertions.assertEquals(ShotType.SUNK, lastShotOpponent);
+    }
+
+    @Test
+    public void Should_Return_Allsunk_When_All_Ship_Coordinates_Sunk() {
+        // Arrange
+        game.startNewGame(1);
+        game.registerPlayer("player1", "sds", applicationPlayer, false);
+        game.registerPlayer("player2", "sds", applicationOpponent, false);
+        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
+        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
+        game.placeShip(1, ShipType.CRUISER, 1,3,true);
+        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
+        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+
+        game.placeShip(2, ShipType.AIRCRAFTCARRIER, 1,1,true);
+        game.placeShip(2, ShipType.BATTLESHIP, 1,2,true);
+        game.placeShip(2, ShipType.CRUISER, 1,3,true);
+        game.placeShip(2, ShipType.SUBMARINE, 1,4,true);
+        game.placeShip(2, ShipType.MINESWEEPER, 1,5,true);
+        game.notifyWhenReady(1);
+        game.notifyWhenReady(2);
+        applicationPlayer.notifyStartGame(1);
+        applicationPlayer.notifyStartGame(2);
+
+        // Act
+        // AIRCRAFTCARRIER
+        game.fireShot(1, 1, 1);
+        game.fireShot(1, 2, 1);
+        game.fireShot(1, 3, 1);
+        game.fireShot(1, 4, 1);
+        game.fireShot(1, 5, 1);
+        // BATTLESHIP
+        game.fireShot(1, 1, 2);
+        game.fireShot(1, 2, 2);
+        game.fireShot(1, 3, 2);
+        game.fireShot(1, 4, 2);
+        //CRUISER
+        game.fireShot(1, 1, 3);
+        game.fireShot(1, 2, 3);
+        game.fireShot(1, 3, 3);
+        //SUBMARINE
+        game.fireShot(1, 1, 4);
+        game.fireShot(1, 2, 4);
+        game.fireShot(1, 3, 4);
+        //MINESWEEPER
+        game.fireShot(1, 1, 5);
+        game.fireShot(1, 2, 5);
+
+        // Assert
+        final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
+
+        Assertions.assertEquals(ShotType.ALLSUNK, lastShotOpponent);
     }
 }
