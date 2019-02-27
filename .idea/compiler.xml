@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="seabattleclient" />
+        <module name="seabattleserver" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="seabattle-start-master" target="11" />
+      <module name="seabattleclient" target="11" />
+      <module name="seabattleserver" target="11" />
+      <module name="SeaBattleStart" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="SeaBattleStart" options="" />
+      <module name="seabattleclient" options="" />
+      <module name="seabattleserver" options="" />
+    </option>
+  </component>
+</project>
