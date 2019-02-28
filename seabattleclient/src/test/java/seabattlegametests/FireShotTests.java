@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import seabattlegui.ShipType;
 import seabattlegui.ShotType;
 import seabattlegui.SquareState;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import seabattleunittests.SeaBattleGameTests;
+
 /**
  * Fire a shot at the opponent's square with given coordinates.
  * Firing a shot gives one of the following results:
@@ -28,13 +30,8 @@ import seabattleunittests.SeaBattleGameTests;
  */
 public class FireShotTests extends SeaBattleGameTests {
 
-    // TODO: add a test for hitting all ships so it is ALLSUNK
-
-    // TODO: add a test for missing a shot MISSED
-
-    // TODO: add test for out of range coordinates
     @Test
-    public void Should_Hit_Opponents_Ship_On_X1_Y1_When_Shot_On_X1_X1() {
+    public void should_Hit_Opponents_Ship_On_X1_Y1_When_Shot_On_X1_Y1() {
         // Arrange
         game.startNewGame(1);
         game.registerPlayer("player1", "sds", applicationPlayer, false);
@@ -63,9 +60,8 @@ public class FireShotTests extends SeaBattleGameTests {
         Assertions.assertEquals(ShotType.HIT, lastShotOpponent);
 
     }
-
     @Test
-    public void Should_Sink_Opponents_Ship_On_X1_Y1_When_Shot_On_All_Ship_Coordinates() {
+    public void should_Sink_Opponents_Ship_On_X1_Y1_When_Shot_On_All_Ship_Coordinates() {
         // Arrange
         game.startNewGame(1);
         game.registerPlayer("player1", "sds", applicationPlayer, false);
@@ -98,9 +94,8 @@ public class FireShotTests extends SeaBattleGameTests {
 
         Assertions.assertEquals(ShotType.SUNK, lastShotOpponent);
     }
-
     @Test
-    public void Should_Return_Allsunk_When_All_Ship_Coordinates_Sunk() {
+    public void should_Return_Allsunk_When_All_Ship_Coordinates_Sunk() {
         // Arrange
         game.startNewGame(1);
         game.registerPlayer("player1", "sds", applicationPlayer, false);
@@ -149,5 +144,54 @@ public class FireShotTests extends SeaBattleGameTests {
         final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
 
         Assertions.assertEquals(ShotType.ALLSUNK, lastShotOpponent);
+    }
+    @Test
+    public void should_Miss_Opponents_Ship_When_Shot_On_X6_Y6() {
+        // Arrange
+        game.startNewGame(1);
+        game.registerPlayer("player1", "sds", applicationPlayer, false);
+        game.registerPlayer("player2", "sds", applicationOpponent, false);
+        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
+        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
+        game.placeShip(1, ShipType.CRUISER, 1,3,true);
+        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
+        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+
+        game.placeShip(2, ShipType.AIRCRAFTCARRIER, 1,1,true);
+        game.placeShip(2, ShipType.BATTLESHIP, 1,2,true);
+        game.placeShip(2, ShipType.CRUISER, 1,3,true);
+        game.placeShip(2, ShipType.SUBMARINE, 1,4,true);
+        game.placeShip(2, ShipType.MINESWEEPER, 1,5,true);
+        game.notifyWhenReady(1);
+        game.notifyWhenReady(2);
+        applicationPlayer.notifyStartGame(1);
+        applicationPlayer.notifyStartGame(2);
+
+        // Act
+        game.fireShot(1, 6, 6);
+
+        // Assert
+        final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
+        Assertions.assertEquals(ShotType.MISSED, lastShotOpponent);
+    }
+    @Test
+    public void should_Be_Out_Of_Range_When_Shot_On_X11_Y11() {
+        // Arrange
+        game.startNewGame(1);
+        game.registerPlayer("player1", "sds", applicationPlayer, false);
+        game.registerPlayer("player2", "sds", applicationOpponent, false);
+
+        game.notifyWhenReady(1);
+        game.notifyWhenReady(2);
+        applicationPlayer.notifyStartGame(1);
+        applicationPlayer.notifyStartGame(2);
+
+        // Act
+        Exception thrown = assertThrows(Exception.class,
+                        () -> game.fireShot(1,11,11),
+                        "Tried to fireShot(), but position was out of range.");
+
+        // Assert
+        Assertions.assertTrue(thrown.getMessage().contains("Tried to fireShot(), but position was out of range."));
     }
 }

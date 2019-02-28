@@ -15,8 +15,6 @@ import seabattleunittests.SeaBattleGameTests;
  */
 public class PlaceShipsAutomaticallyTests extends SeaBattleGameTests {
 
-    // TODO: check if previous ships are removed? (But how?..., placements are random so they could be on the same spot.)
-
     //
     @Test
     public void should_Place_All_Ships_Successfully() {
@@ -31,4 +29,20 @@ public class PlaceShipsAutomaticallyTests extends SeaBattleGameTests {
         int actualResult = applicationPlayer.numberSquaresPlayerWithSquareState(SquareState.SHIP);
         Assertions.assertEquals(expectedResult, actualResult);
     }
+
+    @Test
+    public void should_Remove_All_Placed_Ships_Successfully() {
+        // Arrange
+        int playerNr = applicationPlayer.getPlayerNumber();
+        int expectedResult = 0;
+
+        // Act
+        game.placeShipsAutomatically(playerNr);
+        game.removeAllShips(1);
+
+        // Assert
+        int actualResult = applicationPlayer.numberSquaresPlayerWithSquareState(SquareState.SHIP);
+        Assertions.assertEquals(expectedResult, actualResult);
+    }
+
 }
