@@ -3,10 +3,19 @@
  */
 package seabattlegame;
 
+import messaging.messages.commands.RegisterCommand;
+import messaging.messages.requests.PlaceShipsAutomaticallyRequest;
+import messaging.messages.requests.PlayerNumberRequest;
+import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
+import messaging.messages.responses.PlayerNumberResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import seabattlegame.listeners.PlaceShipsAutomaticallyResponseChangeListener;
+import seabattlegame.listeners.PlayerNumberResponseChangeListener;
 import seabattlegui.ISeaBattleGUI;
 import seabattlegui.ShipType;
+
+import java.io.IOException;
 
 /**
  * The Sea Battle game. To be implemented.
@@ -16,16 +25,38 @@ import seabattlegui.ShipType;
 public class SeaBattleGame implements ISeaBattleGame {
 
   private static final Logger log = LoggerFactory.getLogger(SeaBattleGame.class);
+  private Client client;
+  private ISeaBattleGUI application;
+
+  public SeaBattleGame(ISeaBattleGUI application) {
+    this.application = application;
+    try {
+      client = new Client("127.0.0.1", 9999);
+      client.connect();
+      client.startReading();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   @Override
-  public void registerPlayer(String name, String password, ISeaBattleGUI application, boolean singlePlayerMode) {
+  public void registerPlayer(String name, String password, boolean singlePlayerMode) {
     log.debug("Register Player {} - password {}", name, password);
-    throw new UnsupportedOperationException("Method registerPlayer() not implemented.");
+    client.startWriting(new RegisterCommand(name, password, singlePlayerMode));
+    client.addListener(PlayerNumberResponse.class.getName(), new PlayerNumberResponseChangeListener(this.application, name, client));
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    client.startWriting(new PlayerNumberRequest(name));
   }
 
   @Override
   public void placeShipsAutomatically(int playerNr) {
-    throw new UnsupportedOperationException("Method placeShipsAutomatically() not implemented.");
+    log.debug("placeShipsAutomatically with player number: {}", playerNr);
+    client.addListener(PlaceShipsAutomaticallyResponse.class.getName(), new PlaceShipsAutomaticallyResponseChangeListener(application, playerNr, client));
+    client.startWriting(new PlaceShipsAutomaticallyRequest(playerNr));
   }
 
   @Override

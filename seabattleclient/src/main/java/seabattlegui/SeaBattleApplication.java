@@ -3,6 +3,8 @@
  */
 package seabattlegui;
 
+import domain.Point;
+import domain.Ship;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 
+import java.io.IOException;
 
 
 /**
@@ -277,7 +280,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
                 new Tooltip("Press this button to register as player");
         buttonRegisterPlayer.setTooltip(tooltipRegisterParticipant);
     buttonRegisterPlayer.setOnAction(
-        (EventHandler) event -> {
+        (EventHandler<ActionEvent>) event -> {
             try {
                 registerPlayer();
             } catch (Exception e) {
@@ -486,7 +489,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         // When invoking methods of class SeaBattleGame an
         // UnsupportedOperationException will be thrown
         // TODO: IMPLEMENT CLASS SeaBattleGame.
-        game = new SeaBattleGame();
+        game = new SeaBattleGame(this);
     }
     
     /**
@@ -502,6 +505,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             return;
         }
         this.playerNr = playerNr;
+        log.debug("Player number is: {} ", playerNr);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -686,7 +690,16 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             } 
         });
     }
-    
+
+    /**
+     * Show error message.
+     * @param errorMessage error message
+     */
+    @Override
+    public void showErrorMessage(String errorMessage) {
+        showErrorMessage(playerNr, errorMessage);
+    }
+
     /**
      * Show error message.
      * @param playerNr identification of player
@@ -702,7 +715,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      * Set the color of the square according to position type.
      * Setting the color will be performed by the JavaFX Application Thread.
      * @param square the square of which the color should be changed.
-     * @param type position type to determine the color.
+     * @param squareState position type to determine the color.
      */
     private void setSquareColor(final Rectangle square, final SquareState squareState) {
         // Ensure that changing the color of the square is performed by
@@ -748,7 +761,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             showMessage("Enter your password before registering");
             return;
         }
-        game.registerPlayer(playerName, playerPassword, this, singlePlayerMode);
+        game.registerPlayer(playerName, playerPassword, singlePlayerMode);
     }
     
     /**
@@ -756,6 +769,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     private void placeShipsAutomatically() {
         // Place the player's ships automatically.
+        log.debug("Player number is: {}", playerNr);
         game.placeShipsAutomatically(playerNr);
     }
     
@@ -937,5 +951,15 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    /* new methods.. */
+    public void placeShip(int playerNr, Ship ship) {
+        if (this.playerNr == playerNr) {
+            for (Point point : ship.getPoints()) {
+                Rectangle square = squaresOceanArea[point.getX()][point.getY()];
+                setSquareColor(square, SquareState.SHIP);
+            }
+        }
     }
 }
