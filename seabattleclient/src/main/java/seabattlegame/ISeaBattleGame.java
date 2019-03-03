@@ -3,7 +3,6 @@
  */
 package seabattlegame;
 
-import seabattlegui.ISeaBattleGUI;
 import seabattlegui.ShipType;
 
 /**
@@ -17,7 +16,6 @@ public interface ISeaBattleGame {
      * set at the player's application by a call-back of method setPlayerNumber().
      * @param name              Name of the player to be registered
      * @param password          Password of the player to be registered
-     * @param application       Reference to application of player
      * @param singlePlayerMode  Single-player (true) or multi-player (false) mode
      * @throws IllegalArgumentException when:
      * name is null or the empty, 
@@ -27,7 +25,7 @@ public interface ISeaBattleGame {
      * number of players exceeds two in multi-player mode or
      * name is already registered.
      */
-    public void registerPlayer(String name, String password, ISeaBattleGUI application, boolean singlePlayerMode);
+    public void registerPlayer(String name, String password, boolean singlePlayerMode); // ISeaBattleGUI application, @param application       Reference to application of player
     
     /**
      * Place ships automatically. Ships that are already placed will be removed. 

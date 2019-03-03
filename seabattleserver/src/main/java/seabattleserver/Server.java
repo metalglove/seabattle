@@ -1,12 +1,16 @@
 package seabattleserver;
 
+import domain.Game;
+import domain.Ship;
 import messaging.handlers.*;
 import messaging.interfaces.AcceptingSocket;
 import messaging.interfaces.MessageHandlingSocket;
 import messaging.interfaces.WritingSocket;
 import messaging.messages.Message;
 import messaging.messages.commands.RegisterCommand;
+import messaging.messages.requests.PlaceShipsAutomaticallyRequest;
 import messaging.messages.requests.PlayerNumberRequest;
+import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.PlayerNumberResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
 import messaging.utilities.MessageConverter;
@@ -28,6 +32,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
     private final AsynchronousChannelGroup group;
     private final List<AsyncIdentifiableClientSocket> clients = new CopyOnWriteArrayList<>();
     private final ISeaBattleServerRest rest;
+    private final Game game = new Game();
 
     public Server(int port, ISeaBattleServerRest rest) throws IOException {
         this.rest = rest;
@@ -75,7 +80,8 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
             PlayerNumberRequest request = (PlayerNumberRequest) object;
             PlayerNumberResponse response = new PlayerNumberResponse(null, false);
             AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, null);
-            for (var player : clients) {
+
+            for (AsyncIdentifiableClientSocket player : clients) {
                 if (player.getName() != null)
                     if (player.getName().equals(request.playerName)) {
                         response = new PlayerNumberResponse(player.getNumber(), true);
@@ -85,22 +91,34 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
             }
             requestMessageHandler.completed(response, request);
         }
+        else if (object instanceof PlaceShipsAutomaticallyRequest)
+        {
+            PlaceShipsAutomaticallyRequest request = (PlaceShipsAutomaticallyRequest) object;
+            final List<Ship> ships = game.placeShipsAutomatically(request.playerNumber);
+            PlaceShipsAutomaticallyResponse response = new PlaceShipsAutomaticallyResponse(request.playerNumber, ships, true);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
+
+            requestMessageHandler.completed(response, request);
+        }
         else if (object instanceof RegisterCommand)
         {
             RegisterCommand command = (RegisterCommand) object;
             if (rest.register(command.playername, command.password)) {
                 client.setName(command.playername);
+                client.setNumber(rest.getPlayerNumber(command.playername));
+                game.registerPlayer(rest.getPlayer(command.playername));
                 new AsyncCommandMessageHandler(client).completed(null, command);
             } else {
                 new AsyncCommandMessageHandler(client).failed(null, command);
             }
         }
-        else
+        else {
             try {
                 throw new Exception("Message type not found!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
     }
 
     @Override

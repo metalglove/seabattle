@@ -3,6 +3,7 @@
  */
 package seabattleunittests;
 
+import domain.Ship;
 import seabattlegui.ISeaBattleGUI;
 import seabattlegui.ShotType;
 import seabattlegui.SquareState;
@@ -97,6 +98,11 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
     public void showErrorMessage(String errorMessage) {
         checkPlayerNumber("showErrorMessage()",playerNr);
         this.errorMessage = errorMessage;
+    }
+
+    @Override
+    public void placeShip(int playerNr, Ship ship) {
+        // TODO: fix place ship in MOCK
     }
 
     /**

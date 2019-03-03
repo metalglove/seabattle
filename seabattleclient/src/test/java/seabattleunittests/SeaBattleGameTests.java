@@ -31,7 +31,7 @@ public abstract class SeaBattleGameTests {
     public void setUp() {
         
         // Create the Sea Battle game
-        game = new SeaBattleGame();
+        game = new SeaBattleGame(applicationPlayer);
 
         // Create mock Sea Battle GUI for player
         applicationPlayer = new MockSeaBattleApplication();
@@ -39,7 +39,7 @@ public abstract class SeaBattleGameTests {
         // Create mock Sea Battle GUI for opponent
         applicationOpponent = new MockSeaBattleApplication();
 
-        game.registerPlayer("player1", "sdsd", applicationPlayer, true);
+        game.registerPlayer("player1", "sdsd", true);
     }
     
     @AfterEach

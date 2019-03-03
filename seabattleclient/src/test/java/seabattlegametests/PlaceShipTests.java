@@ -30,11 +30,11 @@ public class PlaceShipTests extends SeaBattleGameTests {
     @Test
     public void should_Not_Place_Ship_On_Wrong_playerGame() {
         // Arrange
-        game = new SeaBattleGame();
         applicationPlayer = new MockSeaBattleApplication();
-        applicationOpponent = new MockSeaBattleApplication();
-        game.registerPlayer("player1", "sdsd", applicationPlayer, false);
-        game.registerPlayer("player2", "sdsd", applicationOpponent, false);
+        game = new SeaBattleGame(applicationPlayer);
+        //applicationOpponent = new MockSeaBattleApplication();
+        game.registerPlayer("player1", "sdsd", false);
+        game.registerPlayer("player2", "sdsd", false);
 
         SquareState expectedPlayer2Value = SquareState.WATER;
 
@@ -61,7 +61,7 @@ public class PlaceShipTests extends SeaBattleGameTests {
     }
 
     @Test
-    public void should_Contain_15_SquareStates_Of_Ship_When_All_Ships_Are_Succesfully_Placed() {
+    public void should_Contain_15_SquareStates_Of_Ship_When_All_Ships_Are_Successfully_Placed() {
         // Arrange
         int expected = 15;
 

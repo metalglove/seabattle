@@ -3,6 +3,8 @@
  */
 package seabattlegui;
 
+import domain.Ship;
+
 /**
  * Interface provided by the graphical user interface of the sea battle game.
  * @author Nico Kuijpers
@@ -87,5 +89,13 @@ public interface ISeaBattleGUI {
      * Show error message.
      * @param errorMessage error message
      */
-    public void showErrorMessage( String errorMessage);
+    public void showErrorMessage(String errorMessage);
+
+
+    /**
+     * Place ship.
+     * @param playerNr identification of player
+     * @param ship     ship to place
+     */
+    void placeShip(int playerNr, Ship ship);
 }

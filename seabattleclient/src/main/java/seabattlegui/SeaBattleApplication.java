@@ -3,6 +3,8 @@
  */
 package seabattlegui;
 
+import domain.Point;
+import domain.Ship;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -130,7 +132,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     private int selectedSquareY;
      
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
 
         log.info("Seabattle started");
         
@@ -278,7 +280,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
                 new Tooltip("Press this button to register as player");
         buttonRegisterPlayer.setTooltip(tooltipRegisterParticipant);
     buttonRegisterPlayer.setOnAction(
-        (EventHandler) event -> {
+        (EventHandler<ActionEvent>) event -> {
             try {
                 registerPlayer();
             } catch (Exception e) {
@@ -487,7 +489,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         // When invoking methods of class SeaBattleGame an
         // UnsupportedOperationException will be thrown
         // TODO: IMPLEMENT CLASS SeaBattleGame.
-        game = new SeaBattleGame();
+        game = new SeaBattleGame(this);
     }
     
     /**
@@ -503,6 +505,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             return;
         }
         this.playerNr = playerNr;
+        log.debug("Player number is: {} ", playerNr);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -758,7 +761,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             showMessage("Enter your password before registering");
             return;
         }
-        game.registerPlayer(playerName, playerPassword, this, singlePlayerMode);
+        game.registerPlayer(playerName, playerPassword, singlePlayerMode);
     }
     
     /**
@@ -766,6 +769,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     private void placeShipsAutomatically() {
         // Place the player's ships automatically.
+        log.debug("Player number is: {}", playerNr);
         game.placeShipsAutomatically(playerNr);
     }
     
@@ -947,5 +951,15 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    /* new methods.. */
+    public void placeShip(int playerNr, Ship ship) {
+        if (this.playerNr == playerNr) {
+            for (Point point : ship.getPoints()) {
+                Rectangle square = squaresOceanArea[point.getX()][point.getY()];
+                setSquareColor(square, SquareState.SHIP);
+            }
+        }
     }
 }

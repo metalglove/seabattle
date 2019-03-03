@@ -1,4 +1,6 @@
 module socketmessaging {
+    requires seabattledomain;
+
     exports messaging.handlers;
     exports messaging.interfaces;
     exports messaging.messages.commands;
