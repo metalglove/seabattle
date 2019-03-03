@@ -3,7 +3,6 @@ package seabattlegame;
 import messaging.handlers.AsyncReadHandler;
 import messaging.handlers.AsyncWriteHandler;
 import messaging.messages.Message;
-import messaging.messages.responses.PlayerNumberResponse;
 import messaging.sockets.AsyncClientSocket;
 import messaging.utilities.MessageConverter;
 
@@ -36,13 +35,7 @@ public class Client extends AsyncClientSocket {
     @Override
     public void addMessage(Message message) {
         String messageType = message.getClass().getName();
-        System.out.printf("Received {%s} message, test test!%n", messageType);
-        if (message instanceof PlayerNumberResponse) {
-            propertyChangeSupport.firePropertyChange(messageType, null, message);
-        } else {
-            System.out.println("Received unknown message response type!");
-            return;
-        }
+        propertyChangeSupport.firePropertyChange(messageType, null, message);
         System.out.printf("Successfully received {%s} message!%n", messageType);
     }
 
