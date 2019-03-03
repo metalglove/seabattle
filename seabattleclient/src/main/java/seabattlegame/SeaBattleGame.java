@@ -43,7 +43,7 @@ public class SeaBattleGame implements ISeaBattleGame {
   public void registerPlayer(String name, String password, boolean singlePlayerMode) {
     log.debug("Register Player {} - password {}", name, password);
     client.startWriting(new RegisterCommand(name, password, singlePlayerMode));
-    client.addListener(PlayerNumberResponse.class.getName(), new PlayerNumberResponseChangeListener(this.application, name, client));
+    client.addListener(PlayerNumberResponse.class.getSimpleName(), new PlayerNumberResponseChangeListener(this.application, name, client));
     try {
       Thread.sleep(100);
     } catch (InterruptedException e) {
@@ -55,7 +55,7 @@ public class SeaBattleGame implements ISeaBattleGame {
   @Override
   public void placeShipsAutomatically(int playerNr) {
     log.debug("placeShipsAutomatically with player number: {}", playerNr);
-    client.addListener(PlaceShipsAutomaticallyResponse.class.getName(), new PlaceShipsAutomaticallyResponseChangeListener(application, playerNr, client));
+    client.addListener(PlaceShipsAutomaticallyResponse.class.getSimpleName(), new PlaceShipsAutomaticallyResponseChangeListener(application, playerNr, client));
     client.startWriting(new PlaceShipsAutomaticallyRequest(playerNr));
   }
 

@@ -34,7 +34,7 @@ public class Client extends AsyncClientSocket {
 
     @Override
     public void addMessage(Message message) {
-        String messageType = message.getClass().getName();
+        String messageType = message.getClass().getSimpleName();
         propertyChangeSupport.firePropertyChange(messageType, null, message);
         System.out.printf("Successfully received {%s} message!%n", messageType);
     }

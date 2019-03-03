@@ -18,7 +18,7 @@ public class AsyncCommandMessageHandler implements CompletionHandler<Void, Messa
     @Override
     public void completed(Void result, Message attachment) {
         try {
-            System.out.println(format("CommandMessage executed successfully: {%s} by {%s}", attachment.getClass().getName(), client.getChannel().getRemoteAddress().toString()));
+            System.out.println(format("CommandMessage executed successfully: {%s} by {%s}", attachment.getClass().getSimpleName(), client.getChannel().getRemoteAddress().toString()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,7 +27,7 @@ public class AsyncCommandMessageHandler implements CompletionHandler<Void, Messa
     @Override
     public void failed(Throwable exc, Message attachment) {
         try {
-            System.out.println(format("CommandMessage executed unsuccessfully: {%s} by {%s}", attachment.getClass().getName(), client.getChannel().getRemoteAddress().toString()));
+            System.out.println(format("CommandMessage executed unsuccessfully: {%s} by {%s}", attachment.getClass().getSimpleName(), client.getChannel().getRemoteAddress().toString()));
         } catch (IOException e) {
             e.printStackTrace();
         }

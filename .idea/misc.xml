@@ -10,6 +10,11 @@
         <option value="$PROJECT_DIR$/seabattledomain/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/seabattledomain/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="11.0.2" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
