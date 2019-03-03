@@ -10,6 +10,8 @@ import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -30,7 +32,7 @@ public abstract class SeaBattleGameTests {
         
         // Create the Sea Battle game
         game = new SeaBattleGame();
-        
+
         // Create mock Sea Battle GUI for player
         applicationPlayer = new MockSeaBattleApplication();
         

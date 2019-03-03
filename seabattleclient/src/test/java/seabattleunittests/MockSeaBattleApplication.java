@@ -92,7 +92,13 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
         checkPlayerNumber("showErrorMessage()",playerNr);
         this.errorMessage = errorMessage;
     }
-    
+
+    @Override
+    public void showErrorMessage(String errorMessage) {
+        checkPlayerNumber("showErrorMessage()",playerNr);
+        this.errorMessage = errorMessage;
+    }
+
     /**
      * Get player number.
      * @return player number

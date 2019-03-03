@@ -8,6 +8,8 @@ import seabattlegui.SquareState;
 import seabattleunittests.MockSeaBattleApplication;
 import seabattleunittests.SeaBattleGameTests;
 
+import java.io.IOException;
+
 /**
  * Place ship of given type. A ship of given type will be placed with its
  * bow at the given coordinates.

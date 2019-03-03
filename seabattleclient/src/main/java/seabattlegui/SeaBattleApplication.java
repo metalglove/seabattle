@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 
+import java.io.IOException;
 
 
 /**
@@ -129,7 +130,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     private int selectedSquareY;
      
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
 
         log.info("Seabattle started");
         
@@ -686,7 +687,16 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             } 
         });
     }
-    
+
+    /**
+     * Show error message.
+     * @param errorMessage error message
+     */
+    @Override
+    public void showErrorMessage(String errorMessage) {
+        showErrorMessage(playerNr, errorMessage);
+    }
+
     /**
      * Show error message.
      * @param playerNr identification of player
@@ -702,7 +712,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      * Set the color of the square according to position type.
      * Setting the color will be performed by the JavaFX Application Thread.
      * @param square the square of which the color should be changed.
-     * @param type position type to determine the color.
+     * @param squareState position type to determine the color.
      */
     private void setSquareColor(final Rectangle square, final SquareState squareState) {
         // Ensure that changing the color of the square is performed by

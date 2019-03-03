@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/seabattle-start-master.iml" filepath="$PROJECT_DIR$/.idea/seabattle-start-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattleclient/seabattleclient.iml" filepath="$PROJECT_DIR$/seabattleclient/seabattleclient.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattleserver/seabattleserver.iml" filepath="$PROJECT_DIR$/seabattleserver/seabattleserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/socket-messaging/socketmessaging.iml" filepath="$PROJECT_DIR$/socket-messaging/socketmessaging.iml" />
     </modules>
   </component>
 </project>
