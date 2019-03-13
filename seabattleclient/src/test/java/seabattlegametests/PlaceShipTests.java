@@ -3,12 +3,10 @@ package seabattlegametests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import seabattlegame.SeaBattleGame;
-import seabattlegui.ShipType;
+import domain.ShipType;
 import seabattlegui.SquareState;
 import seabattleunittests.MockSeaBattleApplication;
 import seabattleunittests.SeaBattleGameTests;
-
-import java.io.IOException;
 
 /**
  * Place ship of given type. A ship of given type will be placed with its

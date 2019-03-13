@@ -6,7 +6,7 @@ module seabattleclient {
   requires java.desktop;
   requires javafx.controls;
   requires slf4j.api;
-    requires seabattledomain;
+  requires seabattledomain;
 
-    exports seabattlegui;
+  exports seabattlegui;
 }

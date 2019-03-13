@@ -2,7 +2,7 @@ package seabattlegametests;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import seabattlegui.ShipType;
+import domain.ShipType;
 import seabattleunittests.SeaBattleGameTests;
 
 /**

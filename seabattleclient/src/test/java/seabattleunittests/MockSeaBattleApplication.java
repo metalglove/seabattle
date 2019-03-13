@@ -5,7 +5,7 @@ package seabattleunittests;
 
 import domain.Ship;
 import seabattlegui.ISeaBattleGUI;
-import seabattlegui.ShotType;
+import domain.ShotType;
 import seabattlegui.SquareState;
 
 /**

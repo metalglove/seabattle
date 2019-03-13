@@ -8,8 +8,10 @@ import messaging.interfaces.MessageHandlingSocket;
 import messaging.interfaces.WritingSocket;
 import messaging.messages.Message;
 import messaging.messages.commands.RegisterCommand;
+import messaging.messages.requests.PlaceShipRequest;
 import messaging.messages.requests.PlaceShipsAutomaticallyRequest;
 import messaging.messages.requests.PlayerNumberRequest;
+import messaging.messages.responses.PlaceShipResponse;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.PlayerNumberResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
@@ -67,15 +69,20 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
 
     @Override
     public void startHandlingMessage(AsyncIdentifiableClientSocket client, byte[] bytes) {
-        Object object;
+        Message object;
         try {
             object = MessageConverter.convertFromBytes(bytes);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return;
         }
-
-        if (object instanceof PlayerNumberRequest)
+        if (object instanceof PlaceShipRequest) {
+            PlaceShipRequest request = (PlaceShipRequest) object;
+            PlaceShipResponse response = new PlaceShipResponse(null, null, false);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, null);
+            // TODO: fix create a game service
+        }
+        else if (object instanceof PlayerNumberRequest)
         {
             PlayerNumberRequest request = (PlayerNumberRequest) object;
             PlayerNumberResponse response = new PlayerNumberResponse(null, false);

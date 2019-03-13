@@ -2,9 +2,9 @@ package seabattlegametests;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import seabattlegui.ShipType;
-import seabattlegui.ShotType;
-import seabattlegui.SquareState;
+import domain.ShipType;
+import domain.ShotType;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import seabattleunittests.SeaBattleGameTests;
 
