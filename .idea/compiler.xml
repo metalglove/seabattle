@@ -27,7 +27,7 @@
       <module name="seabattleclient" options="" />
       <module name="seabattledomain" options="-bootclasspath &quot;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\resources.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\sunrsasign.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jsse.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jce.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\charsets.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jfr.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
       <module name="seabattleserver" options="" />
-      <module name="socketmessaging" options="-bootclasspath &quot;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\resources.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\sunrsasign.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jsse.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jce.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\charsets.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jfr.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
+      <module name="socketmessaging" options="" />
     </option>
   </component>
 </project>
