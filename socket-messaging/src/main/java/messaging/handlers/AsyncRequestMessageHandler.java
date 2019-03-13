@@ -21,7 +21,7 @@ public class AsyncRequestMessageHandler implements CompletionHandler<Message, Me
     @Override
     public void completed(Message response, Message request) {
         try {
-            System.out.println(format("RequestMessage executed successfully: {%s}, {%s} by {%s}", request.getClass().getName(), response.getClass().getName(), client.getChannel().getRemoteAddress().toString()));
+            System.out.println(format("RequestMessage executed successfully: {%s}, {%s} by {%s}", request.getClass().getSimpleName(), response.getClass().getSimpleName(), client.getChannel().getRemoteAddress().toString()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,7 +31,7 @@ public class AsyncRequestMessageHandler implements CompletionHandler<Message, Me
     @Override
     public void failed(Throwable exc, Message request) {
         try {
-            System.out.println(format("RequestMessage executed unsuccessfully: {%s} by {%s}", request.getClass().getName(), client.getChannel().getRemoteAddress().toString()));
+            System.out.println(format("RequestMessage executed unsuccessfully: {%s} by {%s}", request.getClass().getSimpleName(), client.getChannel().getRemoteAddress().toString()));
         } catch (IOException e) {
             e.printStackTrace();
         }

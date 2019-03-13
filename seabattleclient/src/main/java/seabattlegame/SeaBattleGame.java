@@ -58,7 +58,7 @@ public class SeaBattleGame implements ISeaBattleGame {
   @Override
   public void placeShipsAutomatically(int playerNr) {
     log.debug("placeShipsAutomatically with player number: {}", playerNr);
-    client.addListener(PlaceShipsAutomaticallyResponse.class.getName(), new PlaceShipsAutomaticallyResponseChangeListener(application, playerNr, client));
+    client.addListener(PlaceShipsAutomaticallyResponse.class.getSimpleName(), new PlaceShipsAutomaticallyResponseChangeListener(application, playerNr, client));
     client.startWriting(new PlaceShipsAutomaticallyRequest(playerNr));
   }
 
