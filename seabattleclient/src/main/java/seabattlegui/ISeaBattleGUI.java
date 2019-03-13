@@ -4,6 +4,7 @@
 package seabattlegui;
 
 import domain.Ship;
+import domain.ShotType;
 
 /**
  * Interface provided by the graphical user interface of the sea battle game.

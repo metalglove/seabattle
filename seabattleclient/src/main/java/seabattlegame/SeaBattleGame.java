@@ -4,16 +4,19 @@
 package seabattlegame;
 
 import messaging.messages.commands.RegisterCommand;
+import messaging.messages.requests.PlaceShipRequest;
 import messaging.messages.requests.PlaceShipsAutomaticallyRequest;
 import messaging.messages.requests.PlayerNumberRequest;
+import messaging.messages.responses.PlaceShipResponse;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.PlayerNumberResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import seabattlegame.listeners.PlaceShipResponseChangeListener;
 import seabattlegame.listeners.PlaceShipsAutomaticallyResponseChangeListener;
 import seabattlegame.listeners.PlayerNumberResponseChangeListener;
 import seabattlegui.ISeaBattleGUI;
-import seabattlegui.ShipType;
+import domain.ShipType;
 
 import java.io.IOException;
 
@@ -43,8 +46,8 @@ public class SeaBattleGame implements ISeaBattleGame {
   public void registerPlayer(String name, String password, boolean singlePlayerMode) {
     log.debug("Register Player {} - password {}", name, password);
     client.startWriting(new RegisterCommand(name, password, singlePlayerMode));
-    client.addListener(PlayerNumberResponse.class.getName(), new PlayerNumberResponseChangeListener(this.application, name, client));
-    try {
+    client.addListener(PlayerNumberResponse.class.getName(), new PlayerNumberResponseChangeListener(application, name, client));
+    try { // TODO: fix request it to fast... XD
       Thread.sleep(100);
     } catch (InterruptedException e) {
       e.printStackTrace();
@@ -61,7 +64,9 @@ public class SeaBattleGame implements ISeaBattleGame {
 
   @Override
   public void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
-    throw new UnsupportedOperationException("Method placeShip() not implemented.");
+    log.debug("placeShip with player number: {} - shipType: {} - bowX: {} - bowY: {} - horizontal: {}", playerNr, shipType, bowX, bowY, horizontal);
+    client.addListener(PlaceShipResponse.class.getName(), new PlaceShipResponseChangeListener(application, playerNr, client));
+    client.startWriting(new PlaceShipRequest(playerNr, shipType, bowX, bowY, horizontal));
   }
 
   @Override

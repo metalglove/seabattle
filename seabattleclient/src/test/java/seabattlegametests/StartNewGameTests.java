@@ -1,7 +1,7 @@
 package seabattlegametests;
 
 import org.junit.jupiter.api.Test;
-import seabattlegui.ShipType;
+import domain.ShipType;
 import seabattleunittests.SeaBattleGameTests;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

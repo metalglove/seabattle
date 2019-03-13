@@ -5,6 +5,8 @@ package seabattlegui;
 
 import domain.Point;
 import domain.Ship;
+import domain.ShipType;
+import domain.ShotType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -25,8 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
-
-import java.io.IOException;
 
 
 /**

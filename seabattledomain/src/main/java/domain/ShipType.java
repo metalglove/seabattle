@@ -1,7 +1,7 @@
 /*
  * Sea Battle Start project.
  */
-package seabattlegui;
+package domain;
 
 /**
  * Indicate type of ship.
