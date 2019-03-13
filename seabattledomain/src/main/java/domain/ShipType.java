@@ -1,7 +1,7 @@
 /*
  * Sea Battle Start project.
  */
-package seabattlegui;
+package domain;
 
 /**
  * Indicate type of ship.
@@ -12,5 +12,5 @@ public enum ShipType {
     BATTLESHIP,       // Battle ship (size 4)
     CRUISER,          // Cruister (size 3)
     SUBMARINE,        // Submarine (size 3)
-    MINESWEEPER;      // Mine sweeper (size 2)
+    MINESWEEPER      // Mine sweeper (size 2)
 }

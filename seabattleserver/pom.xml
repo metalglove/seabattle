@@ -12,7 +12,7 @@
   <artifactId>seabattleserver</artifactId>
 
   <dependencies>
-    <!-- WebSockets Server -->
+    <!-- WebSockets Server
     <dependency>
       <groupId>javax.websocket</groupId>
       <artifactId>javax.websocket-api</artifactId>
@@ -23,7 +23,7 @@
       <groupId>org.eclipse.jetty.websocket</groupId>
       <artifactId>javax-websocket-server-impl</artifactId>
       <version>9.4.7.v20170914</version>
-    </dependency>
+    </dependency> -->
 
     <!--  Gson: Java to Json conversion -->
     <dependency>
@@ -32,10 +32,28 @@
       <version>2.8.2</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
+   <!--  <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.3</version>
+    </dependency> -->
+      <dependency>
+          <groupId>nl.fhict.s3</groupId>
+          <artifactId>socket-messaging</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>nl.fhict.s3</groupId>
+          <artifactId>socket-messaging</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore-nio -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore-nio</artifactId>
+      <version>4.4.11</version>
     </dependency>
   </dependencies>
 

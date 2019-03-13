@@ -7,21 +7,27 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="seabattleclient" />
+        <module name="seabattledomain" />
         <module name="seabattleserver" />
+        <module name="socketmessaging" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="seabattle-start-master" target="11" />
       <module name="seabattleclient" target="11" />
+      <module name="seabattledomain" target="11" />
       <module name="seabattleserver" target="11" />
       <module name="SeaBattleStart" target="11" />
+      <module name="socketmessaging" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SeaBattleStart" options="" />
       <module name="seabattleclient" options="" />
+      <module name="seabattledomain" options="-bootclasspath &quot;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\resources.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\sunrsasign.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jsse.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jce.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\charsets.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jfr.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
       <module name="seabattleserver" options="" />
+      <module name="socketmessaging" options="-bootclasspath &quot;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\resources.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\sunrsasign.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jsse.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jce.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\charsets.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\lib\jfr.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
     </option>
   </component>
 </project>

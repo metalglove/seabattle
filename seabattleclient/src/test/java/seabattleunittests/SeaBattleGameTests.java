@@ -10,32 +10,36 @@ import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for Sea Battle game.
  * @author Nico Kuijpers
  */
-public abstract class SeaBattleGameTest {
+public abstract class SeaBattleGameTests {
     
     protected ISeaBattleGame game;
     protected MockSeaBattleApplication applicationPlayer;
     protected MockSeaBattleApplication applicationOpponent;
     
-    public SeaBattleGameTest() {
+    public SeaBattleGameTests() {
     }
 
     @BeforeEach
     public void setUp() {
         
         // Create the Sea Battle game
-        game = new SeaBattleGame();
-        
+        game = new SeaBattleGame(applicationPlayer);
+
         // Create mock Sea Battle GUI for player
         applicationPlayer = new MockSeaBattleApplication();
         
         // Create mock Sea Battle GUI for opponent
         applicationOpponent = new MockSeaBattleApplication();
+
+        game.registerPlayer("player1", "sdsd", true);
     }
     
     @AfterEach
