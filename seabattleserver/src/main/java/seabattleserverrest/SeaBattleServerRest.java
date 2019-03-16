@@ -1,6 +1,7 @@
 package seabattleserverrest;
 
 import domain.Player;
+import interfaces.ISeaBattleServerRest;
 
 import java.util.HashMap;
 import java.util.Map;

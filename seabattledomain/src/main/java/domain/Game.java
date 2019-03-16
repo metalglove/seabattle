@@ -14,7 +14,6 @@ public class Game {
         } else if(player2 == null) {
             player2 = player;
         } else {
-            System.out.printf("Player: {%s} tried to join a game that is already full!", player.getUsername());
             return false;
         }
         return true;
@@ -22,6 +21,8 @@ public class Game {
 
     public List<Ship> placeShipsAutomatically(int playerNr) {
         Player player = getPlayerFromNumber(playerNr);
+        if (player == null)
+            return null;
         AircraftCarrier aircraftCarrier = new AircraftCarrier(new Point(1, 1), true);
         BattleShip battleShip = new BattleShip(new Point(1, 2), true);
         Cruiser cruiser = new Cruiser(new Point(1, 3), true);
@@ -35,7 +36,20 @@ public class Game {
         return player.getShips();
     }
 
-    private Player getPlayerFromNumber(int playerNr) {
-        return player1.getPlayerNumber() == playerNr ? player1 : player2;
+    public Player getPlayerFromNumber(int playerNr) {
+        if (containsPlayer(playerNr))
+            return player1.getPlayerNumber() == playerNr ? player1 : player2;
+        return null;
+    }
+
+    public boolean containsPlayer(int playerNumber) {
+        if (player1 != null) {
+            if (player1.getPlayerNumber().equals(playerNumber))
+                return true;
+        }
+        if (player2 != null) {
+            return player2.getPlayerNumber().equals(playerNumber);
+        }
+        return false;
     }
 }

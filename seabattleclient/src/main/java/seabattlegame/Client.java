@@ -22,6 +22,7 @@ public class Client extends AsyncClientSocket {
     void addListener(String eventName, PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(eventName, listener);
     }
+
     public void removeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }

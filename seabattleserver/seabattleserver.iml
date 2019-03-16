@@ -12,7 +12,6 @@
     <orderEntry type="module" module-name="seabattledomain" />
     <orderEntry type="module" module-name="seabattledomain" />
     <orderEntry type="module" module-name="socketmessaging" />
-    <orderEntry type="library" name="Maven: nl.fhict.s3:seabattledomain:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore-nio:4.4.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.11" level="project" />

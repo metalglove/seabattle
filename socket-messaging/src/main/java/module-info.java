@@ -3,7 +3,6 @@ module socketmessaging {
 
     exports messaging.handlers;
     exports messaging.interfaces;
-    exports messaging.messages.commands;
     exports messaging.messages.requests;
     exports messaging.messages.responses;
     exports messaging.messages;

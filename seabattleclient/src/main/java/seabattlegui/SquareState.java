@@ -5,6 +5,7 @@ package seabattlegui;
 
 /**
  * Indicate the state of a square.
+ *
  * @author Nico Kuijpers
  */
 public enum SquareState {

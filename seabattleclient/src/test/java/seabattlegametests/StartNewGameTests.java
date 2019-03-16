@@ -27,6 +27,6 @@ public class StartNewGameTests extends SeaBattleGameTests {
         game.startNewGame(1);
 
         // Assert
-        assertDoesNotThrow(() -> game.registerPlayer("jan", "asdsd", true));
+        assertDoesNotThrow(() -> game.registerPlayer("jan", "asdsd"));
     }
 }

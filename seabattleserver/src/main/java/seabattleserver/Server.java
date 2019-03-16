@@ -1,22 +1,17 @@
 package seabattleserver;
 
-import domain.Game;
 import domain.Ship;
 import messaging.handlers.*;
 import messaging.interfaces.AcceptingSocket;
 import messaging.interfaces.MessageHandlingSocket;
 import messaging.interfaces.WritingSocket;
 import messaging.messages.Message;
-import messaging.messages.commands.RegisterCommand;
-import messaging.messages.requests.PlaceShipRequest;
-import messaging.messages.requests.PlaceShipsAutomaticallyRequest;
-import messaging.messages.requests.PlayerNumberRequest;
-import messaging.messages.responses.PlaceShipResponse;
-import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
-import messaging.messages.responses.PlayerNumberResponse;
+import messaging.messages.requests.*;
+import messaging.messages.responses.*;
 import messaging.sockets.AsyncIdentifiableClientSocket;
 import messaging.utilities.MessageConverter;
-import seabattleserverrest.ISeaBattleServerRest;
+import interfaces.ISeaBattleServerRest;
+import interfaces.ISeaBattleGameService;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -34,10 +29,11 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
     private final AsynchronousChannelGroup group;
     private final List<AsyncIdentifiableClientSocket> clients = new CopyOnWriteArrayList<>();
     private final ISeaBattleServerRest rest;
-    private final Game game = new Game();
+    private final ISeaBattleGameService gameService;
 
-    public Server(int port, ISeaBattleServerRest rest) throws IOException {
+    public Server(int port, ISeaBattleServerRest rest, ISeaBattleGameService gameService) throws IOException {
         this.rest = rest;
+        this.gameService = gameService;
         group = AsynchronousChannelGroup.withThreadPool(Executors.newFixedThreadPool(100));
         server = AsynchronousServerSocketChannel.open(group);
         server.setOption(StandardSocketOptions.SO_REUSEADDR, true);
@@ -47,7 +43,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
         startAccepting();
     }
 
-    public void await() throws InterruptedException {
+    void await() throws InterruptedException {
         group.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
     }
 
@@ -76,48 +72,72 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
             e.printStackTrace();
             return;
         }
+
         if (object instanceof PlaceShipRequest) {
             PlaceShipRequest request = (PlaceShipRequest) object;
-            PlaceShipResponse response = new PlaceShipResponse(null, null, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, null);
-            // TODO: fix create a game service
-        }
-        else if (object instanceof PlayerNumberRequest)
-        {
-            PlayerNumberRequest request = (PlayerNumberRequest) object;
-            PlayerNumberResponse response = new PlayerNumberResponse(null, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, null);
+            PlaceShipResponse response = new PlaceShipResponse(request.playerNumber, null, false);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
+            final Ship placedShip = gameService.placeShip(request.playerNumber, request.shipType, request.bowX, request.bowY, request.horizontal);
+            if (placedShip != null)
+                response = new PlaceShipResponse(request.playerNumber, placedShip, true);
 
-            for (AsyncIdentifiableClientSocket player : clients) {
-                if (player.getName() != null)
-                    if (player.getName().equals(request.playerName)) {
-                        response = new PlayerNumberResponse(player.getNumber(), true);
-                        requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-                        break;
-                    }
+            requestMessageHandler.completed(response, request);
+        }
+        else if(object instanceof RemoveShipRequest) {
+            RemoveShipRequest request = (RemoveShipRequest) object;
+            RemoveShipResponse response = new RemoveShipResponse(request.playerNumber, false);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
+            // TODO: create remove ship method
+        }
+        else if(object instanceof RemoveAllShipsRequest) {
+            RemoveAllShipsRequest request = (RemoveAllShipsRequest) object;
+            RemoveAllShipsResponse response = new RemoveAllShipsResponse(request.playerNumber, false);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
+            // TODO: create remove all ships method
+        }
+        else if(object instanceof NotifyWhenReadyRequest) {
+            NotifyWhenReadyRequest request = (NotifyWhenReadyRequest) object;
+            NotifyWhenReadyResponse response = new NotifyWhenReadyResponse(request.playerNumber, false);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
+            // TODO: create notification event
+        }
+        else if(object instanceof FireShotRequest) {
+            FireShotRequest request = (FireShotRequest) object;
+            FireShotResponse response = new FireShotResponse(request.firingPlayerNumber, null, false);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
+            // TODO: create fireShot method (that also notifies other player)
+        }
+        else if(object instanceof StartNewGameRequest) {
+            StartNewGameRequest request = (StartNewGameRequest) object;
+            StartNewGameResponse response = new StartNewGameResponse(request.playerNumber, false);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
+            // TODO: delete game if other player has not yet and register player to a new game
+        }
+        else if (object instanceof RegisterRequest)
+        {
+            RegisterRequest request = (RegisterRequest) object;
+            RegisterResponse response = new RegisterResponse(null, false);
+            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
+            if (rest.register(request.playerName, request.password)) {
+                client.setName(request.playerName);
+                int playerNumber = rest.getPlayerNumber(request.playerName);
+                client.setNumber(playerNumber);
+                gameService.registerPlayer(rest.getPlayer(request.playerName));
+                response = new RegisterResponse(playerNumber, true);
             }
             requestMessageHandler.completed(response, request);
         }
         else if (object instanceof PlaceShipsAutomaticallyRequest)
         {
             PlaceShipsAutomaticallyRequest request = (PlaceShipsAutomaticallyRequest) object;
-            final List<Ship> ships = game.placeShipsAutomatically(request.playerNumber);
-            PlaceShipsAutomaticallyResponse response = new PlaceShipsAutomaticallyResponse(request.playerNumber, ships, true);
+            final List<Ship> ships = gameService.placeShipsAutomatically(request.playerNumber);
+            PlaceShipsAutomaticallyResponse response;
+            if (ships == null)
+                response = new PlaceShipsAutomaticallyResponse(request.playerNumber, null, false);
+            else
+                response = new PlaceShipsAutomaticallyResponse(request.playerNumber, ships, true);
             AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-
             requestMessageHandler.completed(response, request);
-        }
-        else if (object instanceof RegisterCommand)
-        {
-            RegisterCommand command = (RegisterCommand) object;
-            if (rest.register(command.playername, command.password)) {
-                client.setName(command.playername);
-                client.setNumber(rest.getPlayerNumber(command.playername));
-                game.registerPlayer(rest.getPlayer(command.playername));
-                new AsyncCommandMessageHandler(client).completed(null, command);
-            } else {
-                new AsyncCommandMessageHandler(client).failed(null, command);
-            }
         }
         else {
             try {

@@ -1,18 +1,18 @@
 package seabattlegame.listeners;
 
-import messaging.messages.responses.PlayerNumberResponse;
+import messaging.messages.responses.RegisterResponse;
 import seabattlegame.Client;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class PlayerNumberResponseChangeListener implements PropertyChangeListener {
+public class RegisterResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
     private final String name;
     private final Client client;
 
-    public PlayerNumberResponseChangeListener(ISeaBattleGUI application, String name, Client client) {
+    public RegisterResponseChangeListener(ISeaBattleGUI application, String name, Client client) {
         this.application = application;
         this.name = name;
         this.client = client;
@@ -20,9 +20,9 @@ public class PlayerNumberResponseChangeListener implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        PlayerNumberResponse response = (PlayerNumberResponse) evt.getNewValue();
+        RegisterResponse response = (RegisterResponse) evt.getNewValue();
         if (!response.success) {
-            application.showErrorMessage("No player registered with that name!");
+            application.showErrorMessage("Failed to register!");
         } else {
             application.setPlayerNumber(response.playerNumber, name);
         }

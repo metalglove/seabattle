@@ -1,9 +1,9 @@
 package seabattlegametests;
 
+import domain.ShipType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import seabattlegame.SeaBattleGame;
-import domain.ShipType;
+import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.SquareState;
 import seabattleunittests.MockSeaBattleApplication;
 import seabattleunittests.SeaBattleGameTests;
@@ -29,10 +29,10 @@ public class PlaceShipTests extends SeaBattleGameTests {
     public void should_Not_Place_Ship_On_Wrong_playerGame() {
         // Arrange
         applicationPlayer = new MockSeaBattleApplication();
-        game = new SeaBattleGame(applicationPlayer);
+        game = new MultiPlayerSeaBattleGame(applicationPlayer);
         //applicationOpponent = new MockSeaBattleApplication();
-        game.registerPlayer("player1", "sdsd", false);
-        game.registerPlayer("player2", "sdsd", false);
+        game.registerPlayer("player1", "sdsd");
+        game.registerPlayer("player2", "sdsd");
 
         SquareState expectedPlayer2Value = SquareState.WATER;
 

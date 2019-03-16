@@ -1,4 +1,4 @@
-package seabattleserverrest;
+package interfaces;
 
 import domain.Player;
 

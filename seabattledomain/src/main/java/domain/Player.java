@@ -1,6 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -11,7 +10,7 @@ public class Player {
     private final String password;
     private final Integer number;
     private List<Ship> ships = new CopyOnWriteArrayList<>();
-    private boolean gamehasStarted = false;
+    private boolean gameHasStarted = false;
 
     public Player(String username, String password, Integer number) {
 
@@ -21,16 +20,25 @@ public class Player {
     }
 
     public boolean addShip(Ship ship) {
-        if (gamehasStarted)
+        if (gameHasStarted)
             return false;
 
-        Stream<Ship> shipStream = ships.stream().filter(x -> x.getClass().equals(ship.getClass()));
-        final Optional<Ship> optionalShip = shipStream.findFirst();
+        Stream<Ship> shipStream = ships.stream();
+        Ship oldShip = null;
+        final Optional<Ship> optionalShip = shipStream.filter(x -> x.getClass().equals(ship.getClass())).findFirst();
         if (optionalShip.isPresent()) {
-            Ship oldShip = optionalShip.get();
+            oldShip = optionalShip.get();
             ships.remove(oldShip);
         }
-
+        for (Ship shipInList : ships) {
+            for (Point point : ship.getPoints())
+                if (shipInList.containsPoint(point)) {
+                    if (oldShip != null) {
+                        ships.add(oldShip);
+                    }
+                    return false;
+                }
+        }
         ships.add(ship);
         return true;
     }
