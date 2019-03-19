@@ -1,17 +1,20 @@
 package seabattleserver;
 
-import domain.Ship;
-import messaging.handlers.*;
+import handlers.*;
+import interfaces.IFactory;
+import interfaces.ISeaBattleGameService;
+import interfaces.ISeaBattleServerRest;
+import interfaces.RequestHandler;
+import messaging.handlers.AsyncAcceptHandler;
+import messaging.handlers.AsyncReadForHandlingMessageHandler;
+import messaging.handlers.AsyncWriteBufferHandler;
 import messaging.interfaces.AcceptingSocket;
 import messaging.interfaces.MessageHandlingSocket;
 import messaging.interfaces.WritingSocket;
 import messaging.messages.Message;
 import messaging.messages.requests.*;
-import messaging.messages.responses.*;
 import messaging.sockets.AsyncIdentifiableClientSocket;
 import messaging.utilities.MessageConverter;
-import interfaces.ISeaBattleServerRest;
-import interfaces.ISeaBattleGameService;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -20,9 +23,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSocket {
     private final AsynchronousServerSocketChannel server;
@@ -30,6 +31,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
     private final List<AsyncIdentifiableClientSocket> clients = new CopyOnWriteArrayList<>();
     private final ISeaBattleServerRest rest;
     private final ISeaBattleGameService gameService;
+    private final ConcurrentMap<Class<?>, IFactory<RequestHandler>> requestHandlerMapping = new ConcurrentHashMap<>();
 
     public Server(int port, ISeaBattleServerRest rest, ISeaBattleGameService gameService) throws IOException {
         this.rest = rest;
@@ -41,6 +43,15 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
         server.bind(new InetSocketAddress(port), 100);
         System.out.println("Started server socket on: " + server.getLocalAddress().toString());
         startAccepting();
+
+        requestHandlerMapping.put(RegisterRequest.class, () -> new RegisterRequestHandler(this, rest, gameService));
+        requestHandlerMapping.put(FireShotRequest.class, () -> new FireShotRequestHandler(this, gameService));
+        requestHandlerMapping.put(NotifyWhenReadyRequest.class, () -> new NotifyWhenReadyRequestHandler(this, gameService));
+        requestHandlerMapping.put(PlaceShipRequest.class, () -> new PlaceShipRequestHandler(this, gameService));
+        requestHandlerMapping.put(PlaceShipsAutomaticallyRequest.class, () -> new PlaceShipsAutomaticallyRequestHandler(this, gameService));
+        requestHandlerMapping.put(RemoveAllShipsRequest.class, () -> new RemoveAllShipsRequestHandler(this, gameService));
+        requestHandlerMapping.put(RemoveShipRequest.class, () -> new RemoveShipRequestHandler(this, gameService));
+        requestHandlerMapping.put(StartNewGameRequest.class, () -> new StartNewGameRequestHandler(this, gameService));
     }
 
     void await() throws InterruptedException {
@@ -72,80 +83,10 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
             e.printStackTrace();
             return;
         }
-
-        if (object instanceof PlaceShipRequest) {
-            PlaceShipRequest request = (PlaceShipRequest) object;
-            PlaceShipResponse response = new PlaceShipResponse(request.playerNumber, null, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-            final Ship placedShip = gameService.placeShip(request.playerNumber, request.shipType, request.bowX, request.bowY, request.horizontal);
-            if (placedShip != null)
-                response = new PlaceShipResponse(request.playerNumber, placedShip, true);
-
-            requestMessageHandler.completed(response, request);
-        }
-        else if(object instanceof RemoveShipRequest) {
-            RemoveShipRequest request = (RemoveShipRequest) object;
-            RemoveShipResponse response = new RemoveShipResponse(request.playerNumber, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-            // TODO: create remove ship method
-        }
-        else if(object instanceof RemoveAllShipsRequest) {
-            RemoveAllShipsRequest request = (RemoveAllShipsRequest) object;
-            RemoveAllShipsResponse response = new RemoveAllShipsResponse(request.playerNumber, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-            // TODO: create remove all ships method
-        }
-        else if(object instanceof NotifyWhenReadyRequest) {
-            NotifyWhenReadyRequest request = (NotifyWhenReadyRequest) object;
-            NotifyWhenReadyResponse response = new NotifyWhenReadyResponse(request.playerNumber, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-            // TODO: create notification event
-        }
-        else if(object instanceof FireShotRequest) {
-            FireShotRequest request = (FireShotRequest) object;
-            FireShotResponse response = new FireShotResponse(request.firingPlayerNumber, null, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-            // TODO: create fireShot method (that also notifies other player)
-        }
-        else if(object instanceof StartNewGameRequest) {
-            StartNewGameRequest request = (StartNewGameRequest) object;
-            StartNewGameResponse response = new StartNewGameResponse(request.playerNumber, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-            // TODO: delete game if other player has not yet and register player to a new game
-        }
-        else if (object instanceof RegisterRequest)
-        {
-            RegisterRequest request = (RegisterRequest) object;
-            RegisterResponse response = new RegisterResponse(null, false);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-            if (rest.register(request.playerName, request.password)) {
-                client.setName(request.playerName);
-                int playerNumber = rest.getPlayerNumber(request.playerName);
-                client.setNumber(playerNumber);
-                gameService.registerPlayer(rest.getPlayer(request.playerName));
-                response = new RegisterResponse(playerNumber, true);
-            }
-            requestMessageHandler.completed(response, request);
-        }
-        else if (object instanceof PlaceShipsAutomaticallyRequest)
-        {
-            PlaceShipsAutomaticallyRequest request = (PlaceShipsAutomaticallyRequest) object;
-            final List<Ship> ships = gameService.placeShipsAutomatically(request.playerNumber);
-            PlaceShipsAutomaticallyResponse response;
-            if (ships == null)
-                response = new PlaceShipsAutomaticallyResponse(request.playerNumber, null, false);
-            else
-                response = new PlaceShipsAutomaticallyResponse(request.playerNumber, ships, true);
-            AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(this, client);
-            requestMessageHandler.completed(response, request);
-        }
-        else {
-            try {
-                throw new Exception("Message type not found!");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        System.out.println("Message is " + object.getClass().getSimpleName());
+        IFactory<RequestHandler> requestHandlerFactory = requestHandlerMapping.get(object.getClass());
+        RequestHandler handler = requestHandlerFactory.create();
+        handler.handle(object, client);
     }
 
     @Override

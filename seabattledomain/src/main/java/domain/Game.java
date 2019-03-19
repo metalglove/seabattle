@@ -28,6 +28,7 @@ public class Game {
         Cruiser cruiser = new Cruiser(new Point(1, 3), true);
         MineSweeper mineSweeper = new MineSweeper(new Point(1, 4), true);
         Submarine submarine = new Submarine(new Point(1, 5), true);
+        // TODO: random placement?
         player.addShip(aircraftCarrier);
         player.addShip(battleShip);
         player.addShip(cruiser);

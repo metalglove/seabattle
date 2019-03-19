@@ -22,7 +22,7 @@ public class StartNewGameResponseChangeListener implements PropertyChangeListene
     public void propertyChange(PropertyChangeEvent evt) {
         NotifyWhenReadyResponse response = (NotifyWhenReadyResponse) evt.getNewValue();
         if (!response.success) {
-            application.showErrorMessage("Notify from other player failed!");
+            application.showErrorMessage("New game!"); // TODO: fix
         } else {
             application.notifyStartGame(response.playerNumber);
         }
