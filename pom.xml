@@ -8,6 +8,7 @@
     <module>seabattleserver</module>
     <module>seabattledomain</module>
     <module>socket-messaging</module>
+      <module>rest</module>
   </modules>
   <packaging>pom</packaging>
   <properties>

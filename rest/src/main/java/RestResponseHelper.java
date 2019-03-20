@@ -1,0 +1,47 @@
+import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+class RestResponseHelper {
+    private static final Logger log = LoggerFactory.getLogger(SeaBattleRESTService.class);
+    private static final Gson gson = new Gson();
+
+    static String getErrorResponseString()
+    {
+        SeaBattleResponse response = new SeaBattleResponse();
+        response.setSuccess(false);
+        String output = gson.toJson(response);
+        log.info("[Server response] " + output);
+        return output;
+    }
+
+    static String getSuccessResponse(boolean success){
+        SeaBattleResponse response = new SeaBattleResponse();
+        response.setSuccess(success);
+        String output = gson.toJson(response);
+        log.info("[Server response] " + output);
+        return output;
+    }
+    // TODO: Add User object as parameter
+    static String getRegisterResponse()
+    {
+        // TODO: return new registered user
+        SeaBattleResponse response = new SeaBattleResponse();
+        response.setSuccess(true);
+        response.setResponse("Register test triggered");
+        String output = gson.toJson(response);
+        log.info("[Server response] " + output);
+        return output;
+    }
+    // TODO: Add user object as parameter
+    static String getLoginResponse()
+    {
+        // TODO: return logged in user
+        SeaBattleResponse response = new SeaBattleResponse();
+        response.setSuccess(true);
+        response.setResponse("Login test triggered");
+        String output = gson.toJson(response);
+        log.info("[Server response] " + output);
+        return output;
+    }
+}
