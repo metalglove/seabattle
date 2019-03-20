@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="rest" />
         <module name="seabattleclient" />
         <module name="seabattledomain" />
         <module name="seabattleserver" />
@@ -13,6 +14,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="rest" target="11" />
       <module name="seabattle-start-master" target="11" />
       <module name="seabattleclient" target="11" />
       <module name="seabattledomain" target="11" />
@@ -24,10 +26,11 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SeaBattleStart" options="" />
-      <module name="seabattleclient" options="" />
-      <module name="seabattledomain" options="-bootclasspath &quot;C:\Users\mario\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\183.5912.21\jre64\lib\resources.jar;C:\Users\mario\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\183.5912.21\jre64\lib\rt.jar;C:\Users\mario\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\183.5912.21\jre64\lib\sunrsasign.jar;C:\Users\mario\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\183.5912.21\jre64\lib\jsse.jar;C:\Users\mario\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\183.5912.21\jre64\lib\jce.jar;C:\Users\mario\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\183.5912.21\jre64\lib\charsets.jar;C:\Users\mario\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\183.5912.21\jre64\lib\jfr.jar;C:\Users\mario\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\183.5912.21\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
-      <module name="seabattleserver" options="" />
-      <module name="socketmessaging" options="" />
+      <module name="rest" options="-bootclasspath &quot;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
+      <module name="seabattleclient" options="-bootclasspath &quot;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
+      <module name="seabattledomain" options="-bootclasspath &quot;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
+      <module name="seabattleserver" options="-bootclasspath &quot;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
+      <module name="socketmessaging" options="-bootclasspath &quot;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;D:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
     </option>
   </component>
 </project>
