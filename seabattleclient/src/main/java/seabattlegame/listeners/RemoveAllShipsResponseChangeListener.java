@@ -26,6 +26,6 @@ public class RemoveAllShipsResponseChangeListener implements PropertyChangeListe
         } else {
             System.out.println("Successfully removed all ships.");
         }
-        client.removeListener(this);
+        client.removeListener(RemoveAllShipsResponse.class.getSimpleName(), this);
     }
 }

@@ -26,6 +26,6 @@ public class RemoveShipResponseChangeListener implements PropertyChangeListener 
         } else {
             System.out.println("Successfully removed ship from proposed point.");
         }
-        client.removeListener(this);
+        client.removeListener(RemoveShipResponse.class.getSimpleName(), this);
     }
 }

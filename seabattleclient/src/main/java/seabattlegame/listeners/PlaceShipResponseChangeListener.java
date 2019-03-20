@@ -24,8 +24,11 @@ public class PlaceShipResponseChangeListener implements PropertyChangeListener {
         if (!response.success) {
             application.showErrorMessage("Failed to place the ship!");
         } else {
+            if (response.shipToRemove != null) {
+                application.removeShip(playerNumber, response.shipToRemove);
+            }
             application.placeShip(playerNumber, response.ship);
         }
-        client.removeListener(this);
+        client.removeListener(PlaceShipResponse.class.getSimpleName(), this);
     }
 }

@@ -1,10 +1,8 @@
 package seabattleserver;
 
+import domain.Game;
 import handlers.*;
-import interfaces.IFactory;
-import interfaces.ISeaBattleGameService;
-import interfaces.ISeaBattleServerRest;
-import interfaces.RequestHandler;
+import interfaces.*;
 import messaging.handlers.AsyncAcceptHandler;
 import messaging.handlers.AsyncReadForHandlingMessageHandler;
 import messaging.handlers.AsyncWriteBufferHandler;
@@ -22,15 +20,15 @@ import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousServerSocketChannel;
-import java.util.List;
 import java.util.concurrent.*;
 
-public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSocket {
+public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwareWritingSocket {
     private final AsynchronousServerSocketChannel server;
     private final AsynchronousChannelGroup group;
-    private final List<AsyncIdentifiableClientSocket> clients = new CopyOnWriteArrayList<>();
+    // TODO: implement mapping for 2 player to game, for improved handling of requests where a player id is used
     private final ISeaBattleServerRest rest;
     private final ISeaBattleGameService gameService;
+    private final ConcurrentMap<Integer, AsyncIdentifiableClientSocket> clientMapping = new ConcurrentHashMap<>();
     private final ConcurrentMap<Class<?>, IFactory<RequestHandler>> requestHandlerMapping = new ConcurrentHashMap<>();
 
     public Server(int port, ISeaBattleServerRest rest, ISeaBattleGameService gameService) throws IOException {
@@ -71,7 +69,11 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, WritingSo
 
     @Override
     public void registerClient(AsyncIdentifiableClientSocket client) {
-        clients.add(client);
+        clientMapping.put(client.getNumber(), client);
+    }
+
+    public AsyncIdentifiableClientSocket getClientById(int id) {
+        return clientMapping.get(id);
     }
 
     @Override

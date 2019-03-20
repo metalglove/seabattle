@@ -1,6 +1,6 @@
 package handlers;
 
-import domain.Ship;
+import dtos.PlaceShipResultDto;
 import interfaces.ISeaBattleGameService;
 import interfaces.RequestHandler;
 import messaging.handlers.AsyncRequestMessageHandler;
@@ -21,11 +21,11 @@ public class PlaceShipRequestHandler implements RequestHandler<PlaceShipRequest>
 
     @Override
     public void handle(PlaceShipRequest request, AsyncIdentifiableClientSocket client) {
-        PlaceShipResponse response = new PlaceShipResponse(request.playerNumber, null, false);
+        PlaceShipResponse response = new PlaceShipResponse(request.playerNumber, null, false, null);
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
-        final Ship placedShip = gameService.placeShip(request.playerNumber, request.shipType, request.bowX, request.bowY, request.horizontal);
-        if (placedShip != null)
-            response = new PlaceShipResponse(request.playerNumber, placedShip, true);
+        final PlaceShipResultDto placeShipResultDto = gameService.placeShip(request.playerNumber, request.shipType, request.bowX, request.bowY, request.horizontal);
+        if (placeShipResultDto.getShip() != null)
+            response = new PlaceShipResponse(request.playerNumber, placeShipResultDto.getShip(), true, placeShipResultDto.getOldShip());
         requestMessageHandler.completed(response, request);
     }
 }

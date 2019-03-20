@@ -105,6 +105,11 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
         // TODO: fix place ship in MOCK
     }
 
+    @Override
+    public void removeShip(int playerNumber, Ship shipToRemove) {
+        // TODO: fix remove ship in MOCK
+    }
+
     /**
      * Get player number.
      * @return player number

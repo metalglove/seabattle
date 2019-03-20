@@ -5,7 +5,7 @@ import java.nio.channels.AsynchronousSocketChannel;
 public class AsyncIdentifiableClientSocket {
     private final AsynchronousSocketChannel channel;
     private String name;
-    private int number;
+    private Integer number;
 
     public AsyncIdentifiableClientSocket(AsynchronousSocketChannel channel) {
         this.channel = channel;
@@ -23,11 +23,11 @@ public class AsyncIdentifiableClientSocket {
         this.name = name;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 }

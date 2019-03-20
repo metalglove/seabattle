@@ -26,6 +26,6 @@ public class StartNewGameResponseChangeListener implements PropertyChangeListene
         } else {
             application.notifyStartGame(response.playerNumber);
         }
-        client.removeListener(this);
+        client.removeListener(NotifyWhenReadyResponse.class.getSimpleName(), this);
     }
 }

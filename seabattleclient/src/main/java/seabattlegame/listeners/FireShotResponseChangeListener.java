@@ -26,6 +26,6 @@ public class FireShotResponseChangeListener implements PropertyChangeListener {
         } else {
             application.playerFiresShot(response.firingPlayerNumber, response.shotType);
         }
-        client.removeListener(this);
+        client.removeListener(FireShotResponse.class.getSimpleName(), this);
     }
 }

@@ -1,6 +1,7 @@
 package seabattlegame.listeners;
 
 import messaging.messages.responses.NotifyWhenReadyResponse;
+import messaging.messages.responses.OpponentFireShotResponse;
 import seabattlegame.Client;
 import seabattlegui.ISeaBattleGUI;
 
@@ -25,7 +26,8 @@ public class NotifyWhenReadyResponseChangeListener implements PropertyChangeList
             application.showErrorMessage("Notify from other player failed!");
         } else {
             application.notifyStartGame(response.playerNumber);
+            client.addListener(OpponentFireShotResponse.class.getSimpleName(), new OpponentFireShotResponseListener(application, playerNumber, client));
+            client.removeListener(NotifyWhenReadyResponse.class.getSimpleName(), this);
         }
-        client.removeListener(this);
     }
 }

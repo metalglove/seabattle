@@ -19,12 +19,14 @@ public class Client extends AsyncClientSocket {
         super(host, port);
     }
 
-    void addListener(String eventName, PropertyChangeListener listener) {
+    public void addListener(String eventName, PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(eventName, listener);
+        System.out.println("New listener count after an add: " + propertyChangeSupport.getPropertyChangeListeners().length);
     }
 
-    public void removeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+    public void removeListener(String eventName, PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(eventName, listener);
+        System.out.println("New listener count after a remove: " + propertyChangeSupport.getPropertyChangeListeners().length);
     }
 
     @Override

@@ -26,6 +26,6 @@ public class RegisterResponseChangeListener implements PropertyChangeListener {
         } else {
             application.setPlayerNumber(response.playerNumber, name);
         }
-        client.removeListener(this);
+        client.removeListener(RegisterResponse.class.getSimpleName(), this);
     }
 }

@@ -29,6 +29,6 @@ public class PlaceShipsAutomaticallyResponseChangeListener implements PropertyCh
                 application.placeShip(playerNumber, ship);
             }
         }
-        client.removeListener(this);
+        client.removeListener(PlaceShipsAutomaticallyResponse.class.getSimpleName(), this);
     }
 }

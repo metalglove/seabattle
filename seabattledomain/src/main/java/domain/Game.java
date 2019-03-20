@@ -1,6 +1,8 @@
 package domain;
 
 import domain.ships.*;
+import dtos.FireShotResultDto;
+import dtos.SetReadyResultDto;
 
 import java.util.List;
 
@@ -11,8 +13,10 @@ public class Game {
     public boolean registerPlayer(Player player) {
         if (player1 == null) {
             player1 = player;
+            System.out.println("player 1 set");
         } else if(player2 == null) {
             player2 = player;
+            System.out.println("player 2 set");
         } else {
             return false;
         }
@@ -52,5 +56,54 @@ public class Game {
             return player2.getPlayerNumber().equals(playerNumber);
         }
         return false;
+    }
+    public FireShotResultDto fireShot(int firingPlayerNumber, int x, int y) {
+        Player opponent = getOpponentPlayer(firingPlayerNumber);
+        if (opponent == null)
+            return null;
+
+        Point point = new Point(x, y);
+        FireShotResultDto fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.MISSED);
+        Ship shipToRemoveIfNeeded = null;
+        for (Ship opponentShip : opponent.getShips()) {
+            if (opponentShip.containsPoint(point)) {
+                if (opponentShip.getLength() == 1) {
+                    shipToRemoveIfNeeded = opponentShip;
+                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.SUNK);
+                } else {
+                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.HIT);
+                }
+                opponentShip.removePoint(point);
+                break;
+            }
+        }
+        if (shipToRemoveIfNeeded != null)
+            opponent.removeShip(shipToRemoveIfNeeded);
+        if (opponent.getShips().size() == 0)
+            fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.ALLSUNK);
+        return fireShotResultDto;
+    }
+
+    public Player getOpponentPlayer(int otherPlayerNumber) {
+        if (containsPlayer(otherPlayerNumber))
+            return player1.getPlayerNumber() == otherPlayerNumber ? player2 : player1;
+        return null;
+    }
+
+    public SetReadyResultDto readyUp(int playerNumber) {
+        Player player = getPlayerFromNumber(playerNumber);
+        if (player != null) {
+            player.setReady();
+        }
+        Player opponent = getOpponentPlayer(playerNumber);
+        Integer opponentNumber = null;
+        boolean bothReady = false;
+        if (opponent != null) {
+            opponentNumber = opponent.getPlayerNumber();
+            if (player.isReady() && opponent.isReady())
+                bothReady = true;
+        }
+
+        return new SetReadyResultDto(playerNumber, opponentNumber, bothReady);
     }
 }

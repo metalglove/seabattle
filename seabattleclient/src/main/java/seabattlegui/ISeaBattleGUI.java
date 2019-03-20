@@ -110,4 +110,12 @@ public interface ISeaBattleGUI {
      * @param ship     ship to place
      */
     void placeShip(int playerNr, Ship ship);
+
+    /**
+     * Remove ship.
+     *
+     * @param playerNumber identification of player
+     * @param shipToRemove ship to place
+     */
+    void removeShip(int playerNumber, Ship shipToRemove);
 }

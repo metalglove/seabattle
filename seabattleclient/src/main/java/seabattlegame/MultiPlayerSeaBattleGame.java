@@ -23,7 +23,6 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
     private static final Logger log = LoggerFactory.getLogger(MultiPlayerSeaBattleGame.class);
     private Client client;
     private ISeaBattleGUI application;
-    private boolean singlePlayerMode = false;
 
     public MultiPlayerSeaBattleGame(ISeaBattleGUI application) {
         this.application = application;
@@ -38,7 +37,7 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
 
     @Override
     public void registerPlayer(String name, String password) {
-        log.debug("Register Player {} - password {} - singlePlayerMode {}", name, password, singlePlayerMode);
+        log.debug("Register Player {} - password {} - multiplayermode", name, password);
         client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, client));
         client.startWriting(new RegisterRequest(name, password));
     }
@@ -74,6 +73,7 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
     @Override
     public void notifyWhenReady(int playerNr) {
         log.debug("notifyWhenReady with player number: {}", playerNr);
+        // TODO: check if player has placed all ships before setting to ready!
         client.addListener(NotifyWhenReadyResponse.class.getSimpleName(), new NotifyWhenReadyResponseChangeListener(application, playerNr, client));
         client.startWriting(new NotifyWhenReadyRequest(playerNr));
     }
@@ -81,6 +81,7 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
     @Override
     public void fireShot(int playerNr, int posX, int posY) {
         log.debug("fireShot with player number: {} - posX: {} - posY: {}", playerNr, posX, posY);
+        // TODO: check if it is the players turn!
         client.addListener(FireShotResponse.class.getSimpleName(), new FireShotResponseChangeListener(application, playerNr, client));
         client.startWriting(new FireShotRequest(playerNr, posX, posY));
     }
@@ -88,6 +89,7 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
     @Override
     public void startNewGame(int playerNr) {
         log.debug("startNewGame with player number: {} ", playerNr);
+        // TODO: check if the game is over
         client.addListener(StartNewGameResponse.class.getSimpleName(), new StartNewGameResponseChangeListener(application, playerNr, client));
         client.startWriting(new StartNewGameRequest(playerNr));
     }

@@ -15,7 +15,8 @@ public class AsyncAcceptHandler implements CompletionHandler<AsynchronousSocketC
 
         // register client
         AsyncIdentifiableClientSocket client = new AsyncIdentifiableClientSocket(result);
-        socket.registerClient(client);
+        // TODO: remove later if not needed anymore
+        //socket.registerClient(client);
 
         // start reading the socket channel for data
         socket.startReading(client);

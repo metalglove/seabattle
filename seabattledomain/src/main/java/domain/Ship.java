@@ -7,7 +7,7 @@ import java.util.List;
 public abstract class Ship implements Serializable {
     private final Point startingPoint;
     private final boolean horizontal;
-    private final List<Point> points = new ArrayList<>();
+    private List<Point> points = new ArrayList<>();
 
     public Ship(Point startingPoint, boolean horizontal) {
         this.startingPoint = startingPoint;
@@ -26,6 +26,9 @@ public abstract class Ship implements Serializable {
             }
         }
     }
+    public int getLength() {
+        return points.size();
+    }
 
     public List<Point> getPoints() {
         return List.copyOf(points);
@@ -40,11 +43,22 @@ public abstract class Ship implements Serializable {
         return false;
     }
 
+    public boolean isWithinBounds() {
+        return points.stream().noneMatch(point -> !boundCheck(point.getX()) || !boundCheck(point.getY()));
+    }
+
+    private boolean boundCheck(int bound) {
+        return bound >= 0 && bound <= 9;
+    }
     public boolean isHorizontal() {
         return horizontal;
     }
 
     public Point getStartingPoint() {
         return startingPoint;
+    }
+
+    public void removePoint(Point point) {
+        points.remove(point);
     }
 }

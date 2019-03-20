@@ -1,5 +1,7 @@
 package domain;
 
+import dtos.PlaceShipResultDto;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -11,6 +13,7 @@ public class Player {
     private final Integer number;
     private List<Ship> ships = new CopyOnWriteArrayList<>();
     private boolean gameHasStarted = false;
+    private boolean _isReady = false;
 
     public Player(String username, String password, Integer number) {
 
@@ -19,9 +22,10 @@ public class Player {
         this.number = number;
     }
 
-    public boolean addShip(Ship ship) {
-        if (gameHasStarted)
-            return false;
+    public PlaceShipResultDto addShip(Ship ship) {
+        PlaceShipResultDto placeShipResultDto = new PlaceShipResultDto(null, null, false);
+        if (gameHasStarted || !ship.isWithinBounds())
+            return placeShipResultDto;
 
         Stream<Ship> shipStream = ships.stream();
         Ship oldShip = null;
@@ -36,11 +40,11 @@ public class Player {
                     if (oldShip != null) {
                         ships.add(oldShip);
                     }
-                    return false;
+                    return placeShipResultDto;
                 }
         }
         ships.add(ship);
-        return true;
+        return new PlaceShipResultDto(ship, oldShip, true);
     }
 
     public String getUsername() {
@@ -63,5 +67,17 @@ public class Player {
 
     public List<Ship> getShips() {
         return List.copyOf(ships);
+    }
+
+    public void removeShip(Ship shipToRemoveIfNeeded) {
+        ships.remove(shipToRemoveIfNeeded);
+    }
+
+    public void setReady() {
+        _isReady = true;
+    }
+
+    public boolean isReady() {
+        return _isReady;
     }
 }

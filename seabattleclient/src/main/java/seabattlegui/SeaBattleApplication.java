@@ -102,7 +102,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     // Flag to indicate whether the game is in playing mode
     private boolean playingMode = false;
 
-    // Flag to indicate that the game is endend
+    // Flag to indicate that the game is ended
     private boolean gameEnded = false;
 
     // Flag to indicate whether next ship should be placed horizontally or vertically
@@ -484,14 +484,6 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         primaryStage.setTitle("Sea battle: the game");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
-        // Create instance of class that implements java interface ISeaBattleGame.
-        // The class SeaBattleGame is not implemented yet.
-        // When invoking methods of class SeaBattleGame an
-        // UnsupportedOperationException will be thrown
-        // TODO: IMPLEMENT CLASS SeaBattleGame.
-        //game = new MultiPlayerSeaBattleGame(this);
     }
 
     /**
@@ -973,6 +965,16 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             for (Point point : ship.getPoints()) {
                 Rectangle square = squaresOceanArea[point.getX()][point.getY()];
                 setSquareColor(square, SquareState.SHIP);
+            }
+        }
+    }
+
+    @Override
+    public void removeShip(int playerNumber, Ship shipToRemove) {
+        if (this.playerNr == playerNumber) {
+            for (Point point : shipToRemove.getPoints()) {
+                Rectangle square = squaresOceanArea[point.getX()][point.getY()];
+                setSquareColor(square, SquareState.WATER);
             }
         }
     }
