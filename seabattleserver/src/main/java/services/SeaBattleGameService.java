@@ -3,6 +3,7 @@ package services;
 import domain.*;
 import dtos.FireShotResultDto;
 import dtos.PlaceShipResultDto;
+import dtos.RegisterPlayerResultDto;
 import dtos.SetReadyResultDto;
 import interfaces.IFactoryWithArgument;
 import interfaces.ISeaBattleGameService;
@@ -37,7 +38,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
 
     @Override
     public PlaceShipResultDto placeShip(int playerNumber, ShipType shipType, int bowX, int bowY, boolean horizontal) {
-        PlaceShipResultDto placeShipResultDto = new PlaceShipResultDto(null,  null, false);
+        PlaceShipResultDto placeShipResultDto = new PlaceShipResultDto(null,  null, false, false);
         synchronized(games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
@@ -52,17 +53,19 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     }
 
     @Override
-    public void registerPlayer(Player player) {
+    public RegisterPlayerResultDto registerPlayer(Player player) {
         synchronized(games) {
             for (Game game : games) {
                 if (game.registerPlayer(player)) {
-                    return;
+                    Player opponent =  game.getOpponentPlayer(player.getPlayerNumber());
+                    return new RegisterPlayerResultDto(opponent.getPlayerNumber(), opponent.getUsername(), true);
                 }
             }
-            Game game = new Game();
-            game.registerPlayer(player);
-            games.add(game);
         }
+        Game game = new Game();
+        game.registerPlayer(player);
+        games.add(game);
+        return new RegisterPlayerResultDto(null, null, true);
     }
 
     @Override

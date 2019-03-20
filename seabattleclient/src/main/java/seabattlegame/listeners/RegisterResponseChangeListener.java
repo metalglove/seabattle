@@ -1,5 +1,6 @@
 package seabattlegame.listeners;
 
+import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.messages.responses.RegisterResponse;
 import seabattlegame.Client;
 import seabattlegui.ISeaBattleGUI;
@@ -25,6 +26,11 @@ public class RegisterResponseChangeListener implements PropertyChangeListener {
             application.showErrorMessage("Failed to register!");
         } else {
             application.setPlayerNumber(response.playerNumber, name);
+            if (response.opponentName != null && response.opponentPlayerNumber != null) {
+                application.setOpponentName(response.opponentPlayerNumber, response.opponentName);
+            } else {
+                client.addListener(OpponentRegisterResponse.class.getSimpleName(), new OpponentRegisterResponseListener(application, client));
+            }
         }
         client.removeListener(RegisterResponse.class.getSimpleName(), this);
     }

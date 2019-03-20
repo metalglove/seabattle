@@ -37,7 +37,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
         group = AsynchronousChannelGroup.withThreadPool(Executors.newFixedThreadPool(100));
         server = AsynchronousServerSocketChannel.open(group);
         server.setOption(StandardSocketOptions.SO_REUSEADDR, true);
-        server.setOption(StandardSocketOptions.SO_RCVBUF, 16 * 1024);
+        server.setOption(StandardSocketOptions.SO_RCVBUF, 16 * 2048);
         server.bind(new InetSocketAddress(port), 100);
         System.out.println("Started server socket on: " + server.getLocalAddress().toString());
         startAccepting();
@@ -58,7 +58,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
 
     @Override
     public void startReading(AsyncIdentifiableClientSocket client) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
         client.getChannel().read(byteBuffer, byteBuffer, new AsyncReadForHandlingMessageHandler(this, client));
     }
 
@@ -93,7 +93,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
 
     @Override
     public void startWriting(AsyncIdentifiableClientSocket client, Message message) {
-        final ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+        final ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
         try {
             byteBuffer.put(MessageConverter.convertToBytes(message));
         } catch (IOException e) {

@@ -21,11 +21,11 @@ public class PlaceShipRequestHandler implements RequestHandler<PlaceShipRequest>
 
     @Override
     public void handle(PlaceShipRequest request, AsyncIdentifiableClientSocket client) {
-        PlaceShipResponse response = new PlaceShipResponse(request.playerNumber, null, false, null);
+        PlaceShipResponse response = new PlaceShipResponse(request.playerNumber, null, false, null, false);
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
         final PlaceShipResultDto placeShipResultDto = gameService.placeShip(request.playerNumber, request.shipType, request.bowX, request.bowY, request.horizontal);
         if (placeShipResultDto.getShip() != null)
-            response = new PlaceShipResponse(request.playerNumber, placeShipResultDto.getShip(), true, placeShipResultDto.getOldShip());
+            response = new PlaceShipResponse(request.playerNumber, placeShipResultDto.getShip(), true, placeShipResultDto.getOldShip(), placeShipResultDto.getHasPlacedAllShips());
         requestMessageHandler.completed(response, request);
     }
 }

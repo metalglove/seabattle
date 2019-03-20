@@ -3,6 +3,7 @@
  */
 package seabattlegui;
 
+import domain.Point;
 import domain.Ship;
 import domain.ShotType;
 
@@ -46,8 +47,9 @@ public interface ISeaBattleGUI {
      *
      * @param playerNr identification of player
      * @param shotType result of shot fired by player
+     * @param point the location of the fired shot
      */
-    public void playerFiresShot(int playerNr, ShotType shotType);
+    public void playerFiresShot(int playerNr, ShotType shotType, Point point);
 
     /**
      * Communicate the result of a shot fired by the opponent.
@@ -59,8 +61,9 @@ public interface ISeaBattleGUI {
      *
      * @param playerNr identification of player
      * @param shotType result of shot fired by opponent
+     * @param point the location of the fired shot
      */
-    public void opponentFiresShot(int playerNr, ShotType shotType);
+    public void opponentFiresShot(int playerNr, ShotType shotType, Point point);
 
     /**
      * Show state of a square in the ocean area.

@@ -3,6 +3,7 @@
  */
 package seabattleunittests;
 
+import domain.Point;
 import domain.Ship;
 import seabattlegui.ISeaBattleGUI;
 import domain.ShotType;
@@ -64,14 +65,14 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
         this.gameStarted = true;
     }
 
-     @Override
-    public void playerFiresShot(int playerNr, ShotType shotType) {
+    @Override
+    public void playerFiresShot(int playerNr, ShotType shotType, Point point) {
         checkPlayerNumber("playerFiresShot()",playerNr);
         this.lastShotPlayer = shotType;
     }
-    
+
     @Override
-    public void opponentFiresShot(int playerNr, ShotType shotType) {
+    public void opponentFiresShot(int playerNr, ShotType shotType, Point point) {
         checkPlayerNumber("opponentFiresShot()",playerNr);
         this.lastShotOpponent = shotType;
     }

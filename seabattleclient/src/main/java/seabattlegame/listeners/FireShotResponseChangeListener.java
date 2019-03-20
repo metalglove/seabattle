@@ -1,7 +1,10 @@
 package seabattlegame.listeners;
 
+import domain.Point;
+import domain.ShotType;
 import messaging.messages.responses.FireShotResponse;
 import seabattlegame.Client;
+import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -9,12 +12,12 @@ import java.beans.PropertyChangeListener;
 
 public class FireShotResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final int playerNumber;
+    private final MultiPlayerSeaBattleGame multiPlayerSeaBattleGame;
     private final Client client;
 
-    public FireShotResponseChangeListener(ISeaBattleGUI application, int playerNumber, Client client) {
+    public FireShotResponseChangeListener(ISeaBattleGUI application, MultiPlayerSeaBattleGame multiPlayerSeaBattleGame, Client client) {
         this.application = application;
-        this.playerNumber = playerNumber;
+        this.multiPlayerSeaBattleGame = multiPlayerSeaBattleGame;
         this.client = client;
     }
 
@@ -24,7 +27,18 @@ public class FireShotResponseChangeListener implements PropertyChangeListener {
         if (!response.success) {
             application.showErrorMessage("Fire shot failed!");
         } else {
-            application.playerFiresShot(response.firingPlayerNumber, response.shotType);
+            if (response.ship != null) {
+                for (Point point : response.ship.getPointsHit()) {
+                    application.playerFiresShot(response.firingPlayerNumber, response.shotType, point);
+                }
+            } else {
+                application.playerFiresShot(response.firingPlayerNumber, response.shotType, response.point);
+            }
+            if (response.shotType == ShotType.ALLSUNK) {
+                application.showErrorMessage("You won!");
+            } else {
+                multiPlayerSeaBattleGame.isPlayersTurn = false;
+            }
         }
         client.removeListener(FireShotResponse.class.getSimpleName(), this);
     }

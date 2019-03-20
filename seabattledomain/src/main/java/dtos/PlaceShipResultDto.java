@@ -5,11 +5,13 @@ import domain.Ship;
 public class PlaceShipResultDto {
     private final Ship ship;
     private final Ship oldShip;
+    private final boolean hasPlacedAllShips;
     private final boolean success;
 
-    public PlaceShipResultDto(final Ship ship, final Ship oldShip, final boolean success) {
+    public PlaceShipResultDto(final Ship ship, final Ship oldShip, boolean hasPlacedAllShips, final boolean success) {
         this.ship = ship;
         this.oldShip = oldShip;
+        this.hasPlacedAllShips = hasPlacedAllShips;
         this.success = success;
     }
 
@@ -23,5 +25,9 @@ public class PlaceShipResultDto {
 
     public boolean isSuccess() {
         return success;
+    }
+
+    public boolean getHasPlacedAllShips() {
+        return hasPlacedAllShips;
     }
 }

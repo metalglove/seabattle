@@ -2,6 +2,7 @@ package seabattlegame.listeners;
 
 import messaging.messages.responses.PlaceShipResponse;
 import seabattlegame.Client;
+import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -9,11 +10,13 @@ import java.beans.PropertyChangeListener;
 
 public class PlaceShipResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
+    private final MultiPlayerSeaBattleGame multiPlayerSeaBattleGame;
     private final int playerNumber;
     private final Client client;
 
-    public PlaceShipResponseChangeListener(ISeaBattleGUI application, int playerNumber, Client client) {
+    public PlaceShipResponseChangeListener(ISeaBattleGUI application, MultiPlayerSeaBattleGame multiPlayerSeaBattleGame, int playerNumber, Client client) {
         this.application = application;
+        this.multiPlayerSeaBattleGame = multiPlayerSeaBattleGame;
         this.playerNumber = playerNumber;
         this.client = client;
     }
@@ -26,6 +29,9 @@ public class PlaceShipResponseChangeListener implements PropertyChangeListener {
         } else {
             if (response.shipToRemove != null) {
                 application.removeShip(playerNumber, response.shipToRemove);
+            }
+            if (response.hasPlacedAllShips) {
+                multiPlayerSeaBattleGame.hasPlacedAllShips = true;
             }
             application.placeShip(playerNumber, response.ship);
         }

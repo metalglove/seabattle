@@ -31,7 +31,7 @@ public class Client extends AsyncClientSocket {
 
     @Override
     public void startReading() {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
         channel.read(byteBuffer, byteBuffer, new AsyncReadHandler(this));
     }
 
@@ -49,7 +49,7 @@ public class Client extends AsyncClientSocket {
 
     @Override
     public void startWriting(Message message) {
-        final ByteBuffer buffer = ByteBuffer.allocate(1024);
+        final ByteBuffer buffer = ByteBuffer.allocate(2048);
         try {
             buffer.put(MessageConverter.convertToBytes(message));
         } catch (IOException e) {

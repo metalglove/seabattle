@@ -35,6 +35,7 @@ import seabattlegame.SinglePlayerSeaBattleGame;
  *
  * @author Nico Kuijpers
  */
+@SuppressWarnings("Duplicates")
 public class SeaBattleApplication extends Application implements ISeaBattleGUI {
 
     private static final Logger log = LoggerFactory.getLogger(SeaBattleApplication.class);
@@ -70,7 +71,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     private String playerName = null;
 
     // Player that may fire a shot (player 0 or player 1)
-    private int playerTurn = 0;
+    //private int playerTurn = 0;
 
     // Label for player's name
     private Label labelPlayerName;
@@ -495,10 +496,10 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     @Override
     public void setPlayerNumber(int playerNr, String name) {
         // Check identification of player
-        if (!this.playerName.equals(name)) {
-            showMessage("ERROR: Wrong player name method setPlayerNumber()");
-            return;
-        }
+        //if (!this.playerName.equals(name)) {
+        //    showMessage("ERROR: Wrong player name method setPlayerNumber()");
+        //    return;
+        //}
         this.playerNr = playerNr;
         log.debug("Player number is: {} ", playerNr);
         Platform.runLater(new Runnable() {
@@ -539,10 +540,10 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     @Override
     public void setOpponentName(int playerNr, String name) {
         // Check identification of player
-        if (playerNr != this.playerNr) {
-            showMessage("ERROR: Wrong player number method setOpponentName()");
-            return;
-        }
+        //if (playerNr != this.playerNr) {
+         //   showMessage("ERROR: Wrong player number method setOpponentName()");
+         //   return;
+        //}
         showMessage("Your opponent is " + name);
         opponentName = name;
         Platform.runLater(new Runnable() {
@@ -561,10 +562,10 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     @Override
     public void notifyStartGame(int playerNr) {
         // Check identification of player
-        if (playerNr != this.playerNr) {
-            showMessage("ERROR: Wrong player number method notifyStartGame()");
-            return;
-        }
+        //if (playerNr != this.playerNr) {
+        //    showMessage("ERROR: Wrong player number method notifyStartGame()");
+         //   return;
+        //}
 
         // Set playing mode and disable placing/removing of ships
         playingMode = true;
@@ -596,20 +597,35 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      * @param shotType result of shot fired by player
      */
     @Override
-    public void playerFiresShot(int playerNr, ShotType shotType) {
+    public void playerFiresShot(int playerNr, ShotType shotType, Point point) {
         // Check identification of player
-        if (playerNr != this.playerNr) {
-            showMessage("ERROR: Wrong player number method playerFiresShot()");
-            return;
+        //if (playerNr != this.playerNr) {
+        //    showMessage("ERROR: Wrong player number method playerFiresShot()");
+        //    return;
+        //}
+        SquareState squareState;
+        //String message = "";
+        switch (shotType) {
+            case HIT:
+                squareState = SquareState.SHOTHIT;
+                break;
+            case SUNK:
+                squareState = SquareState.SHIPSUNK;
+                //message = "Ship of " + opponentName + " is sunk";
+                break;
+            case ALLSUNK:
+                //message = "Winner: " + playerName + ".\nPress Start new game to continue";
+                squareState = SquareState.SHIPSUNK;
+                buttonStartNewGame.setDisable(false);
+                gameEnded = true;
+                break;
+            default:
+                squareState = SquareState.SHOTMISSED;
+                break;
         }
-        if (shotType.equals(ShotType.SUNK)) {
-            showMessage("Ship of " + opponentName + " is sunk");
-        }
-        if (shotType.equals(ShotType.ALLSUNK)) {
-            showMessage("Winner: " + playerName + ".\nPress Start new game to continue");
-            buttonStartNewGame.setDisable(false);
-            gameEnded = true;
-        }
+
+        showSquareOpponent(playerNr, point.getX(), point.getY(), squareState);
+        //showErrorMessage(message);
     }
 
     /**
@@ -624,22 +640,35 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      * @param shotType result of shot fired by opponent
      */
     @Override
-    public void opponentFiresShot(int playerNr, ShotType shotType) {
+    public void opponentFiresShot(int playerNr, ShotType shotType, Point point) {
         // Check identification of player
-        if (playerNr != this.playerNr) {
-            showMessage("ERROR: Wrong player number method opponentFiresShot()");
-            return;
+        //if (playerNr != this.playerNr) {
+        //    showMessage("ERROR: Wrong player number method opponentFiresShot()");
+        //    return;
+        //}
+        SquareState squareState;
+        //String message = "";
+        switch (shotType) {
+            case HIT:
+                squareState = SquareState.SHOTHIT;
+                break;
+            case SUNK:
+                squareState = SquareState.SHIPSUNK;
+                //message = "Ship of " + playerName + " is sunk";
+                break;
+            case ALLSUNK:
+                //message = "Winner: " + opponentName + ".\nPress Start new game to continue";
+                squareState = SquareState.SHIPSUNK;
+                buttonStartNewGame.setDisable(false);
+                gameEnded = true;
+                break;
+            default:
+                squareState = SquareState.SHOTMISSED;
+                break;
         }
-        if (shotType.equals(ShotType.SUNK)) {
-            showMessage("Ship of " + playerName + " is sunk");
-        }
-        if (shotType.equals(ShotType.ALLSUNK)) {
-            showMessage("Winner: " + opponentName + ".\nPress Start new game to continue");
-            buttonStartNewGame.setDisable(false);
-            gameEnded = true;
-        }
-        // Player's turn
-        switchTurn();
+
+        showSquarePlayer(playerNr, point.getX(), point.getY(), squareState);
+        //showErrorMessage(message);
     }
 
     /**
@@ -654,10 +683,10 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     @Override
     public void showSquarePlayer(int playerNr, final int posX, final int posY, final SquareState squareState) {
         // Check identification of player
-        if (playerNr != this.playerNr) {
-            showMessage("ERROR: Wrong player number method showSquarePlayer()");
-            return;
-        }
+        //if (playerNr != this.playerNr) {
+        //    showMessage("ERROR: Wrong player number method showSquarePlayer()");
+        //    return;
+        //}
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -679,10 +708,10 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     @Override
     public void showSquareOpponent(int playerNr, final int posX, final int posY, final SquareState squareState) {
         // Check identification of player
-        if (playerNr != this.playerNr) {
-            showMessage("ERROR: Wrong player number method showSquareOpponent()");
-            return;
-        }
+        //if (playerNr != this.playerNr) {
+        //    showMessage("ERROR: Wrong player number method showSquareOpponent()");
+        //    return;
+        //}
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -884,17 +913,16 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         if (playingMode && !gameEnded) {
             // Game is in playing mode
             squaresTargetArea[x][y].setFill(Color.YELLOW);
-            if (playersTurn()) {
+            //if (playersTurn()) {
                 // It is this player's turn
                 // Player fires a shot at the selected target area
                 game.fireShot(playerNr, x, y);
 
                 // Opponent's turn
-                switchTurn();
-            } else {
+                //switchTurn();
+            //} else {
                 // It is not this player's turn yet
-                showMessage("Wait till " + opponentName + " has fired a shot");
-            }
+                //showMessage("Wait till " + opponentName + " has fired a shot");
         } else {
             if (gameEnded) {
                 showMessage("Press Start new game");
@@ -938,9 +966,9 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      * called by the Java FX Application thread or by another thread
      * handling communication with the game server.
      */
-    private synchronized void switchTurn() {
-        playerTurn = 1 - playerTurn;
-    }
+    //private synchronized void switchTurn() {
+    //    playerTurn = 1 - playerTurn;
+    //}
 
     /**
      * Method to check whether it is this player's turn.
@@ -948,9 +976,9 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      * called by the Java FX Application thread or another thread
      * handling communication with the game server.
      */
-    private synchronized boolean playersTurn() {
-        return playerNr == playerTurn;
-    }
+    //private synchronized boolean playersTurn() {
+     //   return playerNr == playerTurn;
+    //}
 
     /**
      * @param args the command line arguments
@@ -960,6 +988,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     }
 
     /* new methods.. */
+    @Override
     public void placeShip(int playerNr, Ship ship) {
         if (this.playerNr == playerNr) {
             for (Point point : ship.getPoints()) {

@@ -8,7 +8,7 @@ public abstract class Ship implements Serializable {
     private final Point startingPoint;
     private final boolean horizontal;
     private List<Point> points = new ArrayList<>();
-
+    private List<Point> pointsHit = new ArrayList<>();
     public Ship(Point startingPoint, boolean horizontal) {
         this.startingPoint = startingPoint;
         this.horizontal = horizontal;
@@ -32,6 +32,10 @@ public abstract class Ship implements Serializable {
 
     public List<Point> getPoints() {
         return List.copyOf(points);
+    }
+
+    public List<Point> getPointsHit() {
+        return pointsHit;
     }
 
     public boolean containsPoint(Point point) {
@@ -60,5 +64,6 @@ public abstract class Ship implements Serializable {
 
     public void removePoint(Point point) {
         points.remove(point);
+        pointsHit.add(point);
     }
 }

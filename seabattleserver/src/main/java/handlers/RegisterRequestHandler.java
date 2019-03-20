@@ -1,13 +1,14 @@
 package handlers;
 
 import domain.Player;
+import dtos.RegisterPlayerResultDto;
 import interfaces.ClientAwareWritingSocket;
 import interfaces.ISeaBattleGameService;
 import interfaces.ISeaBattleServerRest;
 import interfaces.RequestHandler;
 import messaging.handlers.AsyncRequestMessageHandler;
-import messaging.interfaces.WritingSocket;
 import messaging.messages.requests.RegisterRequest;
+import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.messages.responses.RegisterResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
 
@@ -25,7 +26,7 @@ public class RegisterRequestHandler implements RequestHandler<RegisterRequest> {
 
     @Override
     public void handle(RegisterRequest request, AsyncIdentifiableClientSocket client) {
-        RegisterResponse response = new RegisterResponse(null, false);
+        RegisterResponse response = new RegisterResponse(null, false, null, null);
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
         if (rest.register(request.playerName, request.password)) {
             client.setName(request.playerName);
@@ -33,8 +34,12 @@ public class RegisterRequestHandler implements RequestHandler<RegisterRequest> {
             client.setNumber(playerNumber);
             serverSocket.registerClient(client);
             Player player = rest.getPlayer(request.playerName);
-            gameService.registerPlayer(player);
-            response = new RegisterResponse(playerNumber, true);
+            RegisterPlayerResultDto registerPlayerResultDto = gameService.registerPlayer(player);
+            if (registerPlayerResultDto.getOpponentName() != null) {
+                AsyncIdentifiableClientSocket opponent = serverSocket.getClientById(registerPlayerResultDto.getOpponentPlayerNumber());
+                serverSocket.startWriting(opponent, new OpponentRegisterResponse(player.getUsername(), player.getPlayerNumber(), true));
+            }
+            response = new RegisterResponse(playerNumber, registerPlayerResultDto.isSuccess(), registerPlayerResultDto.getOpponentPlayerNumber(), registerPlayerResultDto.getOpponentName());
         }
         requestMessageHandler.completed(response, request);
     }

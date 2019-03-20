@@ -19,13 +19,6 @@ public abstract class AsyncClientSocket implements ReadableSocket, WritableSocke
         channel = AsynchronousSocketChannel.open();
     }
 
-    public AsyncClientSocket(AsynchronousSocketChannel channel) throws IOException {
-        this.channel = channel;
-        InetSocketAddress address = ((InetSocketAddress) channel.getRemoteAddress());
-        host = address.getAddress().getHostAddress();
-        port = address.getPort();
-    }
-
     public void connect() {
         channel.connect(new InetSocketAddress(host, port), channel, new AsyncConnectionHandler());
     }

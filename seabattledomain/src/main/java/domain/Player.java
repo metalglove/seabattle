@@ -23,7 +23,7 @@ public class Player {
     }
 
     public PlaceShipResultDto addShip(Ship ship) {
-        PlaceShipResultDto placeShipResultDto = new PlaceShipResultDto(null, null, false);
+        PlaceShipResultDto placeShipResultDto = new PlaceShipResultDto(null, null, false, false);
         if (gameHasStarted || !ship.isWithinBounds())
             return placeShipResultDto;
 
@@ -44,7 +44,8 @@ public class Player {
                 }
         }
         ships.add(ship);
-        return new PlaceShipResultDto(ship, oldShip, true);
+        boolean hasPlacedAllShips = ships.size() == 5;
+        return new PlaceShipResultDto(ship, oldShip, hasPlacedAllShips, true);
     }
 
     public String getUsername() {

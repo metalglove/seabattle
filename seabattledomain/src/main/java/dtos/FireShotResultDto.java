@@ -1,6 +1,7 @@
 package dtos;
 
 import domain.Point;
+import domain.Ship;
 import domain.ShotType;
 
 public class FireShotResultDto {
@@ -8,12 +9,14 @@ public class FireShotResultDto {
     private final Integer receivingPlayerNumber;
     private final Point point;
     private final ShotType shotType;
+    private final Ship ship;
 
-    public FireShotResultDto(Integer firingPlayerNumber, Integer receivingPlayerNumber, Point point, ShotType shotType) {
+    public FireShotResultDto(Integer firingPlayerNumber, Integer receivingPlayerNumber, Point point, ShotType shotType, Ship ship) {
         this.firingPlayerNumber = firingPlayerNumber;
         this.receivingPlayerNumber = receivingPlayerNumber;
         this.point = point;
         this.shotType = shotType;
+        this.ship = ship;
     }
 
     public Integer getFiringPlayerNumber() {
@@ -30,5 +33,9 @@ public class FireShotResultDto {
 
     public ShotType getShotType() {
         return shotType;
+    }
+
+    public Ship getShip() {
+        return ship;
     }
 }

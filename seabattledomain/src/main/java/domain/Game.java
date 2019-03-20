@@ -63,15 +63,15 @@ public class Game {
             return null;
 
         Point point = new Point(x, y);
-        FireShotResultDto fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.MISSED);
+        FireShotResultDto fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.MISSED, null);
         Ship shipToRemoveIfNeeded = null;
         for (Ship opponentShip : opponent.getShips()) {
             if (opponentShip.containsPoint(point)) {
                 if (opponentShip.getLength() == 1) {
                     shipToRemoveIfNeeded = opponentShip;
-                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.SUNK);
+                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.SUNK, opponentShip);
                 } else {
-                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.HIT);
+                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.HIT, opponentShip);
                 }
                 opponentShip.removePoint(point);
                 break;
@@ -80,7 +80,7 @@ public class Game {
         if (shipToRemoveIfNeeded != null)
             opponent.removeShip(shipToRemoveIfNeeded);
         if (opponent.getShips().size() == 0)
-            fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.ALLSUNK);
+            fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.ALLSUNK, shipToRemoveIfNeeded);
         return fireShotResultDto;
     }
 
@@ -92,9 +92,10 @@ public class Game {
 
     public SetReadyResultDto readyUp(int playerNumber) {
         Player player = getPlayerFromNumber(playerNumber);
-        if (player != null) {
-            player.setReady();
+        if (player == null) {
+            return null;
         }
+        player.setReady();
         Player opponent = getOpponentPlayer(playerNumber);
         Integer opponentNumber = null;
         boolean bothReady = false;

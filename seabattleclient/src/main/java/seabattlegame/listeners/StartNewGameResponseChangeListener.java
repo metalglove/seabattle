@@ -25,6 +25,7 @@ public class StartNewGameResponseChangeListener implements PropertyChangeListene
             application.showErrorMessage("New game!"); // TODO: fix
         } else {
             application.notifyStartGame(response.playerNumber);
+            // TODO: reset every bool in multiplayergame
         }
         client.removeListener(NotifyWhenReadyResponse.class.getSimpleName(), this);
     }
