@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
-    <output url="file://$MODULE_DIR$/../seabattlerest/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../seabattlerest/target/test-classes" />
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
     <content url="file://$MODULE_DIR$/src/main/resources">
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
     </content>
     <content url="file://$MODULE_DIR$/src/test/java">
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-    </content>
-    <content url="file://$MODULE_DIR$/../seabattlerest">
-      <sourceFolder url="file://$MODULE_DIR$/../seabattlerest/src/main/java" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../seabattlerest/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

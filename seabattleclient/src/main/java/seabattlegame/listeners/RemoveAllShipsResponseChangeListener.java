@@ -27,6 +27,7 @@ public class RemoveAllShipsResponseChangeListener implements PropertyChangeListe
         if (!response.success) {
             application.showErrorMessage("Failed to remove all ships.");
         } else {
+          //  application.removeShip(playerNr, response.ship);
             multiPlayerSeaBattleGame.hasPlacedAllShips = false;
         }
         client.removeListener(RemoveAllShipsResponse.class.getSimpleName(), this);

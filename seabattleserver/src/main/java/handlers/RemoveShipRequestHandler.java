@@ -20,7 +20,7 @@ public class RemoveShipRequestHandler implements RequestHandler<RemoveShipReques
 
     @Override
     public void handle(RemoveShipRequest request, AsyncIdentifiableClientSocket client) {
-        RemoveShipResponse response = new RemoveShipResponse(request.playerNumber, false);
+      //  RemoveShipResponse response = new RemoveShipResponse(request.playerNumber, false);
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
         // TODO: create remove ship method
         System.out.println("RemoveShipRequest is not implemented yet!");

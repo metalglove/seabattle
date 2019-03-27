@@ -1,12 +1,16 @@
 package handlers;
 
+import domain.Ship;
 import interfaces.ISeaBattleGameService;
 import interfaces.RequestHandler;
 import messaging.handlers.AsyncRequestMessageHandler;
 import messaging.interfaces.WritingSocket;
 import messaging.messages.requests.RemoveAllShipsRequest;
+import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.RemoveAllShipsResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
+
+import java.util.List;
 
 public class RemoveAllShipsRequestHandler implements RequestHandler<RemoveAllShipsRequest> {
 
@@ -20,9 +24,12 @@ public class RemoveAllShipsRequestHandler implements RequestHandler<RemoveAllShi
 
     @Override
     public void handle(RemoveAllShipsRequest request, AsyncIdentifiableClientSocket client) {
-        RemoveAllShipsResponse response = new RemoveAllShipsResponse(request.playerNumber, false);
+        RemoveAllShipsResponse response;
+        List<Ship> allShipsRemoved = gameService.removeAllShips(request.playerNumber);
+
+        response = new RemoveAllShipsResponse(request.playerNumber, true);
+
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
-        // TODO: create remove all ships method
-        System.out.println("RemoveAllShipsRequest is not implemented yet!");
+        requestMessageHandler.completed(response, request);
     }
 }

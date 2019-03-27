@@ -21,7 +21,26 @@ public class SeaBattleGameService implements ISeaBattleGameService {
         this._shipFactory = shipFactory;
         games = Collections.synchronizedList(new ArrayList<>());
     }
+    @Override
+    public List<Ship> removeAllShips(int playerNumber) {
+        List<Ship> removedShips = null;
 
+        synchronized(games) {
+            for (Game game : games) {
+                if (game.containsPlayer(playerNumber)) {
+                    Player player = game.getPlayerFromNumber(playerNumber);
+
+                    removedShips = List.copyOf(player.getShips());
+
+                    for (Ship ship : player.getShips()){
+                        player.removeShip(ship);
+                    }
+                    break;
+                }
+            }
+        }
+        return removedShips;
+    }
     @Override
     public List<Ship> placeShipsAutomatically(int playerNumber) {
         List<Ship> ships = null;
