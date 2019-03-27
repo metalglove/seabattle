@@ -3,6 +3,7 @@ package seabattlegame.listeners;
 import domain.Ship;
 import messaging.messages.responses.RemoveShipResponse;
 import seabattlegame.Client;
+import seabattlegame.ISeaBattleGame;
 import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -11,13 +12,13 @@ import java.beans.PropertyChangeListener;
 
 public class RemoveShipResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final MultiPlayerSeaBattleGame multiPlayerSeaBattleGame;
+    private final ISeaBattleGame game;
     private final int playerNr;
     private final Client client;
 
-    public RemoveShipResponseChangeListener(ISeaBattleGUI application, MultiPlayerSeaBattleGame multiPlayerSeaBattleGame, int playerNr, Client client) {
+    public RemoveShipResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNr, Client client) {
         this.application = application;
-        this.multiPlayerSeaBattleGame = multiPlayerSeaBattleGame;
+        this.game = game;
         this.playerNr = playerNr;
         this.client = client;
     }
@@ -28,10 +29,9 @@ public class RemoveShipResponseChangeListener implements PropertyChangeListener 
         if (!response.success) {
             application.showErrorMessage("Failed to remove ship from proposed point.");
         } else {
-            multiPlayerSeaBattleGame.hasPlacedAllShips = false;
-            for (Ship ship : response.ship){
-                application.removeShip(playerNr, ship);
-            }
+            game.setHasPlacedAllShips(false);
+
+            application.removeShip(playerNr, response.ship);
         }
         client.removeListener(RemoveShipResponse.class.getSimpleName(), this);
     }

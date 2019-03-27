@@ -127,7 +127,36 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
             application.showErrorMessage("Game has not ended yet!");
             return;
         }
-        client.addListener(StartNewGameResponse.class.getSimpleName(), new StartNewGameResponseChangeListener(application, playerNr, client));
+        client.addListener(StartNewGameResponse.class.getSimpleName(), new StartNewGameResponseChangeListener(application,this , playerNr, client));
         client.startWriting(new StartNewGameRequest(playerNr));
+    }
+
+    @Override
+    public void resetGame() {
+       hasPlacedAllShips = false;
+       isReady = false;
+       hasStarted = false;
+       isPlayersTurn = false;
+       hasGameEnded = false;
+    }
+
+    @Override
+    public void endGame() {
+        hasGameEnded = true;
+    }
+
+    @Override
+    public void setHasPlacedAllShips(boolean value) {
+        hasPlacedAllShips = value;
+    }
+
+    @Override
+    public void setPlayerTurn(boolean value) {
+        isPlayersTurn = value;
+    }
+
+    @Override
+    public void setStarted(boolean value) {
+        hasStarted = value;
     }
 }

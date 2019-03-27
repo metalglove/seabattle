@@ -1,10 +1,7 @@
 package services;
 
 import domain.*;
-import dtos.FireShotResultDto;
-import dtos.PlaceShipResultDto;
-import dtos.RegisterPlayerResultDto;
-import dtos.SetReadyResultDto;
+import dtos.*;
 import interfaces.IFactoryWithArgument;
 import interfaces.ISeaBattleGameService;
 import utilities.ShipCreationArgument;
@@ -21,44 +18,73 @@ public class SeaBattleGameService implements ISeaBattleGameService {
         this._shipFactory = shipFactory;
         games = Collections.synchronizedList(new ArrayList<>());
     }
-    @Override
-    public List<Ship> removeAllShips(int playerNumber) {
-        List<Ship> removedShips = null;
 
-        synchronized(games) {
+    @Override
+    public RemoveAllShipsResultDto removeAllShips(int playerNumber) {
+        RemoveAllShipsResultDto removeAllShipsResultDto = new RemoveAllShipsResultDto(null, false);
+
+        synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
                     Player player = game.getPlayerFromNumber(playerNumber);
 
-                    removedShips = List.copyOf(player.getShips());
-
-                    for (Ship ship : player.getShips()){
+                    final List<Ship> shipsToRemove = player.getShips();
+                    for (Ship ship : player.getShips()) {
                         player.removeShip(ship);
+                    }
+                    removeAllShipsResultDto = new RemoveAllShipsResultDto(shipsToRemove, true);
+                    break;
+                }
+            }
+        }
+        return removeAllShipsResultDto;
+    }
+
+    @Override
+    public RemoveShipResultDto removeShip(int playerNumber, int posX, int posY) {
+        RemoveShipResultDto removeShipResultDto = new RemoveShipResultDto(null, false);
+        Point point = new Point(posX, posY);
+        synchronized (games) {
+            for (Game game : games) {
+                if (game.containsPlayer(playerNumber)) {
+                    Player player = game.getPlayerFromNumber(playerNumber);
+                    for (Ship ship : player.getShips()) {
+                        if (ship.containsPoint(point)) {
+                            Ship shipToRemove = ship;
+                            removeShipResultDto = new RemoveShipResultDto(shipToRemove, true);
+                            player.removeShip(ship);
+                        }
                     }
                     break;
                 }
             }
         }
-        return removedShips;
+        return removeShipResultDto;
     }
+
     @Override
-    public List<Ship> placeShipsAutomatically(int playerNumber) {
-        List<Ship> ships = null;
-        synchronized(games) {
+    public PlaceShipsAutomaticallyResultDto placeShipsAutomatically(int playerNumber) {
+        PlaceShipsAutomaticallyResultDto placeShipsAutomaticallyResultDto = new PlaceShipsAutomaticallyResultDto(null, null, false);
+        synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
-                    ships = game.placeShipsAutomatically(playerNumber);
+                    Player player = game.getPlayerFromNumber(playerNumber);
+                    final List<Ship> shipsToRemove = player.getShips();
+                    final List<Ship> shipsToAdd = game.placeShipsAutomatically(playerNumber);
+                    if(shipsToAdd != null){
+                        placeShipsAutomaticallyResultDto = new PlaceShipsAutomaticallyResultDto(shipsToAdd, shipsToRemove, true);
+                    }
                     break;
                 }
             }
         }
-        return ships;
+        return placeShipsAutomaticallyResultDto;
     }
 
     @Override
     public PlaceShipResultDto placeShip(int playerNumber, ShipType shipType, int bowX, int bowY, boolean horizontal) {
-        PlaceShipResultDto placeShipResultDto = new PlaceShipResultDto(null,  null, false, false);
-        synchronized(games) {
+        PlaceShipResultDto placeShipResultDto = new PlaceShipResultDto(null, null, false, false);
+        synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
                     Player player = game.getPlayerFromNumber(playerNumber);
@@ -73,10 +99,10 @@ public class SeaBattleGameService implements ISeaBattleGameService {
 
     @Override
     public RegisterPlayerResultDto registerPlayer(Player player) {
-        synchronized(games) {
+        synchronized (games) {
             for (Game game : games) {
                 if (game.registerPlayer(player)) {
-                    Player opponent =  game.getOpponentPlayer(player.getPlayerNumber());
+                    Player opponent = game.getOpponentPlayer(player.getPlayerNumber());
                     return new RegisterPlayerResultDto(opponent.getPlayerNumber(), opponent.getUsername(), true);
                 }
             }
@@ -90,7 +116,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     @Override
     public FireShotResultDto fireShot(int firingPlayerNumber, int posX, int posY) {
         FireShotResultDto fireShotResultDto = null;
-        synchronized(games) {
+        synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(firingPlayerNumber)) {
                     fireShotResultDto = game.fireShot(firingPlayerNumber, posX, posY);
@@ -104,7 +130,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     @Override
     public SetReadyResultDto setReady(int playerNumber) {
         SetReadyResultDto setReadyResultDto = null;
-        synchronized(games) {
+        synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
                     setReadyResultDto = game.readyUp(playerNumber);

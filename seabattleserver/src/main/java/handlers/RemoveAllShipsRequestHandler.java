@@ -1,6 +1,7 @@
 package handlers;
 
 import domain.Ship;
+import dtos.RemoveAllShipsResultDto;
 import interfaces.ISeaBattleGameService;
 import interfaces.RequestHandler;
 import messaging.handlers.AsyncRequestMessageHandler;
@@ -24,12 +25,12 @@ public class RemoveAllShipsRequestHandler implements RequestHandler<RemoveAllShi
 
     @Override
     public void handle(RemoveAllShipsRequest request, AsyncIdentifiableClientSocket client) {
-        RemoveAllShipsResponse response;
-        List<Ship> allShipsRemoved = gameService.removeAllShips(request.playerNumber);
-
-        response = new RemoveAllShipsResponse(request.playerNumber, true);
-
+        RemoveAllShipsResponse response = new RemoveAllShipsResponse(request.playerNumber, null, false);
+        RemoveAllShipsResultDto removeAllShipsResultDto = gameService.removeAllShips(request.playerNumber);
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
+        if(removeAllShipsResultDto.isSuccess())
+            response = new RemoveAllShipsResponse(request.playerNumber, removeAllShipsResultDto.getShipsToRemove() ,true);
+
         requestMessageHandler.completed(response, request);
     }
 }

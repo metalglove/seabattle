@@ -37,13 +37,7 @@ public class SinglePlayerSeaBattleGame implements ISeaBattleGame {
 
     @Override
     public void placeShipsAutomatically(int playerNr) {
-//        log.debug("placeShipsAutomatically with player number: {}", playerNr);
-//        if (isReady) {
-//            application.showErrorMessage("You are not allowed to change your ships after readying up.");
-//            return;
-//        }
-//        client.addListener(PlaceShipsAutomaticallyResponse.class.getSimpleName(), new PlaceShipsAutomaticallyResponseChangeListener(application, this, playerNr, client));
-//        client.startWriting(new PlaceShipsAutomaticallyRequest(playerNr));
+
     }
 
     @Override
@@ -74,5 +68,34 @@ public class SinglePlayerSeaBattleGame implements ISeaBattleGame {
     @Override
     public void startNewGame(int playerNr) {
 
+    }
+
+    @Override
+    public void resetGame() {
+        hasPlacedAllShips = false;
+        isReady = false;
+        hasStarted = false;
+        isPlayersTurn = false;
+        hasGameEnded = false;
+    }
+
+    @Override
+    public void endGame() {
+        hasGameEnded = true;
+    }
+
+    @Override
+    public void setHasPlacedAllShips(boolean value) {
+        hasPlacedAllShips = value;
+    }
+
+    @Override
+    public void setPlayerTurn(boolean value) {
+        isPlayersTurn = value;
+    }
+
+    @Override
+    public void setStarted(boolean value) {
+        hasStarted = value;
     }
 }

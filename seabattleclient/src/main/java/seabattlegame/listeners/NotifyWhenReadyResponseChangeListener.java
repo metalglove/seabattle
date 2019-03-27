@@ -3,6 +3,7 @@ package seabattlegame.listeners;
 import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.OpponentFireShotResponse;
 import seabattlegame.Client;
+import seabattlegame.ISeaBattleGame;
 import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -11,13 +12,13 @@ import java.beans.PropertyChangeListener;
 
 public class NotifyWhenReadyResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final MultiPlayerSeaBattleGame multiPlayerSeaBattleGame;
+    private final ISeaBattleGame game;
     private final int playerNumber;
     private final Client client;
 
-    public NotifyWhenReadyResponseChangeListener(ISeaBattleGUI application, MultiPlayerSeaBattleGame multiPlayerSeaBattleGame, int playerNumber, Client client) {
+    public NotifyWhenReadyResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, Client client) {
         this.application = application;
-        this.multiPlayerSeaBattleGame = multiPlayerSeaBattleGame;
+        this.game = game;
         this.playerNumber = playerNumber;
         this.client = client;
     }
@@ -28,11 +29,11 @@ public class NotifyWhenReadyResponseChangeListener implements PropertyChangeList
         if (!response.success) {
             application.showErrorMessage("Notify from other player failed!");
         } else {
-            multiPlayerSeaBattleGame.hasStarted = true;
-            multiPlayerSeaBattleGame.isPlayersTurn = response.isPlayersTurn;
+            game.setStarted(true);
+            game.setPlayerTurn(response.isPlayersTurn);
             application.notifyStartGame(response.playerNumber);
             application.showErrorMessage(response.isPlayersTurn ? "You start." : "Opponent starts.");
-            client.addListener(OpponentFireShotResponse.class.getSimpleName(), new OpponentFireShotResponseListener(application, multiPlayerSeaBattleGame, client));
+            client.addListener(OpponentFireShotResponse.class.getSimpleName(), new OpponentFireShotResponseListener(application, game, client));
             client.removeListener(NotifyWhenReadyResponse.class.getSimpleName(), this);
         }
     }

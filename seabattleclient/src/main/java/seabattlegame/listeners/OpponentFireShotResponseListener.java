@@ -4,6 +4,7 @@ import domain.Point;
 import domain.ShotType;
 import messaging.messages.responses.OpponentFireShotResponse;
 import seabattlegame.Client;
+import seabattlegame.ISeaBattleGame;
 import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -12,12 +13,12 @@ import java.beans.PropertyChangeListener;
 
 public class OpponentFireShotResponseListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final MultiPlayerSeaBattleGame multiPlayerSeaBattleGame;
+    private final ISeaBattleGame game;
     private final Client client;
 
-    public OpponentFireShotResponseListener(ISeaBattleGUI application, MultiPlayerSeaBattleGame multiPlayerSeaBattleGame, Client client) {
+    public OpponentFireShotResponseListener(ISeaBattleGUI application, ISeaBattleGame game, Client client) {
         this.application = application;
-        this.multiPlayerSeaBattleGame = multiPlayerSeaBattleGame;
+        this.game = game;
         this.client = client;
     }
 
@@ -39,7 +40,7 @@ public class OpponentFireShotResponseListener implements PropertyChangeListener 
                 application.showErrorMessage("You lost!");
                 client.removeListener(OpponentFireShotResponse.class.getSimpleName(), this);
             } else {
-                multiPlayerSeaBattleGame.isPlayersTurn = true;
+                game.setPlayerTurn(true);
             }
         }
     }

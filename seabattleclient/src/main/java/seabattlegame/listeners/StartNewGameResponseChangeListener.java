@@ -2,6 +2,8 @@ package seabattlegame.listeners;
 
 import messaging.messages.responses.NotifyWhenReadyResponse;
 import seabattlegame.Client;
+import seabattlegame.ISeaBattleGame;
+import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -11,11 +13,13 @@ public class StartNewGameResponseChangeListener implements PropertyChangeListene
     private final ISeaBattleGUI application;
     private final int playerNumber;
     private final Client client;
+    private final ISeaBattleGame game;
 
-    public StartNewGameResponseChangeListener(ISeaBattleGUI application, int playerNumber, Client client) {
+    public StartNewGameResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, Client client) {
         this.application = application;
         this.playerNumber = playerNumber;
         this.client = client;
+        this.game = game;
     }
 
     @Override
@@ -24,8 +28,8 @@ public class StartNewGameResponseChangeListener implements PropertyChangeListene
         if (!response.success) {
             application.showErrorMessage("New game!"); // TODO: fix
         } else {
+            game.resetGame();
             application.notifyStartGame(response.playerNumber);
-            // TODO: reset every bool in multiplayergame
         }
         client.removeListener(NotifyWhenReadyResponse.class.getSimpleName(), this);
     }
