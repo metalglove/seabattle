@@ -138,4 +138,6 @@ public interface ISeaBattleGame {
     void setPlayerTurn(boolean value);
 
     void setStarted(boolean value);
+
+    void setPlayerName(String name);
 }

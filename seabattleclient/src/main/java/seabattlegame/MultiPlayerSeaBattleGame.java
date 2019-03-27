@@ -22,15 +22,16 @@ import java.io.IOException;
 public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
 
     private static final Logger log = LoggerFactory.getLogger(MultiPlayerSeaBattleGame.class);
-    private Client client;
-    private ISeaBattleGUI application;
-    public boolean hasPlacedAllShips = false;
-    public boolean isReady = false;
-    public boolean hasStarted = false;
-    public boolean isPlayersTurn = false;
-    public boolean hasGameEnded = false;
+    private final Client client;
+    private final ISeaBattleGUI application;
+    private boolean hasPlacedAllShips = false;
+    private boolean isReady = false;
+    private boolean hasStarted = false;
+    private boolean isPlayersTurn = false;
+    private boolean hasGameEnded = false;
+    private String playerName;
 
-    public MultiPlayerSeaBattleGame(ISeaBattleGUI application) {
+    public MultiPlayerSeaBattleGame(ISeaBattleGUI application) throws IOException {
         this.application = application;
         try {
             client = new Client("127.0.0.1", 9999);
@@ -38,13 +39,14 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
             client.startReading();
         } catch (IOException e) {
             e.printStackTrace();
+            throw e;
         }
     }
 
     @Override
     public void registerPlayer(String name, String password) {
         log.debug("Register Player {} - password {} - multiplayermode", name, password);
-        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, client));
+        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, this, client));
         client.startWriting(new RegisterRequest(name, password));
     }
 
@@ -99,6 +101,10 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
             application.showErrorMessage("You are already ready.");
             return;
         }
+        if (!hasPlacedAllShips) {
+            application.showErrorMessage("You have not yet placed all your ships.");
+            return;
+        }
         isReady = true;
         client.addListener(NotifyWhenReadyResponse.class.getSimpleName(), new NotifyWhenReadyResponseChangeListener(application, this, playerNr, client));
         client.startWriting(new NotifyWhenReadyRequest(playerNr));
@@ -127,7 +133,7 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
             application.showErrorMessage("Game has not ended yet!");
             return;
         }
-        client.addListener(StartNewGameResponse.class.getSimpleName(), new StartNewGameResponseChangeListener(application,this , playerNr, client));
+        client.addListener(StartNewGameResponse.class.getSimpleName(), new StartNewGameResponseChangeListener(application,this , playerName, client));
         client.startWriting(new StartNewGameRequest(playerNr));
     }
 
@@ -158,5 +164,10 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
     @Override
     public void setStarted(boolean value) {
         hasStarted = value;
+    }
+
+    @Override
+    public void setPlayerName(String name) {
+        playerName = name;
     }
 }

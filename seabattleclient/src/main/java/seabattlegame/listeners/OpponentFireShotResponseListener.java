@@ -38,6 +38,7 @@ public class OpponentFireShotResponseListener implements PropertyChangeListener 
             }
             if (response.shotType == ShotType.ALLSUNK) {
                 application.showErrorMessage("You lost!");
+                game.endGame();
                 client.removeListener(OpponentFireShotResponse.class.getSimpleName(), this);
             } else {
                 game.setPlayerTurn(true);

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.MultiPlayerSeaBattleGame;
 
+import java.io.IOException;
+
 /**
  * Unit tests for Sea Battle game.
  * @author Nico Kuijpers
@@ -24,7 +26,11 @@ public abstract class SeaBattleGameTests {
     @BeforeEach
     public void setUp() {
         // Create the Sea Battle game
-        game = new MultiPlayerSeaBattleGame(applicationPlayer);
+        try {
+            game = new MultiPlayerSeaBattleGame(applicationPlayer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Create mock Sea Battle GUI for player
         applicationPlayer = new MockSeaBattleApplication();

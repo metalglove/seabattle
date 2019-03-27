@@ -49,7 +49,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
         requestHandlerMapping.put(PlaceShipsAutomaticallyRequest.class, () -> new PlaceShipsAutomaticallyRequestHandler(this, gameService));
         requestHandlerMapping.put(RemoveAllShipsRequest.class, () -> new RemoveAllShipsRequestHandler(this, gameService));
         requestHandlerMapping.put(RemoveShipRequest.class, () -> new RemoveShipRequestHandler(this, gameService));
-        requestHandlerMapping.put(StartNewGameRequest.class, () -> new StartNewGameRequestHandler(this, gameService));
+        requestHandlerMapping.put(StartNewGameRequest.class, () -> new StartNewGameRequestHandler(this, gameService, rest));
     }
 
     void await() throws InterruptedException {

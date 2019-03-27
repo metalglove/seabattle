@@ -1,9 +1,9 @@
 package seabattlegame.listeners;
 
-import messaging.messages.responses.NotifyWhenReadyResponse;
+import messaging.messages.responses.OpponentRegisterResponse;
+import messaging.messages.responses.StartNewGameResponse;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
-import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -11,26 +11,31 @@ import java.beans.PropertyChangeListener;
 
 public class StartNewGameResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final int playerNumber;
+    private final String name;
     private final Client client;
     private final ISeaBattleGame game;
 
-    public StartNewGameResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, Client client) {
+    public StartNewGameResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, String name, Client client) {
         this.application = application;
-        this.playerNumber = playerNumber;
+        this.name = name;
         this.client = client;
         this.game = game;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        NotifyWhenReadyResponse response = (NotifyWhenReadyResponse) evt.getNewValue();
+        StartNewGameResponse response = (StartNewGameResponse) evt.getNewValue();
         if (!response.success) {
-            application.showErrorMessage("New game!"); // TODO: fix
+            application.showErrorMessage("Starting a new game failed!");
         } else {
             game.resetGame();
-            application.notifyStartGame(response.playerNumber);
+            application.setPlayerNumber(response.playerNumber, name);
+            if (response.opponentName != null && response.opponentPlayerNumber != null) {
+                application.setOpponentName(response.opponentPlayerNumber, response.opponentName);
+            } else {
+                client.addListener(OpponentRegisterResponse.class.getSimpleName(), new OpponentRegisterResponseListener(application, client));
+            }
         }
-        client.removeListener(NotifyWhenReadyResponse.class.getSimpleName(), this);
+        client.removeListener(StartNewGameResponse.class.getSimpleName(), this);
     }
 }

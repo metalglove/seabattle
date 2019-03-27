@@ -50,8 +50,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
                     Player player = game.getPlayerFromNumber(playerNumber);
                     for (Ship ship : player.getShips()) {
                         if (ship.containsPoint(point)) {
-                            Ship shipToRemove = ship;
-                            removeShipResultDto = new RemoveShipResultDto(shipToRemove, true);
+                            removeShipResultDto = new RemoveShipResultDto(ship, true);
                             player.removeShip(ship);
                         }
                     }
@@ -117,11 +116,22 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     public FireShotResultDto fireShot(int firingPlayerNumber, int posX, int posY) {
         FireShotResultDto fireShotResultDto = null;
         synchronized (games) {
+            Game gameToRemove = null;
             for (Game game : games) {
                 if (game.containsPlayer(firingPlayerNumber)) {
                     fireShotResultDto = game.fireShot(firingPlayerNumber, posX, posY);
+                    if (fireShotResultDto.getShotType() == ShotType.ALLSUNK) {
+                        gameToRemove = game;
+                    }
                     break;
                 }
+            }
+            if (gameToRemove != null) {
+                Player player = gameToRemove.getPlayerFromNumber(firingPlayerNumber);
+                player.setUnReady();
+                Player opponent = gameToRemove.getOpponentPlayer(firingPlayerNumber);
+                opponent.setUnReady();
+                games.remove(gameToRemove);
             }
         }
         return fireShotResultDto;
@@ -140,5 +150,4 @@ public class SeaBattleGameService implements ISeaBattleGameService {
         }
         return setReadyResultDto;
     }
-    // TODO: implement game logic and gamestate management
 }

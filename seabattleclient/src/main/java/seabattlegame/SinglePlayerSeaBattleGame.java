@@ -31,7 +31,7 @@ public class SinglePlayerSeaBattleGame implements ISeaBattleGame {
     public void registerPlayer(String name, String password) {
         log.debug("Register Player {} - password {} - singleplayermode", name, password);
 
-        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, client));
+        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, this, client));
         client.startWriting(new RegisterRequest(name, password));
     }
 
@@ -97,5 +97,10 @@ public class SinglePlayerSeaBattleGame implements ISeaBattleGame {
     @Override
     public void setStarted(boolean value) {
         hasStarted = value;
+    }
+
+    @Override
+    public void setPlayerName(String name) {
+
     }
 }

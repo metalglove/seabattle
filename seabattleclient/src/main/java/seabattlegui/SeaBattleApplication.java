@@ -133,6 +133,8 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     // X and y-position of selected square in ocean region
     private int selectedSquareX;
     private int selectedSquareY;
+    // for returning color on previous selected square
+    private Color oldColorPress = null;
 
     @Override
     public void start(Stage primaryStage) {
@@ -797,7 +799,13 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         if (singlePlayerMode) {
             game = new SinglePlayerSeaBattleGame(this);
         } else {
-            game = new MultiPlayerSeaBattleGame(this);
+            try {
+                game = new MultiPlayerSeaBattleGame(this);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                showMessage("Connecting with server failed try again later..");
+                return;
+            }
         }
         game.registerPlayer(playerName, playerPassword);
     }
@@ -835,13 +843,29 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         game.startNewGame(playerNr);
         playingMode = false;
         gameEnded = false;
-        labelYourName.setDisable(false);
-        textFieldPlayerName.setDisable(false);
-        labelYourPassword.setDisable(false);
-        passwordFieldPlayerPassword.setDisable(false);
-        radioSinglePlayer.setDisable(false);
-        radioMultiPlayer.setDisable(false);
-        buttonRegisterPlayer.setDisable(false);
+        //labelYourName.setDisable(false);
+        //textFieldPlayerName.setDisable(false);
+        //labelYourPassword.setDisable(false);
+        //passwordFieldPlayerPassword.setDisable(false);
+        //radioSinglePlayer.setDisable(false);
+        //radioMultiPlayer.setDisable(false);
+        //buttonRegisterPlayer.setDisable(false);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //TODO: cgeck
+                for (Rectangle[] rects : squaresOceanArea) {
+                    for (Rectangle rect : rects) {
+                        rect.setFill(Color.LIGHTBLUE);
+                    }
+                }
+                for (Rectangle[] rects : squaresTargetArea) {
+                    for (Rectangle rect : rects) {
+                        rect.setFill(Color.LIGHTBLUE);
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -932,6 +956,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         }
     }
 
+
     /**
      * Event handler when mouse button is pressed in rectangle in ocean area.
      * When not in playing mode: the square that was selected before will
@@ -943,16 +968,19 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      * @param y     y-coordinate of selected square
      */
     private void rectangleOceanAreaMousePressed(MouseEvent event, int x, int y) {
+
         if (!playingMode) {
             // Game is not in playing mode: select square to place a ship
             if (squareSelectedInOceanArea) {
-                Rectangle square = squaresOceanArea[selectedSquareX][selectedSquareY];
-                if (square.getFill().equals(Color.YELLOW)) {
-                    square.setFill(Color.LIGHTBLUE);
+                if (oldColorPress != null) {
+                    Rectangle square = squaresOceanArea[selectedSquareX][selectedSquareY];
+                    Color asd = Color.color(oldColorPress.getRed(), oldColorPress.getGreen(), oldColorPress.getBlue());
+                    square.setFill(asd);
                 }
             }
             selectedSquareX = x;
             selectedSquareY = y;
+            oldColorPress = (Color) squaresOceanArea[selectedSquareX][selectedSquareY].getFill();
             squaresOceanArea[x][y].setFill(Color.YELLOW);
             squareSelectedInOceanArea = true;
         } else {
