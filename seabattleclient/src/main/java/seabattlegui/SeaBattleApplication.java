@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -698,6 +699,44 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         });
     }
 
+    /**
+     * Show state of a square in the target area.
+     * The color of the square depends on the state of the square.
+     *
+     * @param playerNr    identification of player
+     * @param posX        x-position of square
+     * @param posY        y-position of square
+     */
+    @Override
+    public SquareState getSquareStateOpponent(int playerNr, final int posX, final int posY) {
+        // Check identification of player
+        //if (playerNr != this.playerNr) {
+        //    showMessage("ERROR: Wrong player number method showSquareOpponent()");
+        //    return;
+        //}
+        SquareState squareState;
+        Rectangle square = squaresTargetArea[posX][posY];
+
+        //TODO: square.getFill().equals(Color) does not return true in any scenario. Why?
+
+        if(square.getFill().equals(Color.BLUE))
+            squareState = SquareState.SHOTMISSED;
+        else if(square.getFill().equals(Color.RED))
+            squareState = SquareState.SHOTHIT;
+        else if(square.getFill().equals(Color.GREEN))
+            squareState = SquareState.SHIPSUNK;
+        else if(square.getFill().equals(Color.LIGHTBLUE))
+            squareState = SquareState.WATER;
+        else
+            squareState = SquareState.WATER;
+//        Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+            return squareState;
+    }
     /**
      * Show state of a square in the target area.
      * The color of the square depends on the state of the square.

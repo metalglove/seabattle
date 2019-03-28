@@ -84,6 +84,12 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
     }
 
     @Override
+    public SquareState getSquareStateOpponent(int playerNr, int posX, int posY) {
+        //TODO: Mock this?
+        return null;
+    }
+
+    @Override
     public void showSquareOpponent(int playerNr, int posX, int posY, SquareState squareState) {
         checkPlayerNumber("showSquareOpponent()",playerNr);
         this.opponentGrid[posX][posY] = squareState;
