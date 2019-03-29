@@ -2,13 +2,10 @@ package seabattlegame;
 
 import domain.ShipType;
 import messaging.messages.requests.FireShotRequest;
-import messaging.messages.requests.PlaceShipsAutomaticallyRequest;
 import messaging.messages.requests.RegisterRequest;
-import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.RegisterResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import seabattlegame.listeners.PlaceShipsAutomaticallyResponseChangeListener;
 import seabattlegame.listeners.RegisterResponseChangeListener;
 import seabattlegui.ISeaBattleGUI;
 

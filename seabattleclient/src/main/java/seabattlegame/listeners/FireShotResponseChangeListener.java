@@ -7,6 +7,7 @@ import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
+import seabattlegui.SquareState;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

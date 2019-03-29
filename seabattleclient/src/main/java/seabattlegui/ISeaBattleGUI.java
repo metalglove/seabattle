@@ -77,8 +77,6 @@ public interface ISeaBattleGUI {
      */
     public void showSquarePlayer(int playerNr, int posX, int posY, SquareState squareState);
 
-    SquareState getSquareStateOpponent(int playerNr, int posX, int posY);
-
     /**
      * Show state of a square in the target area.
      * The new state of the square will be shown in the area where

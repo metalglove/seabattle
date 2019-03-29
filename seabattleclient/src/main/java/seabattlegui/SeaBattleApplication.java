@@ -20,7 +20,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -707,36 +706,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      * @param posX        x-position of square
      * @param posY        y-position of square
      */
-    @Override
-    public SquareState getSquareStateOpponent(int playerNr, final int posX, final int posY) {
-        // Check identification of player
-        //if (playerNr != this.playerNr) {
-        //    showMessage("ERROR: Wrong player number method showSquareOpponent()");
-        //    return;
-        //}
-        SquareState squareState;
-        Rectangle square = squaresTargetArea[posX][posY];
 
-        //TODO: square.getFill().equals(Color) does not return true in any scenario. Why?
-
-        if(square.getFill().equals(Color.BLUE))
-            squareState = SquareState.SHOTMISSED;
-        else if(square.getFill().equals(Color.RED))
-            squareState = SquareState.SHOTHIT;
-        else if(square.getFill().equals(Color.GREEN))
-            squareState = SquareState.SHIPSUNK;
-        else if(square.getFill().equals(Color.LIGHTBLUE))
-            squareState = SquareState.WATER;
-        else
-            squareState = SquareState.WATER;
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
-            return squareState;
-    }
     /**
      * Show state of a square in the target area.
      * The color of the square depends on the state of the square.
@@ -975,17 +945,14 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     private void rectangleTargetAreaMousePressed(MouseEvent event, int x, int y) {
         if (playingMode && !gameEnded) {
             // Game is in playing mode
-            squaresTargetArea[x][y].setFill(Color.YELLOW);
-            //if (playersTurn()) {
-                // It is this player's turn
-                // Player fires a shot at the selected target area
-                game.fireShot(playerNr, x, y);
+            Rectangle square = squaresTargetArea[x][y];
 
-                // Opponent's turn
-                //switchTurn();
-            //} else {
-                // It is not this player's turn yet
-                //showMessage("Wait till " + opponentName + " has fired a shot");
+            if(!square.getFill().equals(Color.LIGHTBLUE)){
+                showMessage("You already shot here! Please choose another square.");
+                return;
+            }
+
+            game.fireShot(playerNr, x, y);
         } else {
             if (gameEnded) {
                 showMessage("Press Start new game");

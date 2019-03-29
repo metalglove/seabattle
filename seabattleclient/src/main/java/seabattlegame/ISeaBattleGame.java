@@ -104,8 +104,7 @@ public interface ISeaBattleGame {
      * The result of the opponent's shot will be sent to the player's application
      * by a method call of opponentFiresShot() and the ocean area of the player's
      * application will by kept up-to-date by method calls of showSquarePlayer().
-     *
-     * @param playerNr identification of player who fires.
+     *  @param playerNr identification of player who fires.
      * @param posX     x-coordinate of square
      * @param posY     y-coordinate of square
      */

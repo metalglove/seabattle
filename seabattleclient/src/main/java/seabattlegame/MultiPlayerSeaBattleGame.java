@@ -122,10 +122,6 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
             application.showSquareOpponent(playerNr, posX, posY, SquareState.WATER);
             return;
         }
-        if(application.getSquareStateOpponent(playerNr, posX, posY) != SquareState.WATER){
-            application.showErrorMessage("You already shot here.");
-            return;
-        }
         client.addListener(FireShotResponse.class.getSimpleName(), new FireShotResponseChangeListener(application, this, client));
         client.startWriting(new FireShotRequest(playerNr, posX, posY));
     }
