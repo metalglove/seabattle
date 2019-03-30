@@ -63,15 +63,15 @@ public class Game {
             return null;
 
         Point point = new Point(x, y);
-        FireShotResultDto fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.MISSED, null);
+        FireShotResultDto fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.MISSED, null, true);
         Ship shipToRemoveIfNeeded = null;
         for (Ship opponentShip : opponent.getShips()) {
             if (opponentShip.containsPoint(point)) {
                 if (opponentShip.getLength() == 1) {
                     shipToRemoveIfNeeded = opponentShip;
-                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.SUNK, opponentShip);
+                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.SUNK, opponentShip, true);
                 } else {
-                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.HIT, opponentShip);
+                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.HIT, opponentShip, true);
                 }
                 opponentShip.removePoint(point);
                 break;
@@ -80,7 +80,7 @@ public class Game {
         if (shipToRemoveIfNeeded != null)
             opponent.removeShip(shipToRemoveIfNeeded);
         if (opponent.getShips().size() == 0)
-            fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.ALLSUNK, shipToRemoveIfNeeded);
+            fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.ALLSUNK, shipToRemoveIfNeeded, true);
         return fireShotResultDto;
     }
 

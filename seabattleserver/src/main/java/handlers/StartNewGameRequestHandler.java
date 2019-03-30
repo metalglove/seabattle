@@ -30,10 +30,10 @@ public class StartNewGameRequestHandler implements RequestHandler<StartNewGameRe
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
         Player player = rest.getPlayer(client.getName());
         if (player != null) {
-            RegisterPlayerResultDto registerPlayerResultDto = gameService.registerPlayer(player);
+            RegisterPlayerResultDto registerPlayerResultDto = gameService.registerPlayer(player, request.multiPlayer);
             if (registerPlayerResultDto.isSuccess()) {
                 response = new StartNewGameResponse(request.playerNumber, true, registerPlayerResultDto.getOpponentName(), registerPlayerResultDto.getOpponentPlayerNumber());
-                if (registerPlayerResultDto.getOpponentName() != null) {
+                if (registerPlayerResultDto.getOpponentName() != null && registerPlayerResultDto.getOpponentPlayerNumber() > 0) {
                     AsyncIdentifiableClientSocket opponent = serverSocket.getClientById(registerPlayerResultDto.getOpponentPlayerNumber());
                     serverSocket.startWriting(opponent, new OpponentRegisterResponse(player.getUsername(), player.getPlayerNumber(), true));
                 }

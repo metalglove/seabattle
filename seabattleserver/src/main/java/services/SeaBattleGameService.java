@@ -9,10 +9,12 @@ import utilities.ShipCreationArgument;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class SeaBattleGameService implements ISeaBattleGameService {
     private final List<Game> games;
     private final IFactoryWithArgument<Ship, ShipCreationArgument> _shipFactory;
+    private static AtomicLong aiIDCounter = new AtomicLong();
 
     public SeaBattleGameService(IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory) {
         this._shipFactory = shipFactory;
@@ -97,8 +99,20 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     }
 
     @Override
-    public RegisterPlayerResultDto registerPlayer(Player player) {
+    public RegisterPlayerResultDto registerPlayer(Player player, boolean multiPlayer) {
         synchronized (games) {
+            if (!multiPlayer) {
+                Game game = new Game();
+                game.registerPlayer(player);
+                int x = (int)aiIDCounter.getAndIncrement() * -1;
+                System.out.println("CPU ID: " + x);
+                game.registerPlayer(new Player("CPU", "", x));
+                game.placeShipsAutomatically(x);
+                game.readyUp(x);
+                Player opponent = game.getOpponentPlayer(player.getPlayerNumber());
+                games.add(game);
+                return new RegisterPlayerResultDto(opponent.getPlayerNumber(), opponent.getUsername(), true);
+            }
             for (Game game : games) {
                 if (game.registerPlayer(player)) {
                     Player opponent = game.getOpponentPlayer(player.getPlayerNumber());

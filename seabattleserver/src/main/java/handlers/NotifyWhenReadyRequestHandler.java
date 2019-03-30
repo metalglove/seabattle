@@ -28,11 +28,15 @@ public class NotifyWhenReadyRequestHandler implements RequestHandler<NotifyWhenR
         System.out.println("Player : "+ request.playerNumber+" wants to be notified when game can start.");
         if (setReadyResultDto != null && setReadyResultDto.isBothReady()) {
             boolean isPlayersTurn = rand.nextBoolean();
+            if (setReadyResultDto.getOpponentPlayerNumber() <= 0)
+                isPlayersTurn = true;
             AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
             NotifyWhenReadyResponse response = new NotifyWhenReadyResponse(request.playerNumber, true, isPlayersTurn);
             int opponentPlayerNumber = setReadyResultDto.getOpponentPlayerNumber();
-            AsyncIdentifiableClientSocket opponent = serverSocket.getClientById(opponentPlayerNumber);
-            serverSocket.startWriting(opponent, new NotifyWhenReadyResponse(opponentPlayerNumber, true, !isPlayersTurn));
+            if (opponentPlayerNumber > 0) {
+                AsyncIdentifiableClientSocket opponent = serverSocket.getClientById(opponentPlayerNumber);
+                serverSocket.startWriting(opponent, new NotifyWhenReadyResponse(opponentPlayerNumber, true, !isPlayersTurn));
+            }
             requestMessageHandler.completed(response, request);
             System.out.println("Players : "+ request.playerNumber+" & " + opponentPlayerNumber + " are notified.");
         }

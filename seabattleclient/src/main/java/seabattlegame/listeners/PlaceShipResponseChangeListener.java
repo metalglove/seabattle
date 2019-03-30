@@ -3,7 +3,6 @@ package seabattlegame.listeners;
 import messaging.messages.responses.PlaceShipResponse;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
-import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;

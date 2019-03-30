@@ -4,7 +4,6 @@ import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.OpponentFireShotResponse;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
-import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -13,13 +12,11 @@ import java.beans.PropertyChangeListener;
 public class NotifyWhenReadyResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
     private final ISeaBattleGame game;
-    private final int playerNumber;
     private final Client client;
 
-    public NotifyWhenReadyResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, Client client) {
+    public NotifyWhenReadyResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, Client client) {
         this.application = application;
         this.game = game;
-        this.playerNumber = playerNumber;
         this.client = client;
     }
 

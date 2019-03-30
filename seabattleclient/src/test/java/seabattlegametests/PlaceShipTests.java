@@ -3,7 +3,7 @@ package seabattlegametests;
 import domain.ShipType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import seabattlegame.MultiPlayerSeaBattleGame;
+import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
 import seabattleunittests.MockSeaBattleApplication;
 import seabattleunittests.SeaBattleGameTests;
@@ -32,13 +32,13 @@ public class PlaceShipTests extends SeaBattleGameTests {
         // Arrange
         applicationPlayer = new MockSeaBattleApplication();
         try {
-            game = new MultiPlayerSeaBattleGame(applicationPlayer);
+            game = new SeaBattleGame(applicationPlayer);
         } catch (IOException e) {
             e.printStackTrace();
         }
         //applicationOpponent = new MockSeaBattleApplication();
-        game.registerPlayer("player1", "sdsd");
-        game.registerPlayer("player2", "sdsd");
+        game.registerPlayer("player1", "sdsd", true);
+        game.registerPlayer("player2", "sdsd", true);
 
         SquareState expectedPlayer2Value = SquareState.WATER;
 

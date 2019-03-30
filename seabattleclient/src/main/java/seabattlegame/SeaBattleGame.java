@@ -19,9 +19,9 @@ import java.io.IOException;
  *
  * @author Nico Kuijpers
  */
-public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
+public class SeaBattleGame implements ISeaBattleGame {
 
-    private static final Logger log = LoggerFactory.getLogger(MultiPlayerSeaBattleGame.class);
+    private static final Logger log = LoggerFactory.getLogger(SeaBattleGame.class);
     private final Client client;
     private final ISeaBattleGUI application;
     private boolean hasPlacedAllShips = false;
@@ -31,7 +31,7 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
     private boolean hasGameEnded = false;
     private String playerName;
 
-    public MultiPlayerSeaBattleGame(ISeaBattleGUI application) throws IOException {
+    public SeaBattleGame(ISeaBattleGUI application) throws IOException {
         this.application = application;
         try {
             client = new Client("127.0.0.1", 9999);
@@ -44,10 +44,14 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
     }
 
     @Override
-    public void registerPlayer(String name, String password) {
-        log.debug("Register Player {} - password {} - multiplayermode", name, password);
+    public void registerPlayer(String name, String password, boolean multiPlayer) {
+        log.debug("Register Player {} - password {} - Mode {}", name, password, multiPlayer ? "Multi-Player" : "Single-Player");
+        if ("CPU".equals(name)) {
+            application.showErrorMessage("You are not allowed to be named CPU, this is reserved for the AI in SinglePlayer Mode.");
+            return;
+        }
         client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, this, client));
-        client.startWriting(new RegisterRequest(name, password));
+        client.startWriting(new RegisterRequest(name, password, multiPlayer));
     }
 
     @Override
@@ -106,7 +110,7 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
             return;
         }
         isReady = true;
-        client.addListener(NotifyWhenReadyResponse.class.getSimpleName(), new NotifyWhenReadyResponseChangeListener(application, this, playerNr, client));
+        client.addListener(NotifyWhenReadyResponse.class.getSimpleName(), new NotifyWhenReadyResponseChangeListener(application, this, client));
         client.startWriting(new NotifyWhenReadyRequest(playerNr));
     }
 
@@ -127,14 +131,14 @@ public class MultiPlayerSeaBattleGame implements ISeaBattleGame {
     }
 
     @Override
-    public void startNewGame(int playerNr) {
+    public void startNewGame(int playerNr, boolean multiPlayer) {
         log.debug("startNewGame with player number: {} ", playerNr);
         if (!hasGameEnded) {
             application.showErrorMessage("Game has not ended yet!");
             return;
         }
         client.addListener(StartNewGameResponse.class.getSimpleName(), new StartNewGameResponseChangeListener(application,this , playerName, client));
-        client.startWriting(new StartNewGameRequest(playerNr));
+        client.startWriting(new StartNewGameRequest(playerNr, multiPlayer));
     }
 
     @Override

@@ -1,10 +1,8 @@
 package seabattlegame.listeners;
 
-import domain.Ship;
 import messaging.messages.responses.RemoveShipResponse;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
-import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;

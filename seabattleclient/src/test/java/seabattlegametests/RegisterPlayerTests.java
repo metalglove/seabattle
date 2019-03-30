@@ -35,7 +35,7 @@ public class RegisterPlayerTests extends SeaBattleGameTests {
         final boolean singlePlayerMode = true;
 
         // Act & Assert
-        assertDoesNotThrow(() -> game.registerPlayer(name, password));
+        assertDoesNotThrow(() -> game.registerPlayer(name, password, singlePlayerMode));
     }
     @Test()
     public void should_Throw_When_Name_Is_Null_And_Password_Is_Ape123_And_ApplicationPlayer_Is_Not_Null_And_SinglePlayerMode_Is_True() {
@@ -45,7 +45,7 @@ public class RegisterPlayerTests extends SeaBattleGameTests {
         final boolean singlePlayerMode = true;
 
         // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password));
+        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, singlePlayerMode));
     }
     @Test()
     public void should_Throw_When_Name_Is_Mario_And_Password_Is_Null_And_ApplicationPlayer_Is_Not_Null_And_SinglePlayerMode_Is_True() {
@@ -55,7 +55,7 @@ public class RegisterPlayerTests extends SeaBattleGameTests {
         final boolean singlePlayerMode = true;
 
         // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password));
+        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, singlePlayerMode));
     }
     /*
     @Test()

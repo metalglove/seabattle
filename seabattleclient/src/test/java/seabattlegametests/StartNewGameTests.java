@@ -24,9 +24,9 @@ public class StartNewGameTests extends SeaBattleGameTests {
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1, 1,true);
 
         // Act
-        game.startNewGame(1);
+        game.startNewGame(1, true);
 
         // Assert
-        assertDoesNotThrow(() -> game.registerPlayer("jan", "asdsd"));
+        assertDoesNotThrow(() -> game.registerPlayer("jan", "asdsd", true));
     }
 }

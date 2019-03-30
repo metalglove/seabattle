@@ -8,11 +8,11 @@ import messaging.handlers.AsyncReadForHandlingMessageHandler;
 import messaging.handlers.AsyncWriteBufferHandler;
 import messaging.interfaces.AcceptingSocket;
 import messaging.interfaces.MessageHandlingSocket;
-import messaging.interfaces.WritingSocket;
 import messaging.messages.Message;
 import messaging.messages.requests.*;
 import messaging.sockets.AsyncIdentifiableClientSocket;
 import messaging.utilities.MessageConverter;
+import services.SeaBattleGameAI;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -43,7 +43,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
         startAccepting();
 
         requestHandlerMapping.put(RegisterRequest.class, () -> new RegisterRequestHandler(this, rest, gameService));
-        requestHandlerMapping.put(FireShotRequest.class, () -> new FireShotRequestHandler(this, gameService));
+        requestHandlerMapping.put(FireShotRequest.class, () -> new FireShotRequestHandler(this, gameService, new SeaBattleGameAI(gameService)));
         requestHandlerMapping.put(NotifyWhenReadyRequest.class, () -> new NotifyWhenReadyRequestHandler(this, gameService));
         requestHandlerMapping.put(PlaceShipRequest.class, () -> new PlaceShipRequestHandler(this, gameService));
         requestHandlerMapping.put(PlaceShipsAutomaticallyRequest.class, () -> new PlaceShipsAutomaticallyRequestHandler(this, gameService));
@@ -72,6 +72,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
         clientMapping.put(client.getNumber(), client);
     }
 
+    @Override
     public AsyncIdentifiableClientSocket getClientById(int id) {
         return clientMapping.get(id);
     }

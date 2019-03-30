@@ -18,6 +18,7 @@ public interface ISeaBattleGame {
      *
      * @param name     Name of the player to be registered
      * @param password Password of the player to be registered
+     * @param multiPlayer  Multi-Player (true) or Single-Player (false) mode
      * @throws IllegalArgumentException when:
      *                                  name is null or the empty,
      *                                  password is null or empty,
@@ -26,7 +27,7 @@ public interface ISeaBattleGame {
      *                                  number of players exceeds two in multi-player mode or
      *                                  name is already registered.
      */
-    void registerPlayer(String name, String password); //@param singlePlayerMode  Single-player (true) or multi-player (false) mode , boolean singlePlayerMode ISeaBattleGUI application, @param application       Reference to application of player
+    void registerPlayer(String name, String password, boolean multiPlayer);
 
     /**
      * Place ships automatically. Ships that are already placed will be removed.
@@ -120,8 +121,9 @@ public interface ISeaBattleGame {
      * calls of showSquareOpponent().
      *
      * @param playerNr identification of player who starts a new game
+     * @param multiPlayer Multi-Player (true) or Single-Player (false) mode ,
      */
-    void startNewGame(int playerNr);
+    void startNewGame(int playerNr, boolean multiPlayer);
 
     /**
      * Resets the game and sets all variables back to default.

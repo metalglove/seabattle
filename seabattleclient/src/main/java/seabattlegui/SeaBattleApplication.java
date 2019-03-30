@@ -26,8 +26,9 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import seabattlegame.ISeaBattleGame;
-import seabattlegame.MultiPlayerSeaBattleGame;
-import seabattlegame.SinglePlayerSeaBattleGame;
+import seabattlegame.SeaBattleGame;
+
+import java.io.IOException;
 
 
 /**
@@ -805,18 +806,14 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             showMessage("Enter your password before registering");
             return;
         }
-        if (singlePlayerMode) {
-            game = new SinglePlayerSeaBattleGame(this);
-        } else {
-            try {
-                game = new MultiPlayerSeaBattleGame(this);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                showMessage("Connecting with server failed try again later..");
-                return;
-            }
+        try {
+            game = new SeaBattleGame(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showMessage("Connecting with server failed try again later..");
+            return;
         }
-        game.registerPlayer(playerName, playerPassword);
+        game.registerPlayer(playerName, playerPassword, !singlePlayerMode);
     }
 
     /**
@@ -849,7 +846,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     private void startNewGame() {
         // The player wants to start a new game.
-        game.startNewGame(playerNr);
+        game.startNewGame(playerNr, !singlePlayerMode);
         playingMode = false;
         gameEnded = false;
         //labelYourName.setDisable(false);

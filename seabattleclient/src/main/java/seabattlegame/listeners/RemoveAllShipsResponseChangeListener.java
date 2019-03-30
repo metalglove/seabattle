@@ -4,7 +4,6 @@ import domain.Ship;
 import messaging.messages.responses.RemoveAllShipsResponse;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
-import seabattlegame.MultiPlayerSeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
