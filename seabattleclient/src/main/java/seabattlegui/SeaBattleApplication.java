@@ -292,6 +292,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
                     try {
                         registerPlayer();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         messageLogger.error(format("Register Player error: %s", e.getMessage()));
                     }
                 });
@@ -810,12 +811,12 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         }
         try {
             game = new SeaBattleGame(this);
+            game.registerPlayer(playerName, playerPassword, !singlePlayerMode);
         } catch (IOException e) {
             e.printStackTrace();
             showMessage("Connecting with server failed try again later..");
             return;
         }
-        game.registerPlayer(playerName, playerPassword, !singlePlayerMode);
     }
 
     /**

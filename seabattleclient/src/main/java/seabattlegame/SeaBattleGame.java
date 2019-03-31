@@ -38,6 +38,7 @@ public class SeaBattleGame implements ISeaBattleGame {
         try {
             client = new Client("127.0.0.1", 9999, new MessageLogger("CLIENT"));
             client.connect();
+            client.ensureConnection();
             client.startReading();
         } catch (IOException e) {
             e.printStackTrace();

@@ -25,17 +25,15 @@ public class ErrorResponseChangeListener implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ErrorResponse response = (ErrorResponse) evt.getNewValue();
-        // TODO: reset the game properly
         if (response.errorMessage != null) {
             application.showErrorMessage(response.errorMessage);
             messageLogger.error("ErrorResponse resulted in: " + response.errorMessage);
             game.resetGame();
-            application.resetGUI();
-            //application.setPlayerNumber(response.playerNumber, response.playerName);
         } else {
             application.showErrorMessage("Something happened server side. The game has ended.");
             messageLogger.error("ErrorResponse resulted in: " + "Something happened server side. Try playing again later.");
         }
-        //client.removeListener(ErrorResponse.class.getSimpleName(), this);
+        application.resetGUI();
+        client.removeListener(ErrorResponse.class.getSimpleName(), this);
     }
 }
