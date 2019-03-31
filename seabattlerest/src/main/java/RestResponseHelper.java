@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import dtos.UserResultDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

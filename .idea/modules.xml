@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/seabattle-start-master.iml" filepath="$PROJECT_DIR$/.idea/seabattle-start-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattleclient/seabattleclient.iml" filepath="$PROJECT_DIR$/seabattleclient/seabattleclient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/seabattledal/seabattledal.iml" filepath="$PROJECT_DIR$/seabattledal/seabattledal.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattledomain/seabattledomain.iml" filepath="$PROJECT_DIR$/seabattledomain/seabattledomain.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattlerest/seabattlerest.iml" filepath="$PROJECT_DIR$/seabattlerest/seabattlerest.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattleserver/seabattleserver.iml" filepath="$PROJECT_DIR$/seabattleserver/seabattleserver.iml" />

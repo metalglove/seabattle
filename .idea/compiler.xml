@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="seabattleclient" />
+        <module name="seabattledal" />
         <module name="seabattledomain" />
         <module name="seabattlerest" />
         <module name="seabattleserver" />
@@ -16,6 +17,7 @@
     <bytecodeTargetLevel>
       <module name="seabattle-start-master" target="11" />
       <module name="seabattleclient" target="11" />
+      <module name="seabattledal" target="11" />
       <module name="seabattledomain" target="11" />
       <module name="seabattlerest" target="11" />
       <module name="seabattleserver" target="11" />
@@ -27,6 +29,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SeaBattleStart" options="" />
       <module name="seabattleclient" options="-bootclasspath &quot;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
+      <module name="seabattledal" options="-bootclasspath &quot;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
       <module name="seabattledomain" options="-bootclasspath &quot;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
       <module name="seabattlerest" options="-bootclasspath &quot;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
       <module name="seabattleserver" options="-bootclasspath &quot;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\resources.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\rt.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\sunrsasign.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jsse.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jce.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\charsets.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\lib\jfr.jar;E:\Program Files\IntelliJ IDEA 2018.3.4\jre64\classes;C:/Program Files/Java/jdk-11.0.2/lib/jfxrt.jar&quot;" />
