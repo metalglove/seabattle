@@ -2,10 +2,10 @@ package dtos;
 
 public class SetReadyResultDto {
     private final int playerNumber;
-    private final int opponentPlayerNumber;
+    private final Integer opponentPlayerNumber;
     private final boolean bothReady;
 
-    public SetReadyResultDto(int playerNumber, int opponentPlayerNumber, boolean bothReady) {
+    public SetReadyResultDto(int playerNumber, Integer opponentPlayerNumber, boolean bothReady) {
         this.playerNumber = playerNumber;
         this.opponentPlayerNumber = opponentPlayerNumber;
         this.bothReady = bothReady;
@@ -15,7 +15,7 @@ public class SetReadyResultDto {
         return bothReady;
     }
 
-    public int getOpponentPlayerNumber() {
+    public Integer getOpponentPlayerNumber() {
         return opponentPlayerNumber;
     }
 

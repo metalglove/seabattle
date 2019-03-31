@@ -6,7 +6,9 @@ package seabattleunittests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import seabattlegame.ISeaBattleGame;
-import seabattlegame.MultiPlayerSeaBattleGame;
+import seabattlegame.SeaBattleGame;
+
+import java.io.IOException;
 
 /**
  * Unit tests for Sea Battle game.
@@ -24,7 +26,11 @@ public abstract class SeaBattleGameTests {
     @BeforeEach
     public void setUp() {
         // Create the Sea Battle game
-        game = new MultiPlayerSeaBattleGame(applicationPlayer);
+        try {
+            game = new SeaBattleGame(applicationPlayer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Create mock Sea Battle GUI for player
         applicationPlayer = new MockSeaBattleApplication();
@@ -32,7 +38,7 @@ public abstract class SeaBattleGameTests {
         // Create mock Sea Battle GUI for opponent
         applicationOpponent = new MockSeaBattleApplication();
 
-        game.registerPlayer("player1", "sdsd");
+        game.registerPlayer("player1", "sdsd", true);
     }
     
     @AfterEach

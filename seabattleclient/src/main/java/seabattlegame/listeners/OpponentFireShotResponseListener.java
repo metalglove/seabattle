@@ -3,8 +3,9 @@ package seabattlegame.listeners;
 import domain.Point;
 import domain.ShotType;
 import messaging.messages.responses.OpponentFireShotResponse;
+import messaging.utilities.MessageLogger;
 import seabattlegame.Client;
-import seabattlegame.MultiPlayerSeaBattleGame;
+import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -12,21 +13,23 @@ import java.beans.PropertyChangeListener;
 
 public class OpponentFireShotResponseListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final MultiPlayerSeaBattleGame multiPlayerSeaBattleGame;
+    private final ISeaBattleGame game;
     private final Client client;
+    private final MessageLogger messageLogger;
 
-    public OpponentFireShotResponseListener(ISeaBattleGUI application, MultiPlayerSeaBattleGame multiPlayerSeaBattleGame, Client client) {
+    public OpponentFireShotResponseListener(ISeaBattleGUI application, ISeaBattleGame game, Client client, MessageLogger messageLogger) {
         this.application = application;
-        this.multiPlayerSeaBattleGame = multiPlayerSeaBattleGame;
+        this.game = game;
         this.client = client;
+        this.messageLogger = messageLogger;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: verify if it works
         OpponentFireShotResponse response = (OpponentFireShotResponse) evt.getNewValue();
         if (!response.success) {
             application.showErrorMessage("Opponent fired but server faulted! try again later.");
+            messageLogger.error("Opponent fired but server faulted!");
         } else {
             if (response.ship != null) {
                 for (Point point : response.ship.getPointsHit()) {
@@ -37,9 +40,11 @@ public class OpponentFireShotResponseListener implements PropertyChangeListener 
             }
             if (response.shotType == ShotType.ALLSUNK) {
                 application.showErrorMessage("You lost!");
+                messageLogger.info("Player lost.");
+                game.endGame();
                 client.removeListener(OpponentFireShotResponse.class.getSimpleName(), this);
             } else {
-                multiPlayerSeaBattleGame.isPlayersTurn = true;
+                game.setPlayerTurn(true);
             }
         }
     }

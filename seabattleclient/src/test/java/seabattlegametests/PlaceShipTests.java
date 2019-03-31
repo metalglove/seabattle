@@ -3,10 +3,12 @@ package seabattlegametests;
 import domain.ShipType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import seabattlegame.MultiPlayerSeaBattleGame;
+import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
 import seabattleunittests.MockSeaBattleApplication;
 import seabattleunittests.SeaBattleGameTests;
+
+import java.io.IOException;
 
 /**
  * Place ship of given type. A ship of given type will be placed with its
@@ -29,10 +31,14 @@ public class PlaceShipTests extends SeaBattleGameTests {
     public void should_Not_Place_Ship_On_Wrong_playerGame() {
         // Arrange
         applicationPlayer = new MockSeaBattleApplication();
-        game = new MultiPlayerSeaBattleGame(applicationPlayer);
+        try {
+            game = new SeaBattleGame(applicationPlayer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //applicationOpponent = new MockSeaBattleApplication();
-        game.registerPlayer("player1", "sdsd");
-        game.registerPlayer("player2", "sdsd");
+        game.registerPlayer("player1", "sdsd", true);
+        game.registerPlayer("player2", "sdsd", true);
 
         SquareState expectedPlayer2Value = SquareState.WATER;
 

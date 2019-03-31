@@ -3,6 +3,7 @@ package messaging.sockets;
 import messaging.handlers.AsyncConnectionHandler;
 import messaging.interfaces.ReadableSocket;
 import messaging.interfaces.WritableSocket;
+import messaging.utilities.MessageLogger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,6 +13,7 @@ public abstract class AsyncClientSocket implements ReadableSocket, WritableSocke
     protected final AsynchronousSocketChannel channel;
     private final String host;
     private final int port;
+    protected MessageLogger socketMessageLogger = new MessageLogger("SOCKET-HANDLER");
 
     public AsyncClientSocket(String host, int port) throws IOException {
         this.host = host;
@@ -20,6 +22,6 @@ public abstract class AsyncClientSocket implements ReadableSocket, WritableSocke
     }
 
     public void connect() {
-        channel.connect(new InetSocketAddress(host, port), channel, new AsyncConnectionHandler());
+        channel.connect(new InetSocketAddress(host, port), channel, new AsyncConnectionHandler(socketMessageLogger));
     }
 }

@@ -3,6 +3,7 @@ package messaging.handlers;
 import messaging.interfaces.WritingSocket;
 import messaging.messages.Message;
 import messaging.sockets.AsyncIdentifiableClientSocket;
+import messaging.utilities.MessageLogger;
 
 import java.io.IOException;
 import java.nio.channels.CompletionHandler;
@@ -12,18 +13,20 @@ import static java.lang.String.format;
 public class AsyncRequestMessageHandler implements CompletionHandler<Message, Message> {
     private final WritingSocket server;
     private final AsyncIdentifiableClientSocket client;
+    private final MessageLogger messageLogger;
 
-    public AsyncRequestMessageHandler(WritingSocket server, AsyncIdentifiableClientSocket client) {
+    public AsyncRequestMessageHandler(WritingSocket server, AsyncIdentifiableClientSocket client, MessageLogger messageLogger) {
         this.server = server;
         this.client = client;
+        this.messageLogger = messageLogger;
     }
 
     @Override
     public void completed(Message response, Message request) {
         try {
-            System.out.println(format("RequestMessage executed successfully: {%s}, {%s} by {%s}", request.getClass().getSimpleName(), response.getClass().getSimpleName(), client.getChannel().getRemoteAddress().toString()));
+            messageLogger.info(format("RequestMessage executed successfully: {%s}, {%s} by {%s}", request.getClass().getSimpleName(), response.getClass().getSimpleName(), client.getChannel().getRemoteAddress().toString()));
         } catch (IOException e) {
-            e.printStackTrace();
+            messageLogger.error("Failed to read message! " + e.getMessage());
         }
         server.startWriting(client, response);
     }
@@ -31,9 +34,9 @@ public class AsyncRequestMessageHandler implements CompletionHandler<Message, Me
     @Override
     public void failed(Throwable exc, Message request) {
         try {
-            System.out.println(format("RequestMessage executed unsuccessfully: {%s} by {%s}", request.getClass().getSimpleName(), client.getChannel().getRemoteAddress().toString()));
+            messageLogger.info(format("RequestMessage executed unsuccessfully: {%s} by {%s}", request.getClass().getSimpleName(), client.getChannel().getRemoteAddress().toString()));
         } catch (IOException e) {
-            e.printStackTrace();
+            messageLogger.error("Failed to read message! " + e.getMessage());
         }
     }
 }

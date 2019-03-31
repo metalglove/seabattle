@@ -7,11 +7,13 @@ import java.util.List;
 
 public class PlaceShipsAutomaticallyResponse extends Message {
     public final int playerNumber;
-    public final List<Ship> ships;
+    public final List<Ship> shipsToAdd;
+    public final List<Ship> shipsToRemove;
 
-    public PlaceShipsAutomaticallyResponse(int playerNumber, List<Ship> ships, boolean success) {
+    public PlaceShipsAutomaticallyResponse(int playerNumber, List<Ship> shipsToAdd, List<Ship> shipsToRemove, boolean success) {
         this.playerNumber = playerNumber;
-        this.ships = ships;
+        this.shipsToAdd = shipsToAdd;
+        this.shipsToRemove = shipsToRemove;
         super.success = success;
     }
 }

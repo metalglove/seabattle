@@ -33,9 +33,9 @@ public class FireShotTests extends SeaBattleGameTests {
     @Test
     public void should_Hit_Opponents_Ship_On_X1_Y1_When_Shot_On_X1_Y1() {
         // Arrange
-        game.startNewGame(1);
-        game.registerPlayer("player1", "sds");
-        game.registerPlayer("player2", "sds");
+        game.startNewGame(1, true);
+        game.registerPlayer("player1", "sds", true);
+        game.registerPlayer("player2", "sds", true);
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
         game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
         game.placeShip(1, ShipType.CRUISER, 1,3,true);
@@ -63,9 +63,9 @@ public class FireShotTests extends SeaBattleGameTests {
     @Test
     public void should_Sink_Opponents_Ship_On_X1_Y1_When_Shot_On_All_Ship_Coordinates() {
         // Arrange
-        game.startNewGame(1);
-        game.registerPlayer("player1", "sds");
-        game.registerPlayer("player2", "sds");
+        game.startNewGame(1, true);
+        game.registerPlayer("player1", "sds", true);
+        game.registerPlayer("player2", "sds", true);
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
         game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
         game.placeShip(1, ShipType.CRUISER, 1,3,true);
@@ -95,11 +95,11 @@ public class FireShotTests extends SeaBattleGameTests {
         Assertions.assertEquals(ShotType.SUNK, lastShotOpponent);
     }
     @Test
-    public void should_Return_Allsunk_When_All_Ship_Coordinates_Sunk() {
+    public void should_Return_AllSunk_When_All_Ship_Coordinates_Sunk() {
         // Arrange
-        game.startNewGame(1);
-        game.registerPlayer("player1", "sds");
-        game.registerPlayer("player2", "sds");
+        game.startNewGame(1, true);
+        game.registerPlayer("player1", "sds", true);
+        game.registerPlayer("player2", "sds", true);
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
         game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
         game.placeShip(1, ShipType.CRUISER, 1,3,true);
@@ -148,9 +148,9 @@ public class FireShotTests extends SeaBattleGameTests {
     @Test
     public void should_Miss_Opponents_Ship_When_Shot_On_X6_Y6() {
         // Arrange
-        game.startNewGame(1);
-        game.registerPlayer("player1", "sds");
-        game.registerPlayer("player2", "sds");
+        game.startNewGame(1, true);
+        game.registerPlayer("player1", "sds", true);
+        game.registerPlayer("player2", "sds", true);
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
         game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
         game.placeShip(1, ShipType.CRUISER, 1,3,true);
@@ -177,9 +177,9 @@ public class FireShotTests extends SeaBattleGameTests {
     @Test
     public void should_Be_Out_Of_Range_When_Shot_On_X11_Y11() {
         // Arrange
-        game.startNewGame(1);
-        game.registerPlayer("player1", "sds");
-        game.registerPlayer("player2", "sds");
+        game.startNewGame(1, true);
+        game.registerPlayer("player1", "sds", true);
+        game.registerPlayer("player2", "sds", true);
 
         game.notifyWhenReady(1);
         game.notifyWhenReady(2);

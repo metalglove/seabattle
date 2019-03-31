@@ -78,6 +78,10 @@ public class Player {
         _isReady = true;
     }
 
+    public void setUnReady() {
+        _isReady = false;
+    }
+
     public boolean isReady() {
         return _isReady;
     }

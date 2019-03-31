@@ -3,7 +3,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-public class SeaBattleServer {
+public class SeaBattleRestServer {
     public static void main(String[] args) throws Exception {
 
         ServletContextHandler context = new
