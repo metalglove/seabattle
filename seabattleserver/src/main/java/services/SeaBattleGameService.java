@@ -4,6 +4,7 @@ import domain.*;
 import dtos.*;
 import interfaces.IFactoryWithArgument;
 import interfaces.ISeaBattleGameService;
+import messaging.utilities.MessageLogger;
 import utilities.ShipCreationArgument;
 
 import java.util.ArrayList;
@@ -14,17 +15,18 @@ import java.util.concurrent.atomic.AtomicLong;
 public class SeaBattleGameService implements ISeaBattleGameService {
     private final List<Game> games;
     private final IFactoryWithArgument<Ship, ShipCreationArgument> _shipFactory;
+    private final MessageLogger messageLogger;
     private static AtomicLong aiIDCounter = new AtomicLong();
 
-    public SeaBattleGameService(IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory) {
+    public SeaBattleGameService(IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory, MessageLogger messageLogger) {
         this._shipFactory = shipFactory;
+        this.messageLogger = messageLogger;
         games = Collections.synchronizedList(new ArrayList<>());
     }
 
     @Override
     public RemoveAllShipsResultDto removeAllShips(int playerNumber) {
         RemoveAllShipsResultDto removeAllShipsResultDto = new RemoveAllShipsResultDto(null, false);
-
         synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
@@ -105,7 +107,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
                 Game game = new Game();
                 game.registerPlayer(player);
                 int x = (int)aiIDCounter.getAndIncrement() * -1;
-                System.out.println("CPU ID: " + x);
+                messageLogger.info("CPU ID: " + x);
                 game.registerPlayer(new Player("CPU", "", x));
                 game.placeShipsAutomatically(x);
                 game.readyUp(x);
@@ -163,5 +165,29 @@ public class SeaBattleGameService implements ISeaBattleGameService {
             }
         }
         return setReadyResultDto;
+    }
+
+    @Override
+    public EndgameResultDto endGame(Integer number) {
+        Game gameToRemove = null;
+        synchronized (games) {
+            for (Game game : games) {
+                if (game.containsPlayer(number)) {
+                    gameToRemove = game;
+                    break;
+                }
+            }
+            if (gameToRemove != null) {
+                games.remove(gameToRemove);
+                Player opponent = gameToRemove.getOpponentPlayer(number);
+                if (opponent != null) {
+                    return new EndgameResultDto(true, opponent.getPlayerNumber());
+                } else {
+                    return new EndgameResultDto(true, null);
+                }
+            } else {
+                return new EndgameResultDto(false, null);
+            }
+        }
     }
 }

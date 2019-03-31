@@ -2,6 +2,7 @@ package seabattlegame.listeners;
 
 import domain.Ship;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
+import messaging.utilities.MessageLogger;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
@@ -14,12 +15,14 @@ public class PlaceShipsAutomaticallyResponseChangeListener implements PropertyCh
     private final ISeaBattleGame game;
     private final int playerNumber;
     private final Client client;
+    private final MessageLogger messageLogger;
 
-    public PlaceShipsAutomaticallyResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, Client client) {
+    public PlaceShipsAutomaticallyResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, Client client, MessageLogger messageLogger) {
         this.application = application;
         this.game = game;
         this.playerNumber = playerNumber;
         this.client = client;
+        this.messageLogger = messageLogger;
     }
 
     @Override
@@ -27,6 +30,7 @@ public class PlaceShipsAutomaticallyResponseChangeListener implements PropertyCh
         PlaceShipsAutomaticallyResponse response = (PlaceShipsAutomaticallyResponse) evt.getNewValue();
         if (!response.success) {
             application.showErrorMessage("Failed to automatically place all ships!");
+            messageLogger.error("Failed to automatically place all ships!");
         } else {
             for (Ship ship : response.shipsToRemove) {
                 application.removeShip(playerNumber, ship);

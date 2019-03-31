@@ -3,6 +3,7 @@ package seabattlegame.listeners;
 import domain.Point;
 import domain.ShotType;
 import messaging.messages.responses.FireShotResponse;
+import messaging.utilities.MessageLogger;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
@@ -14,11 +15,13 @@ public class FireShotResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
     private final ISeaBattleGame game;
     private final Client client;
+    private final MessageLogger messageLogger;
 
-    public FireShotResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, Client client) {
+    public FireShotResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, Client client, MessageLogger messageLogger) {
         this.application = application;
         this.game = game;
         this.client = client;
+        this.messageLogger = messageLogger;
     }
 
     @Override
@@ -26,6 +29,7 @@ public class FireShotResponseChangeListener implements PropertyChangeListener {
         FireShotResponse response = (FireShotResponse) evt.getNewValue();
         if (!response.success) {
             application.showErrorMessage("Fire shot failed!");
+            messageLogger.error("Fire shot failed!");
         } else {
             if (response.ship != null) {
                 for (Point point : response.ship.getPointsHit()) {
@@ -36,8 +40,8 @@ public class FireShotResponseChangeListener implements PropertyChangeListener {
             }
             if (response.shotType == ShotType.ALLSUNK) {
                 application.showErrorMessage("You won!");
+                messageLogger.info("Player won");
                 game.endGame();
-
             } else {
                 game.setPlayerTurn(false);
             }

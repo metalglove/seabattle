@@ -122,4 +122,9 @@ public interface ISeaBattleGUI {
      */
     void removeShip(int playerNumber, Ship shipToRemove);
 
+    /**
+     * Resets the GUI.
+     */
+    void resetGUI();
+
 }

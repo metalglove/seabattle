@@ -5,8 +5,8 @@ package seabattleunittests;
 
 import domain.Point;
 import domain.Ship;
-import seabattlegui.ISeaBattleGUI;
 import domain.ShotType;
+import seabattlegui.ISeaBattleGUI;
 import seabattlegui.SquareState;
 
 /**
@@ -109,6 +109,11 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
     @Override
     public void removeShip(int playerNumber, Ship shipToRemove) {
         // TODO: fix remove ship in MOCK
+    }
+
+    @Override
+    public void resetGUI() {
+        // TODO: fix resetGUI in MOCK
     }
 
     /**

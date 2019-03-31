@@ -12,5 +12,5 @@ public interface ISeaBattleGameService {
     RegisterPlayerResultDto registerPlayer(Player player, boolean multiPlayer);
     FireShotResultDto fireShot(int firingPlayerNumber, int posX, int posY);
     SetReadyResultDto setReady(int playerNumber);
-
+    EndgameResultDto endGame(Integer number);
 }

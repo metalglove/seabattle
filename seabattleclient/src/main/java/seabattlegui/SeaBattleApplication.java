@@ -23,12 +23,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 
 import java.io.IOException;
+
+import static java.lang.String.format;
 
 
 /**
@@ -39,8 +40,9 @@ import java.io.IOException;
 @SuppressWarnings("Duplicates")
 public class SeaBattleApplication extends Application implements ISeaBattleGUI {
 
-    private static final Logger log = LoggerFactory.getLogger(SeaBattleApplication.class);
+    //private static final Logger log = LoggerFactory.getLogger(SeaBattleApplication.class);
 
+    private static final MessageLogger messageLogger = new MessageLogger("APPLICATION");
     // Constants to define size of GUI elements
     private final int BORDERSIZE = 10; // Size of borders in pixels
     private final int AREAWIDTH = 400; // Width of area in pixels
@@ -136,11 +138,11 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     private int selectedSquareY;
     // for returning color on previous selected square
     private Color oldColorPress = null;
-
+    private Stage primaryStage;
     @Override
     public void start(Stage primaryStage) {
-
-        log.info("Seabattle started");
+        this.primaryStage = primaryStage;
+        messageLogger.info("Seabattle started");
 
         // Define grid pane
         GridPane grid;
@@ -290,7 +292,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
                     try {
                         registerPlayer();
                     } catch (Exception e) {
-                        log.error("Register Player error: {}", e.getMessage());
+                        messageLogger.error(format("Register Player error: %s", e.getMessage()));
                     }
                 });
         grid.add(buttonRegisterPlayer, 1, 14, 1, 3);
@@ -504,7 +506,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         //    return;
         //}
         this.playerNr = playerNr;
-        log.debug("Player number is: {} ", playerNr);
+        messageLogger.info(format("Player number is: %s ", playerNr));
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -821,7 +823,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     private void placeShipsAutomatically() {
         // Place the player's ships automatically.
-        log.debug("Player number is: {}", playerNr);
+        messageLogger.info(format("Player number is: %s", playerNr));
         game.placeShipsAutomatically(playerNr);
     }
 
@@ -859,7 +861,6 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                //TODO: cgeck
                 for (Rectangle[] rects : squaresOceanArea) {
                     for (Rectangle rect : rects) {
                         rect.setFill(Color.LIGHTBLUE);
@@ -916,7 +917,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     private void showMessage(final String message) {
         // Use Platform.runLater() to ensure that code concerning 
         // the Alert message is executed by the JavaFX Application Thread
-        log.debug("Show Message for {} - {}", playerName, message);
+        messageLogger.info(format("Show Message for %s - %s", playerName, message));
 
         Platform.runLater(new Runnable() {
             @Override
@@ -1037,5 +1038,10 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
                 setSquareColor(square, SquareState.WATER);
             }
         }
+    }
+
+    @Override
+    public void resetGUI() {
+        Platform.runLater(() -> start(primaryStage));
     }
 }

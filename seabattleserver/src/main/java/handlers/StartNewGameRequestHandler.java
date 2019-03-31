@@ -2,32 +2,35 @@ package handlers;
 
 import domain.Player;
 import dtos.RegisterPlayerResultDto;
-import interfaces.ClientAwareWritingSocket;
 import interfaces.ISeaBattleGameService;
 import interfaces.ISeaBattleServerRest;
 import interfaces.RequestHandler;
 import messaging.handlers.AsyncRequestMessageHandler;
+import messaging.interfaces.ClientAwareWritingSocket;
 import messaging.messages.requests.StartNewGameRequest;
 import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.messages.responses.StartNewGameResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
+import messaging.utilities.MessageLogger;
 
 public class StartNewGameRequestHandler implements RequestHandler<StartNewGameRequest> {
 
     private final ClientAwareWritingSocket serverSocket;
     private final ISeaBattleGameService gameService;
     private final ISeaBattleServerRest rest;
+    private final MessageLogger messageLogger;
 
-    public StartNewGameRequestHandler(ClientAwareWritingSocket serverSocket, ISeaBattleGameService gameService, ISeaBattleServerRest rest) {
+    public StartNewGameRequestHandler(ClientAwareWritingSocket serverSocket, ISeaBattleGameService gameService, ISeaBattleServerRest rest, MessageLogger messageLogger) {
         this.serverSocket = serverSocket;
         this.gameService = gameService;
         this.rest = rest;
+        this.messageLogger = messageLogger;
     }
 
     @Override
     public void handle(StartNewGameRequest request, AsyncIdentifiableClientSocket client) {
         StartNewGameResponse response = new StartNewGameResponse(request.playerNumber, false, null, null);
-        AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client);
+        AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
         Player player = rest.getPlayer(client.getName());
         if (player != null) {
             RegisterPlayerResultDto registerPlayerResultDto = gameService.registerPlayer(player, request.multiPlayer);

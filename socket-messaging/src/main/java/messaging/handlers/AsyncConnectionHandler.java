@@ -1,16 +1,24 @@
 package messaging.handlers;
 
+import messaging.utilities.MessageLogger;
+
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 
 public class AsyncConnectionHandler implements CompletionHandler<Void, AsynchronousSocketChannel> {
+    private final MessageLogger messageLogger;
+
+    public AsyncConnectionHandler(MessageLogger messageLogger) {
+        this.messageLogger = messageLogger;
+    }
+
     @Override
     public void completed(Void result, AsynchronousSocketChannel attachment) {
-        System.out.println("Connected successfully!");
+        messageLogger.info("Connected successfully!");
     }
 
     @Override
     public void failed(Throwable exc, AsynchronousSocketChannel attachment) {
-        System.out.println("Failed to connect!");
+        messageLogger.error("Failed to connect! " + exc.getMessage());
     }
 }

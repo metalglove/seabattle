@@ -6,13 +6,14 @@ package seabattlegame;
 import domain.ShipType;
 import messaging.messages.requests.*;
 import messaging.messages.responses.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import messaging.utilities.MessageLogger;
 import seabattlegame.listeners.*;
 import seabattlegui.ISeaBattleGUI;
 import seabattlegui.SquareState;
 
 import java.io.IOException;
+
+import static java.lang.String.format;
 
 /**
  * The Sea Battle game. To be implemented.
@@ -21,7 +22,8 @@ import java.io.IOException;
  */
 public class SeaBattleGame implements ISeaBattleGame {
 
-    private static final Logger log = LoggerFactory.getLogger(SeaBattleGame.class);
+    private static final MessageLogger gameMessageLogger = new MessageLogger("GAME");
+    private static final MessageLogger handlerMessageLogger = new MessageLogger("RESPONSE-LISTENER");
     private final Client client;
     private final ISeaBattleGUI application;
     private boolean hasPlacedAllShips = false;
@@ -34,7 +36,7 @@ public class SeaBattleGame implements ISeaBattleGame {
     public SeaBattleGame(ISeaBattleGUI application) throws IOException {
         this.application = application;
         try {
-            client = new Client("127.0.0.1", 9999);
+            client = new Client("127.0.0.1", 9999, new MessageLogger("CLIENT"));
             client.connect();
             client.startReading();
         } catch (IOException e) {
@@ -45,62 +47,63 @@ public class SeaBattleGame implements ISeaBattleGame {
 
     @Override
     public void registerPlayer(String name, String password, boolean multiPlayer) {
-        log.debug("Register Player {} - password {} - Mode {}", name, password, multiPlayer ? "Multi-Player" : "Single-Player");
+        gameMessageLogger.info(format("Register Player %s - password %s - Mode %s", name, password, multiPlayer ? "Multi-Player" : "Single-Player"));
         if ("CPU".equals(name)) {
             application.showErrorMessage("You are not allowed to be named CPU, this is reserved for the AI in SinglePlayer Mode.");
             return;
         }
-        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, this, client));
+        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, this, client, handlerMessageLogger));
+        client.addListener(ErrorResponse.class.getSimpleName(), new ErrorResponseChangeListener(application, this, client, handlerMessageLogger));
         client.startWriting(new RegisterRequest(name, password, multiPlayer));
     }
 
     @Override
     public void placeShipsAutomatically(int playerNr) {
-        log.debug("placeShipsAutomatically with player number: {}", playerNr);
+        gameMessageLogger.info(format("PlaceShipsAutomatically with player number: %s", playerNr));
         if (isReady) {
             application.showErrorMessage("You are not allowed to change your ships after readying up.");
             return;
         }
-        client.addListener(PlaceShipsAutomaticallyResponse.class.getSimpleName(), new PlaceShipsAutomaticallyResponseChangeListener(application, this, playerNr, client));
+        client.addListener(PlaceShipsAutomaticallyResponse.class.getSimpleName(), new PlaceShipsAutomaticallyResponseChangeListener(application, this, playerNr, client, handlerMessageLogger));
         client.startWriting(new PlaceShipsAutomaticallyRequest(playerNr));
     }
 
     @Override
     public void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
-        log.debug("placeShip with player number: {} - shipType: {} - bowX: {} - bowY: {} - horizontal: {}", playerNr, shipType, bowX, bowY, horizontal);
+        gameMessageLogger.info(format("PlaceShip with player number: %s - shipType: %s - bowX: %s - bowY: %s - horizontal: %s", playerNr, shipType, bowX, bowY, horizontal));
         if (isReady) {
             application.showErrorMessage("You are not allowed to change your ships after readying up.");
             return;
         }
-        client.addListener(PlaceShipResponse.class.getSimpleName(), new PlaceShipResponseChangeListener(application, this, playerNr, client));
+        client.addListener(PlaceShipResponse.class.getSimpleName(), new PlaceShipResponseChangeListener(application, this, playerNr, client, handlerMessageLogger));
         client.startWriting(new PlaceShipRequest(playerNr, shipType, bowX, bowY, horizontal));
     }
 
     @Override
     public void removeShip(int playerNr, int posX, int posY) {
-        log.debug("removeShip with player number: {} - posX: {} - posY: {}", playerNr, posX, posY);
+        gameMessageLogger.info(format("RemoveShip with player number: %s - posX: %s - posY: %s", playerNr, posX, posY));
         if (isReady) {
             application.showErrorMessage("You are not allowed to change your ships after readying up.");
             return;
         }
-        client.addListener(RemoveShipResponse.class.getSimpleName(), new RemoveShipResponseChangeListener(application, this, playerNr, client));
+        client.addListener(RemoveShipResponse.class.getSimpleName(), new RemoveShipResponseChangeListener(application, this, playerNr, client, handlerMessageLogger));
         client.startWriting(new RemoveShipRequest(playerNr, posX, posY));
     }
 
     @Override
     public void removeAllShips(int playerNr) {
-        log.debug("removeAllShips with player number: {}", playerNr);
+        gameMessageLogger.info(format("RemoveAllShips with player number: %s", playerNr));
         if (isReady) {
             application.showErrorMessage("You are not allowed to change your ships after readying up.");
             return;
         }
-        client.addListener(RemoveAllShipsResponse.class.getSimpleName(), new RemoveAllShipsResponseChangeListener(application, this, playerNr, client));
+        client.addListener(RemoveAllShipsResponse.class.getSimpleName(), new RemoveAllShipsResponseChangeListener(application, this, playerNr, client, handlerMessageLogger));
         client.startWriting(new RemoveAllShipsRequest(playerNr));
     }
 
     @Override
     public void notifyWhenReady(int playerNr) {
-        log.debug("notifyWhenReady with player number: {}", playerNr);
+        gameMessageLogger.info(format("NotifyWhenReady with player number: %s", playerNr));
         if (isReady) {
             application.showErrorMessage("You are already ready.");
             return;
@@ -110,13 +113,13 @@ public class SeaBattleGame implements ISeaBattleGame {
             return;
         }
         isReady = true;
-        client.addListener(NotifyWhenReadyResponse.class.getSimpleName(), new NotifyWhenReadyResponseChangeListener(application, this, client));
+        client.addListener(NotifyWhenReadyResponse.class.getSimpleName(), new NotifyWhenReadyResponseChangeListener(application, this, client, handlerMessageLogger));
         client.startWriting(new NotifyWhenReadyRequest(playerNr));
     }
 
     @Override
     public void fireShot(int playerNr, int posX, int posY) {
-        log.debug("fireShot with player number: {} - posX: {} - posY: {}", playerNr, posX, posY);
+        gameMessageLogger.info(format("FireShot with player number: %s - posX: %s - posY: %s", playerNr, posX, posY));
         if (!hasStarted) {
             application.showErrorMessage("The game has not yet started.");
             return;
@@ -126,18 +129,18 @@ public class SeaBattleGame implements ISeaBattleGame {
             application.showSquareOpponent(playerNr, posX, posY, SquareState.WATER);
             return;
         }
-        client.addListener(FireShotResponse.class.getSimpleName(), new FireShotResponseChangeListener(application, this, client));
+        client.addListener(FireShotResponse.class.getSimpleName(), new FireShotResponseChangeListener(application, this, client, handlerMessageLogger));
         client.startWriting(new FireShotRequest(playerNr, posX, posY));
     }
 
     @Override
     public void startNewGame(int playerNr, boolean multiPlayer) {
-        log.debug("startNewGame with player number: {} ", playerNr);
+        gameMessageLogger.info(format("StartNewGame with player number: %s", playerNr));
         if (!hasGameEnded) {
             application.showErrorMessage("Game has not ended yet!");
             return;
         }
-        client.addListener(StartNewGameResponse.class.getSimpleName(), new StartNewGameResponseChangeListener(application,this , playerName, client));
+        client.addListener(StartNewGameResponse.class.getSimpleName(), new StartNewGameResponseChangeListener(application,this , playerName, client, handlerMessageLogger));
         client.startWriting(new StartNewGameRequest(playerNr, multiPlayer));
     }
 
