@@ -1,6 +1,6 @@
 package dtos;
 
 public class UserResultDto {
-    public String userName;
+    public String username;
     public String password;
 }

@@ -23,21 +23,17 @@ class RestResponseHelper {
         log.info("[Server response] " + output);
         return output;
     }
-    // TODO: Add User object as parameter
-    static String getRegisterResponse()
+    static String getRegisterResponse(boolean success)
     {
-        // TODO: return new registered user
         SeaBattleResponse response = new SeaBattleResponse();
-        response.setSuccess(true);
+        response.setSuccess(success);
         response.setResponse("Register test triggered");
         String output = gson.toJson(response);
         log.info("[Server response] " + output);
         return output;
     }
-    // TODO: Add user object as parameter
-    static String getLoginResponse()
+    static String getLoginResponse(UserResultDto user)
     {
-        // TODO: return logged in user
         SeaBattleResponse response = new SeaBattleResponse();
         response.setSuccess(true);
         response.setResponse("Login test triggered");

@@ -19,7 +19,7 @@ public class UserDataAccess {
         url = prop.getProperty("jdbc.url");
     }
 
-    public UserResultDto getExistingUser(String userName, String password) {
+    public UserResultDto getExistingUser(String usermame, String password) {
         try {
             setUrlAndDrivers();
             // load the sqlite-JDBC driver using the current class loader
@@ -28,8 +28,8 @@ public class UserDataAccess {
                 UserResultDto user = new UserResultDto();
                 // create a database connection
                 connection = DriverManager.getConnection(url);
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM person WHERE userName = ? AND password = ?");
-                statement.setString(1, userName);
+                PreparedStatement statement = connection.prepareStatement("SELECT * FROM person WHERE username = ? AND password = ?");
+                statement.setString(1, usermame);
                 statement.setString(2, password);
 
                 // execute query: get all persons
@@ -38,10 +38,10 @@ public class UserDataAccess {
                 while (rs.next()) {
                     // read the result set
                     System.out.println("user id = " + rs.getString("id"));
-                    System.out.println("username = " + rs.getString("userName"));
+                    System.out.println("username = " + rs.getString("username"));
 
-                    if(rs.getString("userName").equals(""))
-                        user.userName = rs.getString("userName");
+                    if(rs.getString("username").equals(""))
+                        user.username = rs.getString("username");
                         user.password = rs.getString("password");
                     return user;
                 }
@@ -65,7 +65,8 @@ public class UserDataAccess {
         return null;
     }
 
-    public void resgisterUser(String userName, String password) {
+    public boolean resgisterUser(String username, String password) {
+        boolean success = false;
         try {
             setUrlAndDrivers();
 
@@ -74,13 +75,14 @@ public class UserDataAccess {
             try {
                 // create a database connection
                 connection = DriverManager.getConnection(url);
-                PreparedStatement statement = connection.prepareStatement(" INSERT INTO person (userName, password)" + " values (?, ?)");
-                statement.setString(1, userName);
+                PreparedStatement statement = connection.prepareStatement(" INSERT INTO person (username, password)" + " values (?, ?)");
+                statement.setString(1, username);
                 statement.setString(2, password);
                 // set timeout to 30 sec.
                 statement.setQueryTimeout(30);
 
                 statement.execute();
+                success = true;
 
             } catch (SQLException ex) {
                 // if the error message is "out of memory",
@@ -99,5 +101,6 @@ public class UserDataAccess {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return success;
     }
 }

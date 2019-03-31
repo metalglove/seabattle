@@ -9,7 +9,8 @@ import java.util.Map;
 public class SeaBattleServerRest implements ISeaBattleServerRest {
     private Map<Integer, Player> players = new HashMap<>();
     private Integer counter = 0;
-
+    //TODO: Add export in seabattlerest.
+    // private SeaBattleRESTService seaBattleRESTService;
     @Override
     public boolean register(String username, String password) {
         if (players.containsValue(username))

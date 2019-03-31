@@ -10,7 +10,6 @@
     <module>socket-messaging</module>
       <module>seabattlerest</module>
       <module>seabattledal</module>
-    <module>seabattledal</module>
   </modules>
   <packaging>pom</packaging>
   <properties>

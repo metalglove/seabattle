@@ -32,7 +32,7 @@ public class UserDataTable {
                 // drop existing table "person"
                 statement.executeUpdate("DROP TABLE if EXISTS person");
                 // create new table "person"
-                statement.executeUpdate("CREATE TABLE person (id INTEGER, userName VARCHAR, password VARCHAR )");
+                statement.executeUpdate("CREATE TABLE person (id INTEGER, username VARCHAR, password VARCHAR )");
 
             } catch (SQLException ex) {
                 // if the error message is "out of memory",
