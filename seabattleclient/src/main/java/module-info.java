@@ -1,6 +1,5 @@
 module seabattleclient {
     requires socketmessaging;
-    requires gson;
     requires java.sql;
     requires java.logging;
     requires java.desktop;

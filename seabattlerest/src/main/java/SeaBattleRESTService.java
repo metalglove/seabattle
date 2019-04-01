@@ -1,10 +1,9 @@
 import dtos.UserResultDto;
 import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-
+import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-        import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response;
 
 @Path("/seabattle")
 public class SeaBattleRESTService{
