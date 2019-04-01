@@ -64,4 +64,13 @@ public class Client extends AsyncClientSocket {
         buffer.flip();
         channel.write(buffer, channel, new AsyncWriteHandler(socketMessageLogger));
     }
+
+    public void ensureConnection() {
+        try {
+            channel.getRemoteAddress();
+            messageLogger.info("Ensured connection!");
+        } catch (IOException e) {
+            messageLogger.error("Connection is not open! " + e.getMessage());
+        }
+    }
 }

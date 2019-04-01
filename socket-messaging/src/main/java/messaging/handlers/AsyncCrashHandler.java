@@ -19,6 +19,7 @@ public class AsyncCrashHandler implements CrashHandler {
     @Override
     public void handle(String errorMessage) {
         messageLogger.error(errorMessage);
-        server.unRegisterClient(client);
+        if (client.getNumber() != null)
+            server.unRegisterClient(client);
     }
 }
