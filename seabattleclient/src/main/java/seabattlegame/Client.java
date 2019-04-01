@@ -67,7 +67,9 @@ public class Client extends AsyncClientSocket {
 
     public void ensureConnection() {
         try {
-            channel.getRemoteAddress();
+            while(channel.getRemoteAddress() == null) {
+                messageLogger.info("Socketchannel is not yet open.");
+            }
             messageLogger.info("Ensured connection!");
         } catch (IOException e) {
             messageLogger.error("Connection is not open! " + e.getMessage());
