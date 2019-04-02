@@ -41,4 +41,8 @@ public class MessageLogger {
         sb.append("]");
         return sb.toString();
     }
+
+    public void overwritableInfo(String message) {
+        System.out.print(ANSI_CYAN + getMessagePrefix() + ANSI_YELLOW + " [INFO ] " + message + ANSI_RESET + "\r");
+    }
 }
