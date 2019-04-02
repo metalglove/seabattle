@@ -51,14 +51,14 @@ public class RegisterPlayerTests {
     }
 
     @Test()
-    public void should_Pass_When_Name_Is_Mario_And_Password_Is_Ape123_And_SingePlayer_Is_True() {
+    public void should_Pass_When_Name_Is_Mario_And_Password_Is_Ape123_And_MultiPlayer_Is_False() {
         // Arrange
         String name = "Mario";
         String password = "Ape123";
-        final boolean singlePlayerMode = true;
+        final boolean multiPlayerMode = false;
 
         // Act
-        game.registerPlayer(name, password, singlePlayerMode);
+        game.registerPlayer(name, password, multiPlayerMode);
 
         // Assert
         RegisterResponse message = (RegisterResponse)client.getMessages().get(0);
