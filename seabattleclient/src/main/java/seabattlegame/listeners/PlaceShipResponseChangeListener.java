@@ -1,8 +1,8 @@
 package seabattlegame.listeners;
 
+import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.PlaceShipResponse;
 import messaging.utilities.MessageLogger;
-import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -13,10 +13,10 @@ public class PlaceShipResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
     private final ISeaBattleGame game;
     private final int playerNumber;
-    private final Client client;
+    private final ObservableClientSocket client;
     private final MessageLogger messageLogger;
 
-    public PlaceShipResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, Client client, MessageLogger messageLogger) {
+    public PlaceShipResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, ObservableClientSocket client, MessageLogger messageLogger) {
         this.application = application;
         this.game = game;
         this.playerNumber = playerNumber;

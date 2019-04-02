@@ -4,14 +4,13 @@
 package seabattlegame;
 
 import domain.ShipType;
+import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.requests.*;
 import messaging.messages.responses.*;
 import messaging.utilities.MessageLogger;
 import seabattlegame.listeners.*;
 import seabattlegui.ISeaBattleGUI;
 import seabattlegui.SquareState;
-
-import java.io.IOException;
 
 import static java.lang.String.format;
 
@@ -24,7 +23,7 @@ public class SeaBattleGame implements ISeaBattleGame {
 
     private static final MessageLogger gameMessageLogger = new MessageLogger("GAME");
     private static final MessageLogger handlerMessageLogger = new MessageLogger("RESPONSE-LISTENER");
-    private final Client client;
+    private final ObservableClientSocket client;
     private final ISeaBattleGUI application;
     private boolean hasPlacedAllShips = false;
     private boolean isReady = false;
@@ -33,17 +32,10 @@ public class SeaBattleGame implements ISeaBattleGame {
     private boolean hasGameEnded = false;
     private String playerName;
 
-    public SeaBattleGame(ISeaBattleGUI application) throws IOException {
+    public SeaBattleGame(ISeaBattleGUI application, ObservableClientSocket observableClientSocket) {
         this.application = application;
-        try {
-            client = new Client("127.0.0.1", 9999, new MessageLogger("CLIENT"));
-            client.connect();
-            client.ensureConnection();
-            client.startReading();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
-        }
+        this.client = observableClientSocket;
+        client.startReading();
     }
 
     @Override

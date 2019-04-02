@@ -24,6 +24,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import messaging.utilities.MessageLogger;
+import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 
@@ -810,7 +811,10 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             return;
         }
         try {
-            game = new SeaBattleGame(this);
+            Client client = new Client("127.0.0.1", 9999, new MessageLogger("CLIENT"));
+            client.connect();
+            client.ensureConnection();
+            game = new SeaBattleGame(this, client);
             game.registerPlayer(playerName, playerPassword, !singlePlayerMode);
         } catch (IOException e) {
             e.printStackTrace();

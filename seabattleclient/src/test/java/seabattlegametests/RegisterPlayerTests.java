@@ -1,10 +1,18 @@
 package seabattlegametests;
 
+import messaging.interfaces.ObservableClientSocket;
+import messaging.messages.responses.RegisterResponse;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import seabattleunittests.SeaBattleGameTests;
+import seabattlegame.ISeaBattleGame;
+import seabattlegame.SeaBattleGame;
+import seabattlegui.ISeaBattleGUI;
+import seabattleunittests.MockClient;
+import seabattleunittests.MockSeaBattleApplication;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -22,21 +30,44 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  * number of players exceeds two in multi-player mode or
  * name is already registered.
  */
-public class RegisterPlayerTests extends SeaBattleGameTests {
+public class RegisterPlayerTests {
 
     // TODO: register 2 same players
     // TODO: register 2 players without exceeding for multiplayer
     // TODO: de
+    private ISeaBattleGame game;
+    private ISeaBattleGUI application;
+    private ObservableClientSocket client;
+
+    @BeforeEach
+    public void setUp() {
+        // Create the mock socket client
+        client = new MockClient();
+
+        // Create mock Sea Battle GUI for player
+        application = new MockSeaBattleApplication();
+
+        game = new SeaBattleGame(application, client);
+    }
+
     @Test()
-    public void should_Not_Throw_When_Name_Is_Mario_And_Password_Is_Ape123_And_ApplicationPlayer_Is_Not_Null_And_SinglePlayerMode_Is_True() {
+    public void should_Pass_When_Name_Is_Mario_And_Password_Is_Ape123_And_SingePlayer_Is_True() {
         // Arrange
         String name = "Mario";
         String password = "Ape123";
         final boolean singlePlayerMode = true;
 
-        // Act & Assert
-        assertDoesNotThrow(() -> game.registerPlayer(name, password, singlePlayerMode));
+        // Act
+        game.registerPlayer(name, password, singlePlayerMode);
+
+        // Assert
+        RegisterResponse message = (RegisterResponse)client.getMessages().get(0);
+        assertTrue(message.getSuccess());
+        assertEquals(1, (int)message.getPlayerNumber());
+        assertEquals(-1, (int)message.getOpponentPlayerNumber());
+        assertEquals("CPU", message.getOpponentName());
     }
+
     @Test()
     public void should_Throw_When_Name_Is_Null_And_Password_Is_Ape123_And_ApplicationPlayer_Is_Not_Null_And_SinglePlayerMode_Is_True() {
         // Arrange
@@ -57,16 +88,4 @@ public class RegisterPlayerTests extends SeaBattleGameTests {
         // Act & Assert
         Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, singlePlayerMode));
     }
-    /*
-    @Test()
-    public void should_Throw_When_Name_Is_Mario_And_Password_Is_Ape123_And_ApplicationPlayer_Is_Null_And_SinglePlayerMode_Is_True() {
-        // Arrange
-        String name = "Mario";
-        String password = "Ape123";
-        applicationPlayer = null;
-        final boolean singlePlayerMode = true;
-
-        // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, applicationPlayer, singlePlayerMode));
-    } */
 }

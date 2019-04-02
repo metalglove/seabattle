@@ -2,6 +2,7 @@ package seabattlegame;
 
 import messaging.handlers.AsyncReadHandler;
 import messaging.handlers.AsyncWriteHandler;
+import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.Message;
 import messaging.sockets.AsyncClientSocket;
 import messaging.utilities.MessageConverter;
@@ -11,17 +12,20 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
 
-public class Client extends AsyncClientSocket {
+public class Client extends AsyncClientSocket implements ObservableClientSocket {
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final MessageLogger messageLogger;
+    private final List<Message> messages;
 
     public Client(String host, int port, MessageLogger messageLogger) throws IOException {
         super(host, port);
         this.messageLogger = messageLogger;
+        this.messages = new ArrayList<>();
     }
 
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -49,7 +53,7 @@ public class Client extends AsyncClientSocket {
 
     @Override
     public List<Message> getMessages() {
-        return null;
+        return messages;
     }
 
     @Override

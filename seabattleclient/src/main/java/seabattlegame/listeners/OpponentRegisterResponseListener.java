@@ -1,8 +1,8 @@
 package seabattlegame.listeners;
 
+import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.utilities.MessageLogger;
-import seabattlegame.Client;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -10,10 +10,10 @@ import java.beans.PropertyChangeListener;
 
 public class OpponentRegisterResponseListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final Client client;
+    private final ObservableClientSocket client;
     private final MessageLogger messageLogger;
 
-    public OpponentRegisterResponseListener(ISeaBattleGUI application, Client client, MessageLogger messageLogger) {
+    public OpponentRegisterResponseListener(ISeaBattleGUI application, ObservableClientSocket client, MessageLogger messageLogger) {
         this.application = application;
         this.client = client;
         this.messageLogger = messageLogger;

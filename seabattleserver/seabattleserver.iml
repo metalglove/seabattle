@@ -10,6 +10,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="seabattledomain" />
+    <orderEntry type="library" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0" level="project" />
     <orderEntry type="module" module-name="socketmessaging" />
     <orderEntry type="library" name="Maven: nl.fhict.s3:seabattledomain:1.0-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="seabattlerest" />
