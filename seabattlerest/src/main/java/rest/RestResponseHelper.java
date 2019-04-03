@@ -1,3 +1,5 @@
+package rest;
+
 import com.google.gson.Gson;
 import daldtos.UserResultDto;
 import org.slf4j.Logger;

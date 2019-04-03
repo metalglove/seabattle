@@ -1,6 +1,6 @@
 module socketmessaging {
-    requires seabattledomain;
     requires java.desktop;
+    requires seabattledomain;
 
     exports messaging.handlers;
     exports messaging.interfaces;

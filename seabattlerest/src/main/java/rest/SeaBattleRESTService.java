@@ -1,3 +1,5 @@
+package rest;
+
 import dal.UserDataAccess;
 import daldtos.UserResultDto;
 import org.slf4j.Logger;
