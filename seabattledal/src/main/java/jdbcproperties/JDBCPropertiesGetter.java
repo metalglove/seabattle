@@ -1,3 +1,7 @@
+package jdbcproperties;
+
+import dal.UserDataAccess;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

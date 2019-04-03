@@ -1,3 +1,8 @@
+package dal;
+
+import daldtos.UserResultDto;
+import jdbcproperties.JDBCPropertiesGetter;
+
 import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Level;
