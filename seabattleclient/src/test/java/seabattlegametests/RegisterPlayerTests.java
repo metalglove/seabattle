@@ -32,12 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class RegisterPlayerTests {
 
-    // TODO: register 2 same players
-    // TODO: register 2 players without exceeding for multiplayer
-    // TODO: de
     private ISeaBattleGame game;
-    private ISeaBattleGUI application;
-    private ObservableClientSocket client;
+    private MockSeaBattleApplication application;
+    private MockClient client;
 
     @BeforeEach
     public void setUp() {
@@ -47,45 +44,63 @@ public class RegisterPlayerTests {
         // Create mock Sea Battle GUI for player
         application = new MockSeaBattleApplication();
 
+        // Create the game
         game = new SeaBattleGame(application, client);
     }
 
     @Test()
-    public void should_Pass_When_Name_Is_Mario_And_Password_Is_Ape123_And_MultiPlayer_Is_False() {
+    public void should_Set_PlayerName_To_Henk_On_Application_When_Name_Is_Karel_And_Password_Is_Karel32_And_MultiPlayer_Is_False() {
         // Arrange
-        String name = "Mario";
-        String password = "Ape123";
+        String name = "Henk";
+        String password = "Karel32";
         final boolean multiPlayerMode = false;
 
         // Act
         game.registerPlayer(name, password, multiPlayerMode);
+        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU"));
 
         // Assert
-        RegisterResponse message = (RegisterResponse)client.getMessages().get(0);
-        assertTrue(message.getSuccess());
-        assertEquals(1, (int)message.getPlayerNumber());
-        assertEquals(-1, (int)message.getOpponentPlayerNumber());
-        assertEquals("CPU", message.getOpponentName());
+        assertEquals("Henk", application.getPlayerName());
     }
 
     @Test()
-    public void should_Throw_When_Name_Is_Null_And_Password_Is_Ape123_And_ApplicationPlayer_Is_Not_Null_And_SinglePlayerMode_Is_True() {
+    public void should_Throw_When_Name_Is_Null_And_Password_Is_Karel32_And_MultiPlayerMode_Is_False() {
         // Arrange
         String name = null;
-        String password = "Ape123";
-        final boolean singlePlayerMode = true;
+        String password = "Karel32";
+        final boolean multiPlayerMode = false;
 
         // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, singlePlayerMode));
+        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, multiPlayerMode));
     }
     @Test()
-    public void should_Throw_When_Name_Is_Mario_And_Password_Is_Null_And_ApplicationPlayer_Is_Not_Null_And_SinglePlayerMode_Is_True() {
+    public void should_Throw_When_Name_Is_Blank_And_Password_Is_Karel32_And_MultiPlayerMode_Is_False() {
+        // Arrange
+        String name = "    ";
+        String password = "Karel32";
+        final boolean multiPlayerMode = false;
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, multiPlayerMode));
+    }
+    @Test()
+    public void should_Throw_When_Name_Is_Mario_And_Password_Is_Blank_And_MultiPlayerMode_Is_False() {
+        // Arrange
+        String name = "Mario";
+        String password = "    ";
+        final boolean multiPlayerMode = false;
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, multiPlayerMode));
+    }
+    @Test()
+    public void should_Throw_When_Name_Is_Mario_And_Password_Is_Null_And_MultiPlayerMode_Is_False() {
         // Arrange
         String name = "Mario";
         String password = null;
-        final boolean singlePlayerMode = true;
+        final boolean multiPlayerMode = false;
 
         // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, singlePlayerMode));
+        Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, multiPlayerMode));
     }
 }

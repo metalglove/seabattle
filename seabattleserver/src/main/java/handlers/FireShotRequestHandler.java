@@ -60,7 +60,6 @@ public class FireShotRequestHandler implements RequestHandler<FireShotRequest> {
         }
         try {
             requestMessageHandler.completed(response, request);
-
         } finally {
             // TODO: hopefully it is not to fast :phapoPOGGERS:
             if (requestMessageHandlerAI != null) {

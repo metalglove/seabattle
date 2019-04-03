@@ -108,7 +108,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
         try {
             object = MessageConverter.convertFromBytes(bytes);
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            serverMessageLogger.error(e.getMessage());//  e.printStackTrace();
             return;
         }
         serverMessageLogger.info("Message is " + object.getClass().getSimpleName());
