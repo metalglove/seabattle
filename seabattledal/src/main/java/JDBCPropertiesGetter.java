@@ -19,7 +19,7 @@ public class JDBCPropertiesGetter {
                 return prop;
 
             } catch (IOException ex) {
-                Logger.getLogger(UserDataAccess.class.getName()).log(Level.SEVERE, null, ex);   // TODO: Look into how log is made in Java. Interesting.
+                Logger.getLogger(UserDataAccess.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -20,7 +20,9 @@ public class SeaBattleRestServer {
         try {
             jettyServer.start();
             jettyServer.join();
-        } finally {
+        } catch (Exception e){
+
+            jettyServer.stop();
             jettyServer.destroy();
         }
     }

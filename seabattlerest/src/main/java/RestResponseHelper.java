@@ -1,5 +1,4 @@
 import com.google.gson.Gson;
-import dtos.UserResultDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +36,15 @@ class RestResponseHelper {
         SeaBattleResponse response = new SeaBattleResponse();
         response.setSuccess(true);
         response.setResponse("Login test triggered");
+        String output = gson.toJson(response);
+        log.info("[Server response] " + output);
+        return output;
+    }
+
+    static String getUsernameInUseResponse(boolean inUse) {
+        SeaBattleResponse response = new SeaBattleResponse();
+        response.setSuccess(inUse);
+        response.setResponse("Username in use triggered");
         String output = gson.toJson(response);
         log.info("[Server response] " + output);
         return output;

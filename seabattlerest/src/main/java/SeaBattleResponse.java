@@ -1,5 +1,3 @@
-import dtos.UserResultDto;
-
 public class SeaBattleResponse {
 
     // Indicates whether REST call was successful
