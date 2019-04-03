@@ -1,3 +1,5 @@
+import daldtos.UserResultDto;
+
 public class SeaBattleResponse {
 
     // Indicates whether REST call was successful
