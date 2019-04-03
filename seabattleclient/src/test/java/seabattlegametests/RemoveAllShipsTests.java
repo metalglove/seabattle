@@ -61,7 +61,7 @@ public class RemoveAllShipsTests {
     }
 
     @Test
-    public void Should_Remove_All_Ships_When_Ships_Have_Previously_Been_Placed() {
+    public void should_Remove_All_Ships_When_Ships_Have_Previously_Been_Placed() {
         // Arrange
         game.placeShipsAutomatically(1);
         client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));

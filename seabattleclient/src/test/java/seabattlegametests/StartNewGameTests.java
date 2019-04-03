@@ -65,8 +65,9 @@ public class StartNewGameTests {
         game.notifyWhenReady(1);
         client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
     }
+
     @Test
-    public void Should_Create_New_Game_When_Called() {
+    public void should_Create_New_Game_When_Called() {
         // Arrange
         game.fireShot(1, 1, 1);
         MineSweeper mineSweeper = new MineSweeper(new Point(1, 1), true);
@@ -87,7 +88,7 @@ public class StartNewGameTests {
     }
 
     @Test
-    public void Should_Not_Create_New_Game_When_Called_When_Game_Is_Not_Over_Yet() {
+    public void should_Not_Create_New_Game_When_Called_When_Game_Is_Not_Over_Yet() {
         // Arrange & Act
         game.startNewGame(1, false);
         // Mock response not even needed it will check before hand..

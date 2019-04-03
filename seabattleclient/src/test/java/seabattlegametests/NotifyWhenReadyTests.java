@@ -64,7 +64,7 @@ public class NotifyWhenReadyTests {
     }
 
     @Test
-    public void Should_Notify_Player_When_All_Ships_Have_Been_Placed() {
+    public void should_Notify_Player_When_All_Ships_Have_Been_Placed() {
         // Arrange
         game.placeShipsAutomatically(1);
         client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
@@ -78,7 +78,7 @@ public class NotifyWhenReadyTests {
     }
 
     @Test
-    public void Should_Not_Set_GameStarted_In_Application_When_Not_All_Ships_Have_Been_Placed_After_Calling_NotifyWhenReady() {
+    public void should_Not_Set_GameStarted_In_Application_When_Not_All_Ships_Have_Been_Placed_After_Calling_NotifyWhenReady() {
         // Arrange
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1, 1,true);
         client.setMockUpResponse(new PlaceShipResponse(1, new AircraftCarrier(new Point(1, 1), true), true,null, false));
