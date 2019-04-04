@@ -7,12 +7,10 @@ import domain.ships.*;
 import messaging.messages.responses.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import domain.ShipType;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 import seabattleunittests.MockClient;
 import seabattleunittests.MockSeaBattleApplication;
-import seabattleunittests.SeaBattleGameTests;
 
 import java.util.ArrayList;
 import java.util.List;

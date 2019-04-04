@@ -6,16 +6,13 @@ import domain.ships.*;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.RegisterResponse;
 import messaging.messages.responses.RemoveAllShipsResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import domain.ShipType;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
 import seabattleunittests.MockClient;
 import seabattleunittests.MockSeaBattleApplication;
-import seabattleunittests.SeaBattleGameTests;
 
 import java.util.ArrayList;
 import java.util.List;

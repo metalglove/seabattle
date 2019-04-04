@@ -2,20 +2,18 @@ package seabattlegametests;
 
 import domain.Point;
 import domain.Ship;
+import domain.ShipType;
 import domain.ships.*;
 import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.PlaceShipResponse;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.RegisterResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import domain.ShipType;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 import seabattleunittests.MockClient;
 import seabattleunittests.MockSeaBattleApplication;
-import seabattleunittests.SeaBattleGameTests;
 
 import java.util.ArrayList;
 import java.util.List;

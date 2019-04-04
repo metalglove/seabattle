@@ -40,23 +40,11 @@ public abstract class Ship implements Serializable {
     }
 
     public boolean containsPoint(Point point) {
-        for (Point o : points) {
-            if(o.equals(point)) {
-                return true;
-            }
-        }
-        return false;
+        return points.stream().anyMatch(o -> o.equals(point));
     }
 
     public boolean isWithinBounds() {
         return points.stream().noneMatch(point -> !boundCheck(point.getX()) || !boundCheck(point.getY()));
-    }
-
-    private boolean boundCheck(int bound) {
-        return bound >= 0 && bound <= 9;
-    }
-    public boolean isHorizontal() {
-        return horizontal;
     }
 
     public boolean isSunk() {
@@ -66,5 +54,9 @@ public abstract class Ship implements Serializable {
     public void removePoint(Point point) {
         points.remove(point);
         pointsHit.add(point);
+    }
+
+    private boolean boundCheck(int bound) {
+        return bound >= 0 && bound <= 9;
     }
 }

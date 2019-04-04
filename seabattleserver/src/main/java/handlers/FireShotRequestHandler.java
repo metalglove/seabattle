@@ -75,7 +75,6 @@ public class FireShotRequestHandler implements RequestHandler<FireShotRequest> {
                 Runnable task = () -> finalRequestMessageHandlerAI.completed(finalAiResponse, new FireShotRequest(finalOpponent, finalResponse.point.getX(), finalResponse.point.getY()));
                 executor.schedule(task, 500, TimeUnit.MILLISECONDS);
                 executor.shutdown();
-                messageLogger.info("Active thread count: " + Thread.activeCount());
                 //requestMessageHandlerAI.completed(aiResponse, new FireShotRequest(opponent, response.point.getX(), response.point.getY()));
             }
         }

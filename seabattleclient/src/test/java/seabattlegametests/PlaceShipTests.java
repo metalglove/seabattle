@@ -13,10 +13,8 @@ import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
 import seabattleunittests.MockClient;
 import seabattleunittests.MockSeaBattleApplication;
-import seabattleunittests.SeaBattleGameTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Place ship of given type. A ship of given type will be placed with its
