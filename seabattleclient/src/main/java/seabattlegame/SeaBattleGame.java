@@ -131,7 +131,7 @@ public class SeaBattleGame implements ISeaBattleGame {
             application.showSquareOpponent(playerNr, posX, posY, SquareState.WATER);
             return;
         }
-        if (posX < 1 || posX > 10 || posY < 1 || posY > 10) {
+        if (posX < 0 || posX > 9 || posY < 0 || posY > 9) {
             application.showErrorMessage("Position is out of range!");
             return;
         }

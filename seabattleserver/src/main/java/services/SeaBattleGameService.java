@@ -131,7 +131,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     @Override
     public FireShotResultDto fireShot(int firingPlayerNumber, int posX, int posY) {
         FireShotResultDto fireShotResultDto = null;
-        if (posX < 1 || posX > 10 || posY < 1 || posY > 10) {
+        if (posX < 0 || posX > 9 || posY < 0 || posY > 9) {
             return fireShotResultDto;
         }
         synchronized (games) {

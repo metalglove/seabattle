@@ -14,6 +14,10 @@ import messaging.messages.responses.OpponentFireShotResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
 import messaging.utilities.MessageLogger;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class FireShotRequestHandler implements RequestHandler<FireShotRequest> {
 
     private final ClientAwareWritingSocket serverSocket;
@@ -35,7 +39,7 @@ public class FireShotRequestHandler implements RequestHandler<FireShotRequest> {
         OpponentFireShotResponse aiResponse = null;
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
         AsyncRequestMessageHandler requestMessageHandlerAI = null;
-        int opponent = 0; // TODO: zds
+        int opponent = 0;
         FireShotResultDto fireShotResultDto = gameService.fireShot(request.firingPlayerNumber, request.posX, request.posY);
         if (fireShotResultDto != null) {
             Point point = new Point(request.posX, request.posY);
@@ -63,7 +67,16 @@ public class FireShotRequestHandler implements RequestHandler<FireShotRequest> {
         } finally {
             // TODO: hopefully it is not to fast :phapoPOGGERS:
             if (requestMessageHandlerAI != null) {
-                requestMessageHandlerAI.completed(aiResponse, new FireShotRequest(opponent, response.point.getX(), response.point.getY()));
+                ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+                final AsyncRequestMessageHandler finalRequestMessageHandlerAI = requestMessageHandlerAI;
+                final OpponentFireShotResponse finalAiResponse = aiResponse;
+                final int finalOpponent = opponent;
+                final FireShotResponse finalResponse = response;
+                Runnable task = () -> finalRequestMessageHandlerAI.completed(finalAiResponse, new FireShotRequest(finalOpponent, finalResponse.point.getX(), finalResponse.point.getY()));
+                executor.schedule(task, 500, TimeUnit.MILLISECONDS);
+                executor.shutdown();
+                messageLogger.info("Active thread count: " + Thread.activeCount());
+                //requestMessageHandlerAI.completed(aiResponse, new FireShotRequest(opponent, response.point.getX(), response.point.getY()));
             }
         }
     }
