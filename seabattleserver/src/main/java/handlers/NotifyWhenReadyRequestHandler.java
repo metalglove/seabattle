@@ -27,21 +27,21 @@ public class NotifyWhenReadyRequestHandler implements RequestHandler<NotifyWhenR
 
     @Override
     public void handle(NotifyWhenReadyRequest request, AsyncIdentifiableClientSocket client) {
-        SetReadyResultDto setReadyResultDto = gameService.setReady(request.playerNumber);
-        messageLogger.info("Player : "+ request.playerNumber+" wants to be notified when game can start.");
+        SetReadyResultDto setReadyResultDto = gameService.setReady(request.getPlayerNumber());
+        messageLogger.info("Player : " + request.getPlayerNumber() + " wants to be notified when game can start.");
         if (setReadyResultDto != null && setReadyResultDto.isBothReady()) {
             boolean isPlayersTurn = rand.nextBoolean();
             if (setReadyResultDto.getOpponentPlayerNumber() <= 0)
                 isPlayersTurn = true;
             AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
-            NotifyWhenReadyResponse response = new NotifyWhenReadyResponse(request.playerNumber, true, isPlayersTurn);
+            NotifyWhenReadyResponse response = new NotifyWhenReadyResponse(request.getPlayerNumber(), true, isPlayersTurn);
             int opponentPlayerNumber = setReadyResultDto.getOpponentPlayerNumber();
             if (opponentPlayerNumber > 0) {
                 AsyncIdentifiableClientSocket opponent = serverSocket.getClientById(opponentPlayerNumber);
                 serverSocket.startWriting(opponent, new NotifyWhenReadyResponse(opponentPlayerNumber, true, !isPlayersTurn));
             }
             requestMessageHandler.completed(response, request);
-            messageLogger.info("Players : "+ request.playerNumber+" & " + opponentPlayerNumber + " are notified.");
+            messageLogger.info("Players : " + request.getPlayerNumber() + " & " + opponentPlayerNumber + " are notified.");
         }
     }
 }

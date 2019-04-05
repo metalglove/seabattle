@@ -28,7 +28,7 @@ public class RegisterResponseChangeListener implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         RegisterResponse response = (RegisterResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Failed to register!");
             messageLogger.error("Failed to register!");
         } else {

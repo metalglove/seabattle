@@ -28,14 +28,14 @@ public class StartNewGameResponseChangeListener implements PropertyChangeListene
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         StartNewGameResponse response = (StartNewGameResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Starting a new game failed!");
             messageLogger.error("Starting a new game failed!");
         } else {
             game.resetGame();
-            application.setPlayerNumber(response.playerNumber, name);
-            if (response.opponentName != null && response.opponentPlayerNumber != null) {
-                application.setOpponentName(response.opponentPlayerNumber, response.opponentName);
+            application.setPlayerNumber(response.getPlayerNumber(), name);
+            if (response.getOpponentName() != null && response.getOpponentPlayerNumber() != null) {
+                application.setOpponentName(response.getOpponentPlayerNumber(), response.getOpponentName());
             } else {
                 client.addListener(OpponentRegisterResponse.class.getSimpleName(), new OpponentRegisterResponseListener(application, client, messageLogger));
             }

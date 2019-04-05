@@ -1,6 +1,9 @@
 package services;
 
 import domain.*;
+import domain.actions.AddShipAction;
+import domain.actions.FireShotAction;
+import domain.actions.ReadyUpAction;
 import dtos.*;
 import interfaces.IFactoryWithArgument;
 import interfaces.ISeaBattleGameService;
@@ -92,7 +95,8 @@ public class SeaBattleGameService implements ISeaBattleGameService {
                 if (game.containsPlayer(playerNumber)) {
                     Player player = game.getPlayerFromNumber(playerNumber);
                     Ship ship = _shipFactory.create(new ShipCreationArgument(shipType, bowX, bowY, horizontal));
-                    placeShipResultDto = player.addShip(ship);
+                    AddShipAction addShipAction = player.addShip(ship);
+                    placeShipResultDto = new PlaceShipResultDto(ship, addShipAction.getOldShip(), addShipAction.hasPlacedAllShips(), addShipAction.isSuccess());
                     break;
                 }
             }
@@ -138,7 +142,8 @@ public class SeaBattleGameService implements ISeaBattleGameService {
             Game gameToRemove = null;
             for (Game game : games) {
                 if (game.containsPlayer(firingPlayerNumber)) {
-                    fireShotResultDto = game.fireShot(firingPlayerNumber, posX, posY);
+                    FireShotAction fireShotAction = game.fireShot(firingPlayerNumber, posX, posY);
+                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, fireShotAction.getPlayerNumber(), new Point(posX, posY), fireShotAction.getShotType(), fireShotAction.getOpponentShip(), fireShotAction.isSuccess());
                     if (fireShotResultDto.getShotType() == ShotType.ALLSUNK) {
                         gameToRemove = game;
                     }
@@ -162,7 +167,8 @@ public class SeaBattleGameService implements ISeaBattleGameService {
         synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
-                    setReadyResultDto = game.readyUp(playerNumber);
+                    ReadyUpAction readyUpAction = game.readyUp(playerNumber);
+                    setReadyResultDto = new SetReadyResultDto(readyUpAction.getPlayerNumber(), readyUpAction.getOpponentNumber(), readyUpAction.isBothReady());
                     break;
                 }
             }

@@ -27,6 +27,5 @@ public class AsyncWriteBufferHandler implements CompletionHandler<Integer, ByteB
     @Override
     public void failed(Throwable exc, ByteBuffer attachment) {
         messageLogger.info("Failed to send ResponseMessage! " + exc.getMessage());
-        //exc.printStackTrace();
     }
 }

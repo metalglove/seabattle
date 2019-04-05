@@ -2,8 +2,6 @@ package dtos;
 
 import domain.Ship;
 
-import java.util.List;
-
 public class RemoveShipResultDto {
 
     private final Ship shipToRemove;

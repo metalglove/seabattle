@@ -28,14 +28,14 @@ public class PlaceShipsAutomaticallyResponseChangeListener implements PropertyCh
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         PlaceShipsAutomaticallyResponse response = (PlaceShipsAutomaticallyResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Failed to automatically place all ships!");
             messageLogger.error("Failed to automatically place all ships!");
         } else {
-            for (Ship ship : response.shipsToRemove) {
+            for (Ship ship : response.getShipsToRemove()) {
                 application.removeShip(playerNumber, ship);
             }
-            for (Ship ship : response.shipsToAdd) {
+            for (Ship ship : response.getShipsToAdd()) {
                 application.placeShip(playerNumber, ship);
             }
             game.setHasPlacedAllShips(true);

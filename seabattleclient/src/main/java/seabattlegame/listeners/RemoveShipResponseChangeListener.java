@@ -27,13 +27,13 @@ public class RemoveShipResponseChangeListener implements PropertyChangeListener 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         RemoveShipResponse response = (RemoveShipResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Failed to remove ship from proposed point.");
             messageLogger.error("Failed to remove ship from proposed point.");
         } else {
             game.setHasPlacedAllShips(false);
 
-            application.removeShip(playerNr, response.ship);
+            application.removeShip(playerNr, response.getShip());
         }
         client.removeListener(RemoveShipResponse.class.getSimpleName(), this);
     }

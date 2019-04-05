@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/seabattleclient/seabattleclient.iml" filepath="$PROJECT_DIR$/seabattleclient/seabattleclient.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattledal/seabattledal.iml" filepath="$PROJECT_DIR$/seabattledal/seabattledal.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattledomain/seabattledomain.iml" filepath="$PROJECT_DIR$/seabattledomain/seabattledomain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/seabattledtos/seabattledtos.iml" filepath="$PROJECT_DIR$/seabattledtos/seabattledtos.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattlerest/seabattlerest.iml" filepath="$PROJECT_DIR$/seabattlerest/seabattlerest.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattleserver/seabattleserver.iml" filepath="$PROJECT_DIR$/seabattleserver/seabattleserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/socket-messaging/socketmessaging.iml" filepath="$PROJECT_DIR$/socket-messaging/socketmessaging.iml" />
