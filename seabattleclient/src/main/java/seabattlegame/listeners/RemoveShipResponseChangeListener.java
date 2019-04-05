@@ -1,8 +1,9 @@
 package seabattlegame.listeners;
 
+import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.RemoveShipResponse;
-import seabattlegame.Client;
-import seabattlegame.MultiPlayerSeaBattleGame;
+import messaging.utilities.MessageLogger;
+import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -10,24 +11,29 @@ import java.beans.PropertyChangeListener;
 
 public class RemoveShipResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final MultiPlayerSeaBattleGame multiPlayerSeaBattleGame;
+    private final ISeaBattleGame game;
     private final int playerNr;
-    private final Client client;
+    private final ObservableClientSocket client;
+    private final MessageLogger messageLogger;
 
-    public RemoveShipResponseChangeListener(ISeaBattleGUI application, MultiPlayerSeaBattleGame multiPlayerSeaBattleGame, int playerNr, Client client) {
+    public RemoveShipResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNr, ObservableClientSocket client, MessageLogger messageLogger) {
         this.application = application;
-        this.multiPlayerSeaBattleGame = multiPlayerSeaBattleGame;
+        this.game = game;
         this.playerNr = playerNr;
         this.client = client;
+        this.messageLogger = messageLogger;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         RemoveShipResponse response = (RemoveShipResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Failed to remove ship from proposed point.");
+            messageLogger.error("Failed to remove ship from proposed point.");
         } else {
-            multiPlayerSeaBattleGame.hasPlacedAllShips = false;
+            game.setHasPlacedAllShips(false);
+
+            application.removeShip(playerNr, response.getShip());
         }
         client.removeListener(RemoveShipResponse.class.getSimpleName(), this);
     }

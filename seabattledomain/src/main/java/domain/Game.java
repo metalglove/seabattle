@@ -1,8 +1,8 @@
 package domain;
 
+import domain.actions.FireShotAction;
+import domain.actions.ReadyUpAction;
 import domain.ships.*;
-import dtos.FireShotResultDto;
-import dtos.SetReadyResultDto;
 
 import java.util.List;
 
@@ -13,10 +13,8 @@ public class Game {
     public boolean registerPlayer(Player player) {
         if (player1 == null) {
             player1 = player;
-            System.out.println("player 1 set");
         } else if(player2 == null) {
             player2 = player;
-            System.out.println("player 2 set");
         } else {
             return false;
         }
@@ -57,21 +55,21 @@ public class Game {
         }
         return false;
     }
-    public FireShotResultDto fireShot(int firingPlayerNumber, int x, int y) {
+    public FireShotAction fireShot(int firingPlayerNumber, int x, int y) {
         Player opponent = getOpponentPlayer(firingPlayerNumber);
         if (opponent == null)
             return null;
 
         Point point = new Point(x, y);
-        FireShotResultDto fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.MISSED, null);
+        FireShotAction fireShotAction = new FireShotAction(opponent.getPlayerNumber(), ShotType.MISSED, null, true);
         Ship shipToRemoveIfNeeded = null;
         for (Ship opponentShip : opponent.getShips()) {
             if (opponentShip.containsPoint(point)) {
                 if (opponentShip.getLength() == 1) {
                     shipToRemoveIfNeeded = opponentShip;
-                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.SUNK, opponentShip);
+                    fireShotAction = new FireShotAction(opponent.getPlayerNumber(), ShotType.SUNK, opponentShip, true);
                 } else {
-                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.HIT, opponentShip);
+                    fireShotAction = new FireShotAction(opponent.getPlayerNumber(), ShotType.HIT, opponentShip, true);
                 }
                 opponentShip.removePoint(point);
                 break;
@@ -80,8 +78,8 @@ public class Game {
         if (shipToRemoveIfNeeded != null)
             opponent.removeShip(shipToRemoveIfNeeded);
         if (opponent.getShips().size() == 0)
-            fireShotResultDto = new FireShotResultDto(firingPlayerNumber, opponent.getPlayerNumber(), point, ShotType.ALLSUNK, shipToRemoveIfNeeded);
-        return fireShotResultDto;
+            fireShotAction = new FireShotAction(opponent.getPlayerNumber(), ShotType.ALLSUNK, shipToRemoveIfNeeded, true);
+        return fireShotAction;
     }
 
     public Player getOpponentPlayer(int otherPlayerNumber) {
@@ -90,7 +88,7 @@ public class Game {
         return null;
     }
 
-    public SetReadyResultDto readyUp(int playerNumber) {
+    public ReadyUpAction readyUp(int playerNumber) {
         Player player = getPlayerFromNumber(playerNumber);
         if (player == null) {
             return null;
@@ -105,6 +103,6 @@ public class Game {
                 bothReady = true;
         }
 
-        return new SetReadyResultDto(playerNumber, opponentNumber, bothReady);
+        return new ReadyUpAction(playerNumber, opponentNumber, bothReady);
     }
 }

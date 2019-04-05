@@ -1,6 +1,6 @@
 package domain;
 
-import dtos.PlaceShipResultDto;
+import domain.actions.AddShipAction;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +22,10 @@ public class Player {
         this.number = number;
     }
 
-    public PlaceShipResultDto addShip(Ship ship) {
-        PlaceShipResultDto placeShipResultDto = new PlaceShipResultDto(null, null, false, false);
+    public AddShipAction addShip(Ship ship) {
+        AddShipAction addShipAction = new AddShipAction( null, false, false);
         if (gameHasStarted || !ship.isWithinBounds())
-            return placeShipResultDto;
+            return addShipAction;
 
         Stream<Ship> shipStream = ships.stream();
         Ship oldShip = null;
@@ -40,12 +40,12 @@ public class Player {
                     if (oldShip != null) {
                         ships.add(oldShip);
                     }
-                    return placeShipResultDto;
+                    return addShipAction;
                 }
         }
         ships.add(ship);
         boolean hasPlacedAllShips = ships.size() == 5;
-        return new PlaceShipResultDto(ship, oldShip, hasPlacedAllShips, true);
+        return new AddShipAction(oldShip, hasPlacedAllShips, true);
     }
 
     public String getUsername() {
@@ -76,6 +76,10 @@ public class Player {
 
     public void setReady() {
         _isReady = true;
+    }
+
+    public void setUnReady() {
+        _isReady = false;
     }
 
     public boolean isReady() {

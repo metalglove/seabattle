@@ -1,3 +1,5 @@
+import dtos.UserResultDto;
+
 public class SeaBattleResponse {
 
     // Indicates whether REST call was successful
@@ -11,5 +13,5 @@ public class SeaBattleResponse {
 
     public void setResponse(String response) { this.responseString = response; }
 
-    // TODO: Add User object.
+    public UserResultDto user;
 }

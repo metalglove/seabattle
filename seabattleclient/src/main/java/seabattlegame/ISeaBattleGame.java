@@ -18,6 +18,7 @@ public interface ISeaBattleGame {
      *
      * @param name     Name of the player to be registered
      * @param password Password of the player to be registered
+     * @param multiPlayer  Multi-Player (true) or Single-Player (false) mode
      * @throws IllegalArgumentException when:
      *                                  name is null or the empty,
      *                                  password is null or empty,
@@ -26,7 +27,7 @@ public interface ISeaBattleGame {
      *                                  number of players exceeds two in multi-player mode or
      *                                  name is already registered.
      */
-    public void registerPlayer(String name, String password); //@param singlePlayerMode  Single-player (true) or multi-player (false) mode , boolean singlePlayerMode ISeaBattleGUI application, @param application       Reference to application of player
+    void registerPlayer(String name, String password, boolean multiPlayer);
 
     /**
      * Place ships automatically. Ships that are already placed will be removed.
@@ -37,7 +38,7 @@ public interface ISeaBattleGame {
      *
      * @param playerNr identification of player for which ships will be placed
      */
-    public void placeShipsAutomatically(int playerNr);
+    void placeShipsAutomatically(int playerNr);
 
     /**
      * Place ship of given type. A ship of given type will be placed with its
@@ -56,7 +57,7 @@ public interface ISeaBattleGame {
      * @param bowY       y-coordinate of bow
      * @param horizontal indicate whether ship will placed horizontally or vertically
      */
-    public void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal);
+    void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal);
 
     /**
      * Remove the ship that is placed at the square with coordinates (posX, posY).
@@ -67,7 +68,7 @@ public interface ISeaBattleGame {
      * @param posX     x-coordinate of square where ship was placed
      * @param posY     y-coordinate of square where ship was placed
      */
-    public void removeShip(int playerNr, int posX, int posY);
+    void removeShip(int playerNr, int posX, int posY);
 
     /**
      * Remove all ships that are placed. The state of the ocean area in the
@@ -76,7 +77,7 @@ public interface ISeaBattleGame {
      *
      * @param playerNr identification of player for which ships will be removed
      */
-    public void removeAllShips(int playerNr);
+    void removeAllShips(int playerNr);
 
     /**
      * Notify that the player is ready to play the game, i.e., all ships have
@@ -86,7 +87,7 @@ public interface ISeaBattleGame {
      *
      * @param playerNr identification of player who is ready to play the game
      */
-    public void notifyWhenReady(int playerNr);
+    void notifyWhenReady(int playerNr);
 
     /**
      * Fire a shot at the opponent's square with given coordinates.
@@ -104,12 +105,11 @@ public interface ISeaBattleGame {
      * The result of the opponent's shot will be sent to the player's application
      * by a method call of opponentFiresShot() and the ocean area of the player's
      * application will by kept up-to-date by method calls of showSquarePlayer().
-     *
-     * @param playerNr identification of player who fires.
+     *  @param playerNr identification of player who fires.
      * @param posX     x-coordinate of square
      * @param posY     y-coordinate of square
      */
-    public void fireShot(int playerNr, int posX, int posY);
+    void fireShot(int playerNr, int posX, int posY);
 
     /**
      * Start a new game. Remove all ships and unregister the player.
@@ -121,6 +121,24 @@ public interface ISeaBattleGame {
      * calls of showSquareOpponent().
      *
      * @param playerNr identification of player who starts a new game
+     * @param multiPlayer Multi-Player (true) or Single-Player (false) mode ,
      */
-    public void startNewGame(int playerNr);
+    void startNewGame(int playerNr, boolean multiPlayer);
+
+    /**
+     * Resets the game and sets all variables back to default.
+     */
+    void resetGame();
+    /**
+     * Ends the ongoing game.
+     */
+    void endGame();
+
+    void setHasPlacedAllShips(boolean value);
+
+    void setPlayerTurn(boolean value);
+
+    void setStarted(boolean value);
+
+    void setPlayerName(String name);
 }

@@ -9,6 +9,7 @@
     <module>seabattledomain</module>
     <module>socket-messaging</module>
       <module>seabattlerest</module>
+      <module>seabattledal</module>
   </modules>
   <packaging>pom</packaging>
   <properties>
@@ -71,75 +72,75 @@
     </plugins>
   </build>
   <dependencies>
-    <!-- Unit testing -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-      <type>jar</type>
-    </dependency>
+    <!--&lt;!&ndash; Unit testing &ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>junit</groupId>-->
+      <!--<artifactId>junit</artifactId>-->
+      <!--<version>${junit.version}</version>-->
+      <!--<scope>test</scope>-->
+      <!--<type>jar</type>-->
+    <!--</dependency>-->
 
-    <!-- JAX-RS: Java API for RESTful Web Services -->
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>javax.ws.rs-api</artifactId>
-      <version>${javax.ws.rs-api.version}</version>
-      <type>jar</type>
-    </dependency>
+    <!--&lt;!&ndash; JAX-RS: Java API for RESTful Web Services &ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>javax.ws.rs</groupId>-->
+      <!--<artifactId>javax.ws.rs-api</artifactId>-->
+      <!--<version>${javax.ws.rs-api.version}</version>-->
+      <!--<type>jar</type>-->
+    <!--</dependency>-->
 
-    <!-- Jetty server
-         Note by Nico Kuijpers
-         Use version jetty-9.3.12 or higher for WebSockets
-         to avoid java.lang.NoClassDefFoundError, see
-         https://stackoverflow.com/questions/28170244/
-         jetty-throws-noclassdeffounderror-org-eclipse-jetty-util-futurecallback-on-shut
-    -->
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>${jetty-server.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
-      <version>${jetty-server.version}</version>
-    </dependency>
+    <!--&lt;!&ndash; Jetty server-->
+         <!--Note by Nico Kuijpers-->
+         <!--Use version jetty-9.3.12 or higher for WebSockets-->
+         <!--to avoid java.lang.NoClassDefFoundError, see-->
+         <!--https://stackoverflow.com/questions/28170244/-->
+         <!--jetty-throws-noclassdeffounderror-org-eclipse-jetty-util-futurecallback-on-shut-->
+    <!--&ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>org.eclipse.jetty</groupId>-->
+      <!--<artifactId>jetty-server</artifactId>-->
+      <!--<version>${jetty-server.version}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.eclipse.jetty</groupId>-->
+      <!--<artifactId>jetty-servlet</artifactId>-->
+      <!--<version>${jetty-server.version}</version>-->
+    <!--</dependency>-->
 
-    <!-- Jersey -->
-    <dependency>
-      <groupId>org.glassfish.jersey.core</groupId>
-      <artifactId>jersey-server</artifactId>
-      <version>${jersey-server.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jersey.containers</groupId>
-      <artifactId>jersey-container-servlet-core</artifactId>
-      <version>${jersey-server.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jersey.containers</groupId>
-      <artifactId>jersey-container-jetty-http</artifactId>
-      <version>${jersey-server.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jersey.media</groupId>
-      <artifactId>jersey-media-moxy</artifactId>
-      <version>${jersey-server.version}</version>
-    </dependency>
+    <!--&lt;!&ndash; Jersey &ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>org.glassfish.jersey.core</groupId>-->
+      <!--<artifactId>jersey-server</artifactId>-->
+      <!--<version>${jersey-server.version}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.glassfish.jersey.containers</groupId>-->
+      <!--<artifactId>jersey-container-servlet-core</artifactId>-->
+      <!--<version>${jersey-server.version}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.glassfish.jersey.containers</groupId>-->
+      <!--<artifactId>jersey-container-jetty-http</artifactId>-->
+      <!--<version>${jersey-server.version}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.glassfish.jersey.media</groupId>-->
+      <!--<artifactId>jersey-media-moxy</artifactId>-->
+      <!--<version>${jersey-server.version}</version>-->
+    <!--</dependency>-->
 
-    <!--  Gson: Java to Json conversion -->
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>${gson.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>${httpclient.version}</version>
-    </dependency>
+    <!--&lt;!&ndash;  Gson: Java to Json conversion &ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>com.google.code.gson</groupId>-->
+      <!--<artifactId>gson</artifactId>-->
+      <!--<version>${gson.version}</version>-->
+      <!--<scope>compile</scope>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.httpcomponents</groupId>-->
+      <!--<artifactId>httpclient</artifactId>-->
+      <!--<version>${httpclient.version}</version>-->
+    <!--</dependency>-->
 
     <!-- Logback -->
     <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->

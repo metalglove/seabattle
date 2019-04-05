@@ -1,9 +1,10 @@
 package seabattlegame.listeners;
 
 import domain.Ship;
+import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
-import seabattlegame.Client;
-import seabattlegame.MultiPlayerSeaBattleGame;
+import messaging.utilities.MessageLogger;
+import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -11,27 +12,33 @@ import java.beans.PropertyChangeListener;
 
 public class PlaceShipsAutomaticallyResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
-    private final MultiPlayerSeaBattleGame multiPlayerSeaBattleGame;
+    private final ISeaBattleGame game;
     private final int playerNumber;
-    private final Client client;
+    private final ObservableClientSocket client;
+    private final MessageLogger messageLogger;
 
-    public PlaceShipsAutomaticallyResponseChangeListener(ISeaBattleGUI application, MultiPlayerSeaBattleGame multiPlayerSeaBattleGame, int playerNumber, Client client) {
+    public PlaceShipsAutomaticallyResponseChangeListener(ISeaBattleGUI application, ISeaBattleGame game, int playerNumber, ObservableClientSocket client, MessageLogger messageLogger) {
         this.application = application;
-        this.multiPlayerSeaBattleGame = multiPlayerSeaBattleGame;
+        this.game = game;
         this.playerNumber = playerNumber;
         this.client = client;
+        this.messageLogger = messageLogger;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         PlaceShipsAutomaticallyResponse response = (PlaceShipsAutomaticallyResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Failed to automatically place all ships!");
+            messageLogger.error("Failed to automatically place all ships!");
         } else {
-            for (Ship ship : response.ships) {
+            for (Ship ship : response.getShipsToRemove()) {
+                application.removeShip(playerNumber, ship);
+            }
+            for (Ship ship : response.getShipsToAdd()) {
                 application.placeShip(playerNumber, ship);
             }
-            multiPlayerSeaBattleGame.hasPlacedAllShips = true;
+            game.setHasPlacedAllShips(true);
         }
         client.removeListener(PlaceShipsAutomaticallyResponse.class.getSimpleName(), this);
     }
