@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import domain.Player;
 import dtos.RegisterPlayerResultDto;
 import interfaces.ISeaBattleGameService;
@@ -11,7 +12,6 @@ import messaging.messages.requests.StartNewGameRequest;
 import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.messages.responses.StartNewGameResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 public class StartNewGameRequestHandler implements RequestHandler<StartNewGameRequest> {
 
@@ -29,13 +29,13 @@ public class StartNewGameRequestHandler implements RequestHandler<StartNewGameRe
 
     @Override
     public void handle(StartNewGameRequest request, AsyncIdentifiableClientSocket client) {
-        StartNewGameResponse response = new StartNewGameResponse(request.playerNumber, false, null, null);
+        StartNewGameResponse response = new StartNewGameResponse(request.getPlayerNumber(), false, null, null);
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
         Player player = rest.getPlayer(client.getName());
         if (player != null) {
-            RegisterPlayerResultDto registerPlayerResultDto = gameService.registerPlayer(player, request.multiPlayer);
+            RegisterPlayerResultDto registerPlayerResultDto = gameService.registerPlayer(player, request.isMultiPlayer());
             if (registerPlayerResultDto.isSuccess()) {
-                response = new StartNewGameResponse(request.playerNumber, true, registerPlayerResultDto.getOpponentName(), registerPlayerResultDto.getOpponentPlayerNumber());
+                response = new StartNewGameResponse(request.getPlayerNumber(), true, registerPlayerResultDto.getOpponentName(), registerPlayerResultDto.getOpponentPlayerNumber());
                 if (registerPlayerResultDto.getOpponentName() != null && registerPlayerResultDto.getOpponentPlayerNumber() > 0) {
                     AsyncIdentifiableClientSocket opponent = serverSocket.getClientById(registerPlayerResultDto.getOpponentPlayerNumber());
                     serverSocket.startWriting(opponent, new OpponentRegisterResponse(player.getUsername(), player.getPlayerNumber(), true));

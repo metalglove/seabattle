@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import dtos.PlaceShipsAutomaticallyResultDto;
 import interfaces.ISeaBattleGameService;
 import interfaces.RequestHandler;
@@ -8,7 +9,6 @@ import messaging.interfaces.WritingSocket;
 import messaging.messages.requests.PlaceShipsAutomaticallyRequest;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 public class PlaceShipsAutomaticallyRequestHandler implements RequestHandler<PlaceShipsAutomaticallyRequest> {
 
@@ -24,12 +24,12 @@ public class PlaceShipsAutomaticallyRequestHandler implements RequestHandler<Pla
 
     @Override
     public void handle(PlaceShipsAutomaticallyRequest request, AsyncIdentifiableClientSocket client) {
-        PlaceShipsAutomaticallyResponse response = new PlaceShipsAutomaticallyResponse(request.playerNumber, null, null,false);;
+        PlaceShipsAutomaticallyResponse response = new PlaceShipsAutomaticallyResponse(request.getPlayerNumber(), null, null,false);;
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
-        final PlaceShipsAutomaticallyResultDto resultDto = gameService.placeShipsAutomatically(request.playerNumber);
+        final PlaceShipsAutomaticallyResultDto resultDto = gameService.placeShipsAutomatically(request.getPlayerNumber());
 
         if (resultDto.isSuccess())
-            response = new PlaceShipsAutomaticallyResponse(request.playerNumber, resultDto.getShipsToAdd(), resultDto.getShipsToRemove(), true);
+            response = new PlaceShipsAutomaticallyResponse(request.getPlayerNumber(), resultDto.getShipsToAdd(), resultDto.getShipsToRemove(), true);
 
         requestMessageHandler.completed(response, request);
     }

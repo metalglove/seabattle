@@ -3,14 +3,16 @@
  */
 package seabattlegame;
 
+import common.MessageLogger;
 import domain.ShipType;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.requests.*;
 import messaging.messages.responses.*;
-import messaging.utilities.MessageLogger;
 import seabattlegame.listeners.*;
 import seabattlegui.ISeaBattleGUI;
 import seabattlegui.SquareState;
+
+import java.util.Objects;
 
 import static java.lang.String.format;
 
@@ -40,6 +42,13 @@ public class SeaBattleGame implements ISeaBattleGame {
 
     @Override
     public void registerPlayer(String name, String password, boolean multiPlayer) {
+        if (Objects.isNull(name) || Objects.isNull(password) || Objects.isNull(multiPlayer))
+            throw new IllegalArgumentException("Parameters can not be null");
+        if (name.isBlank())
+            throw new IllegalArgumentException("Name may not be blank.");
+        if (password.isBlank())
+            throw new IllegalArgumentException("Password may not be blank.");
+
         gameMessageLogger.info(format("Register Player %s - password %s - Mode %s", name, password, multiPlayer ? "Multi-Player" : "Single-Player"));
         if ("CPU".equals(name)) {
             application.showErrorMessage("You are not allowed to be named CPU, this is reserved for the AI in SinglePlayer Mode.");
@@ -120,6 +129,10 @@ public class SeaBattleGame implements ISeaBattleGame {
         if (!isPlayersTurn) {
             application.showErrorMessage("It is not your turn yet.");
             application.showSquareOpponent(playerNr, posX, posY, SquareState.WATER);
+            return;
+        }
+        if (posX < 0 || posX > 9 || posY < 0 || posY > 9) {
+            application.showErrorMessage("Position is out of range!");
             return;
         }
         client.addListener(FireShotResponse.class.getSimpleName(), new FireShotResponseChangeListener(application, this, client, handlerMessageLogger));

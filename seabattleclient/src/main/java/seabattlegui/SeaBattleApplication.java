@@ -3,6 +3,7 @@
  */
 package seabattlegui;
 
+import common.MessageLogger;
 import domain.Point;
 import domain.Ship;
 import domain.ShipType;
@@ -23,12 +24,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import messaging.utilities.MessageLogger;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
@@ -94,6 +98,8 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     // Squares for the ocean area
     private Rectangle[][] squaresOceanArea;
 
+    private List<Ship> playerShips;
+
     // Sea battle game
     private ISeaBattleGame game;
 
@@ -140,6 +146,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     // for returning color on previous selected square
     private Color oldColorPress = null;
     private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -488,6 +495,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             }
         }
 
+        playerShips = new ArrayList<>();
         // Define title and assign the scene for main window
         primaryStage.setTitle("Sea battle: the game");
         primaryStage.setScene(scene);
@@ -605,34 +613,28 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     @Override
     public void playerFiresShot(int playerNr, ShotType shotType, Point point) {
-        // Check identification of player
-        //if (playerNr != this.playerNr) {
-        //    showMessage("ERROR: Wrong player number method playerFiresShot()");
-        //    return;
-        //}
         SquareState squareState;
-        //String message = "";
         switch (shotType) {
             case HIT:
                 squareState = SquareState.SHOTHIT;
+                //messageLogger.info("Shot hit one of the ships of " + opponentName);
                 break;
             case SUNK:
                 squareState = SquareState.SHIPSUNK;
-                //message = "Ship of " + opponentName + " is sunk";
+                //messageLogger.info("Ship of " + opponentName + " is sunk.");
                 break;
             case ALLSUNK:
-                //message = "Winner: " + playerName + ".\nPress Start new game to continue";
                 squareState = SquareState.SHIPSUNK;
+                //messageLogger.info("All ships of "+ opponentName +  " have sunk.");
                 buttonStartNewGame.setDisable(false);
                 gameEnded = true;
                 break;
             default:
                 squareState = SquareState.SHOTMISSED;
+                //messageLogger.info("Shot missed all ships of " + opponentName);
                 break;
         }
-
         showSquareOpponent(playerNr, point.getX(), point.getY(), squareState);
-        //showErrorMessage(message);
     }
 
     /**
@@ -648,34 +650,28 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     @Override
     public void opponentFiresShot(int playerNr, ShotType shotType, Point point) {
-        // Check identification of player
-        //if (playerNr != this.playerNr) {
-        //    showMessage("ERROR: Wrong player number method opponentFiresShot()");
-        //    return;
-        //}
         SquareState squareState;
-        //String message = "";
         switch (shotType) {
             case HIT:
                 squareState = SquareState.SHOTHIT;
+                //messageLogger.info("Shot hit one of the ships of " + playerName);
                 break;
             case SUNK:
                 squareState = SquareState.SHIPSUNK;
-                //message = "Ship of " + playerName + " is sunk";
+                //messageLogger.info("Ship of " + playerName + " is sunk.");
                 break;
             case ALLSUNK:
-                //message = "Winner: " + opponentName + ".\nPress Start new game to continue";
                 squareState = SquareState.SHIPSUNK;
+                //messageLogger.info("All ships of "+ playerName +  " have sunk.");
                 buttonStartNewGame.setDisable(false);
                 gameEnded = true;
                 break;
             default:
                 squareState = SquareState.SHOTMISSED;
+                //messageLogger.info("Shot missed all ships of " + playerName);
                 break;
         }
-
         showSquarePlayer(playerNr, point.getX(), point.getY(), squareState);
-        //showErrorMessage(message);
     }
 
     /**
@@ -689,28 +685,11 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     @Override
     public void showSquarePlayer(int playerNr, final int posX, final int posY, final SquareState squareState) {
-        // Check identification of player
-        //if (playerNr != this.playerNr) {
-        //    showMessage("ERROR: Wrong player number method showSquarePlayer()");
-        //    return;
-        //}
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Rectangle square = squaresOceanArea[posX][posY];
-                setSquareColor(square, squareState);
-            }
+        Platform.runLater(() -> {
+            Rectangle square = squaresOceanArea[posX][posY];
+            setSquareColor(square, squareState);
         });
     }
-
-    /**
-     * Show state of a square in the target area.
-     * The color of the square depends on the state of the square.
-     *
-     * @param playerNr    identification of player
-     * @param posX        x-position of square
-     * @param posY        y-position of square
-     */
 
     /**
      * Show state of a square in the target area.
@@ -723,17 +702,9 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     @Override
     public void showSquareOpponent(int playerNr, final int posX, final int posY, final SquareState squareState) {
-        // Check identification of player
-        //if (playerNr != this.playerNr) {
-        //    showMessage("ERROR: Wrong player number method showSquareOpponent()");
-        //    return;
-        //}
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Rectangle square = squaresTargetArea[posX][posY];
-                setSquareColor(square, squareState);
-            }
+        Platform.runLater(() -> {
+            Rectangle square = squaresTargetArea[posX][posY];
+            setSquareColor(square, squareState);
         });
     }
 
@@ -755,7 +726,6 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
      */
     @Override
     public void showErrorMessage(int playerNr, String errorMessage) {
-        // Show the error message as an alert message
         showMessage(errorMessage);
     }
 
@@ -817,9 +787,8 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             game = new SeaBattleGame(this, client);
             game.registerPlayer(playerName, playerPassword, !singlePlayerMode);
         } catch (IOException e) {
-            e.printStackTrace();
+            messageLogger.error(e.getMessage());
             showMessage("Connecting with server failed try again later..");
-            return;
         }
     }
 
@@ -854,27 +823,18 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     private void startNewGame() {
         // The player wants to start a new game.
         game.startNewGame(playerNr, !singlePlayerMode);
+        playerShips = new ArrayList<>();
         playingMode = false;
         gameEnded = false;
-        //labelYourName.setDisable(false);
-        //textFieldPlayerName.setDisable(false);
-        //labelYourPassword.setDisable(false);
-        //passwordFieldPlayerPassword.setDisable(false);
-        //radioSinglePlayer.setDisable(false);
-        //radioMultiPlayer.setDisable(false);
-        //buttonRegisterPlayer.setDisable(false);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                for (Rectangle[] rects : squaresOceanArea) {
-                    for (Rectangle rect : rects) {
-                        rect.setFill(Color.LIGHTBLUE);
-                    }
+        Platform.runLater(() -> {
+            for (Rectangle[] rects : squaresOceanArea) {
+                for (Rectangle rect : rects) {
+                    rect.setFill(Color.LIGHTBLUE);
                 }
-                for (Rectangle[] rects : squaresTargetArea) {
-                    for (Rectangle rect : rects) {
-                        rect.setFill(Color.LIGHTBLUE);
-                    }
+            }
+            for (Rectangle[] rects : squaresTargetArea) {
+                for (Rectangle rect : rects) {
+                    rect.setFill(Color.LIGHTBLUE);
                 }
             }
         });
@@ -924,15 +884,12 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         // the Alert message is executed by the JavaFX Application Thread
         messageLogger.info(format("Show Message for %s - %s", playerName, message));
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Sea battle");
-                alert.setHeaderText("Message for " + playerName);
-                alert.setContentText(message);
-                alert.showAndWait();
-            }
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Sea battle");
+            alert.setHeaderText("Message for " + playerName);
+            alert.setContentText(message);
+            alert.showAndWait();
         });
     }
 
@@ -965,7 +922,6 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         }
     }
 
-
     /**
      * Event handler when mouse button is pressed in rectangle in ocean area.
      * When not in playing mode: the square that was selected before will
@@ -983,8 +939,8 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             if (squareSelectedInOceanArea) {
                 if (oldColorPress != null) {
                     Rectangle square = squaresOceanArea[selectedSquareX][selectedSquareY];
-                    Color asd = Color.color(oldColorPress.getRed(), oldColorPress.getGreen(), oldColorPress.getBlue());
-                    square.setFill(asd);
+                    Color color = getPreviousSelectedColor();
+                    square.setFill(color);
                 }
             }
             selectedSquareX = x;
@@ -997,25 +953,30 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         }
     }
 
-    /**
-     * Method to switch player's turn.
-     * This method is synchronized because switchTurn() may be
-     * called by the Java FX Application thread or by another thread
-     * handling communication with the game server.
-     */
-    //private synchronized void switchTurn() {
-    //    playerTurn = 1 - playerTurn;
-    //}
-
-    /**
-     * Method to check whether it is this player's turn.
-     * This method is synchronized because switchTurn() may be
-     * called by the Java FX Application thread or another thread
-     * handling communication with the game server.
-     */
-    //private synchronized boolean playersTurn() {
-     //   return playerNr == playerTurn;
-    //}
+    private Color getPreviousSelectedColor() {
+        Color color = Color.color(oldColorPress.getRed(), oldColorPress.getGreen(), oldColorPress.getBlue());
+        Point selectedPoint = new Point(selectedSquareX, selectedSquareY);
+        outer:
+        for (Ship ship : playerShips) {
+            if (ship.isSunk()) {
+                color = Color.GREEN;
+                break;
+            }
+            for (Point point : ship.getPoints()) {
+                if (point.equals(selectedPoint)) {
+                    color = Color.DARKGRAY; // SHIP
+                    break outer;
+                }
+            }
+            for (Point point : ship.getPointsHit()) {
+                if (point.equals(selectedPoint)) {
+                    color = Color.RED; // SHIP
+                    break outer;
+                }
+            }
+        }
+        return color;
+    }
 
     /**
      * @param args the command line arguments
@@ -1024,25 +985,50 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         launch(args);
     }
 
-    /* new methods.. */
     @Override
     public void placeShip(int playerNr, Ship ship) {
-        if (this.playerNr == playerNr) {
-            for (Point point : ship.getPoints()) {
-                Rectangle square = squaresOceanArea[point.getX()][point.getY()];
-                setSquareColor(square, SquareState.SHIP);
-            }
-        }
+        playerShips.add(ship);
+        redrawShips();
     }
 
     @Override
     public void removeShip(int playerNumber, Ship shipToRemove) {
-        if (this.playerNr == playerNumber) {
-            for (Point point : shipToRemove.getPoints()) {
-                Rectangle square = squaresOceanArea[point.getX()][point.getY()];
-                setSquareColor(square, SquareState.WATER);
-            }
+        Stream<Ship> shipStream = playerShips.stream();
+        final Optional<Ship> optionalShip = shipStream.filter(x -> x.getClass().equals(shipToRemove.getClass())).findFirst();
+        if (optionalShip.isPresent()) {
+            playerShips.remove(optionalShip.get());
+        } else {
+            messageLogger.error("removeShip failed!");
         }
+        redrawShips();
+        oldColorPress = null;
+    }
+
+    private void redrawShips() {
+        Platform.runLater(() -> {
+            for (Rectangle[] rects : squaresOceanArea) {
+                for (Rectangle rect : rects) {
+                    rect.setFill(Color.LIGHTBLUE);
+                }
+            }
+            for (Ship ship : playerShips) {
+                if (ship.isSunk()) {
+                    for (Point point : ship.getPointsHit()) {
+                        Rectangle square = squaresOceanArea[point.getX()][point.getY()];
+                        setSquareColor(square, SquareState.SHIPSUNK);
+                    }
+                } else {
+                    for (Point point : ship.getPoints()) {
+                        Rectangle square = squaresOceanArea[point.getX()][point.getY()];
+                        setSquareColor(square, SquareState.SHIP);
+                    }
+                    for (Point point : ship.getPointsHit()) {
+                        Rectangle square = squaresOceanArea[point.getX()][point.getY()];
+                        setSquareColor(square, SquareState.SHOTHIT);
+                    }
+                }
+            }
+        });
     }
 
     @Override

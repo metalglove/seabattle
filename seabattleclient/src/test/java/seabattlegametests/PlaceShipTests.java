@@ -1,10 +1,21 @@
 package seabattlegametests;
 
+import domain.Point;
 import domain.ShipType;
+import domain.ships.*;
+import messaging.messages.responses.NotifyWhenReadyResponse;
+import messaging.messages.responses.PlaceShipResponse;
+import messaging.messages.responses.RegisterResponse;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seabattlegame.ISeaBattleGame;
+import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
-import seabattleunittests.SeaBattleGameTests;
+import seabattleunittests.MockClient;
+import seabattleunittests.MockSeaBattleApplication;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Place ship of given type. A ship of given type will be placed with its
@@ -22,236 +33,113 @@ import seabattleunittests.SeaBattleGameTests;
  * param bowY       y-coordinate of bow
  * param horizontal indicate whether ship will placed horizontally or vertically
  */
-public class PlaceShipTests extends SeaBattleGameTests {
-    @Test
-    public void should_Not_Place_Ship_On_Wrong_playerGame() {
-        // Arrange
-        //applicationPlayer = new MockSeaBattleApplication();
-        //try {
-        //    game = new SeaBattleGame(applicationPlayer);
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //}
-        //applicationOpponent = new MockSeaBattleApplication();
-        game.registerPlayer("player1", "sdsd", true);
-        game.registerPlayer("player2", "sdsd", true);
+public class PlaceShipTests {
+    private ISeaBattleGame game;
+    private MockSeaBattleApplication application;
+    private MockClient client;
 
-        SquareState expectedPlayer2Value = SquareState.WATER;
+    @SuppressWarnings("Duplicates")
+    @BeforeEach
+    public void setUp() {
+        // Create the mock socket client
+        client = new MockClient();
+
+        // Create mock Sea Battle GUI for player
+        application = new MockSeaBattleApplication();
+
+        // Create the game
+        game = new SeaBattleGame(application, client);
+        game.registerPlayer("Henk", "Karel32", false);
+        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU"));
+    }
+
+    @Test
+    public void should_Not_Place_Cruiser_On_X3_Y3_Horizontally_True_When_A_BattleShip_Is_Placed_On_X2_Y2_Horizontally_Is_False() {
+        // Arrange
+        game.placeShip(1, ShipType.BATTLESHIP, 2,2,false);
+        client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(2, 2), false), true,null, false));
 
         // Act
         game.placeShip(1, ShipType.CRUISER, 3,3,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new Cruiser(new Point(3, 3), true), false, null, false));
 
         // Assert
-        final SquareState player2SquareState = applicationOpponent.getPlayerSquareState(3, 3);
-        Assertions.assertEquals(expectedPlayer2Value, player2SquareState);
+        Assertions.assertEquals(SquareState.WATER, application.getPlayerSquareState(4, 3));
     }
 
     @Test
-    public void should_Not_Place_Cruiser_On_X3_Y3_Horizontally_True_When_A_BattleShip_Is_Placed_On_X4_Y4_Horizontally_Is_False() {
-        // Arrange
-        game.placeShip(1, ShipType.BATTLESHIP, 4,2,false);
-
-        // Act
-        game.placeShip(1, ShipType.CRUISER, 3,3,true);
-
-        // Assert
-        final SquareState playerSquareState = applicationPlayer.getPlayerSquareState(3, 3);
-
-        Assertions.assertEquals(SquareState.WATER, playerSquareState);
-    }
-
-    @Test
-    public void should_Contain_15_SquareStates_Of_Ship_When_All_Ships_Are_Successfully_Placed() {
-        // Arrange
-        int expected = 15;
-
-        // Act
+    public void should_Contain_17_SquareStates_Of_Ship_When_All_Ships_Are_Successfully_Placed() {
+        // Arrange & Act
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new AircraftCarrier(new Point(1, 1), true), true,null, false));
         game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(1, 2), true), true,null, false));
         game.placeShip(1, ShipType.CRUISER, 1,3,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new Cruiser(new Point(1, 3), true), true,null, false));
         game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new Submarine(new Point(1, 4), true), true,null, false));
         game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new MineSweeper(new Point(1, 5), true), true,null, true));
 
         // Assert
-        final int actualShipSquareCount = applicationPlayer.numberSquaresPlayerWithSquareState(SquareState.SHIP);
-        Assertions.assertEquals(expected, actualShipSquareCount);
+        assertEquals(17, application.numberSquaresPlayerWithSquareState(SquareState.SHIP));
     }
 
-    @Test
-    public void should_Place_5_Different_Ships_Horizontally_Below_Each_Other_When_Horizontally_Is_True() {
-        // Arrange
-        final SquareState playerSquareStateBeforeAIRCRAFTCARRIER = applicationPlayer.getPlayerSquareState(1, 1);
-        final SquareState playerSquareStateBeforeBATTLESHIP = applicationPlayer.getPlayerSquareState(1, 2);
-        final SquareState playerSquareStateBeforeCRUISER = applicationPlayer.getPlayerSquareState(1, 3);
-        final SquareState playerSquareStateBeforeSUBMARINE = applicationPlayer.getPlayerSquareState(1, 4);
-        final SquareState playerSquareStateBeforeMINESWEEPER = applicationPlayer.getPlayerSquareState(1, 5);
-
-        // Act
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(1, ShipType.CRUISER, 1,3,true);
-        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
-
-        // Assert
-        final SquareState playerSquareStateAfterAIRCRAFTCARRIER = applicationPlayer.getPlayerSquareState(1, 1);
-        final SquareState playerSquareStateAfterBATTLESHIP = applicationPlayer.getPlayerSquareState(1, 2);
-        final SquareState playerSquareStateAfterCRUISER = applicationPlayer.getPlayerSquareState(1, 3);
-        final SquareState playerSquareStateAfterSUBMARINE = applicationPlayer.getPlayerSquareState(1, 4);
-        final SquareState playerSquareStateAfterMINESWEEPER = applicationPlayer.getPlayerSquareState(1, 5);
-
-        Assertions.assertNotEquals(playerSquareStateBeforeAIRCRAFTCARRIER, playerSquareStateAfterAIRCRAFTCARRIER);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfterAIRCRAFTCARRIER);
-        Assertions.assertNotEquals(playerSquareStateBeforeBATTLESHIP, playerSquareStateAfterBATTLESHIP);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfterBATTLESHIP);
-        Assertions.assertNotEquals(playerSquareStateBeforeCRUISER, playerSquareStateAfterCRUISER);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfterCRUISER);
-        Assertions.assertNotEquals(playerSquareStateBeforeSUBMARINE, playerSquareStateAfterSUBMARINE);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfterSUBMARINE);
-        Assertions.assertNotEquals(playerSquareStateBeforeMINESWEEPER, playerSquareStateAfterMINESWEEPER);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfterMINESWEEPER);
-    }
-
-    @Test
+     @Test
     public void should_Remove_First_Placed_BattleShip_When_Second_Is_Placed() {
-        // Arrange
-        game.placeShip(1, ShipType.BATTLESHIP, 3,3,true);
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(3, 3);
+         // Arrange
+         game.placeShip(1, ShipType.BATTLESHIP, 2,2,false);
+         client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(2, 2), false), true,null, false));
 
-        // Act
-        game.placeShip(1, ShipType.BATTLESHIP, 4,4,true);
-
-        // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(3, 3);
-        final SquareState playerSquareStateAfterFor2ndShip = applicationPlayer.getPlayerSquareState(4, 4);
-        Assertions.assertNotEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.WATER, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfterFor2ndShip);
-    }
-
-    @Test
-    public void should_Place_MineSweeper_On_3X_Y3_When_Horizontally_Is_True() {
-        // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(3, 3);
-
-        // Act
-        game.placeShip(1, ShipType.MINESWEEPER, 3,3,true);
+         // Act
+         game.placeShip(1, ShipType.BATTLESHIP, 3,3,true);
+         client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(3, 3), true), true, new BattleShip(new Point(2, 2), false), false));
 
         // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(3, 3);
-        Assertions.assertNotEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfter);
-    }
-
-    @Test
-    public void should_Place_Cruiser_On_3X_Y3_When_Horizontally_Is_True() {
-        // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(3, 3);
-
-        // Act
-        game.placeShip(1, ShipType.CRUISER, 3,3,true);
-
-        // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(3, 3);
-        Assertions.assertNotEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfter);
-    }
-
-    @Test
-    public void should_Place_Submarine_On_3X_Y3_When_Horizontally_Is_False() {
-        // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(3, 3);
-
-        // Act
-        game.placeShip(1, ShipType.SUBMARINE, 3,3,false);
-
-        // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(3, 3);
-        Assertions.assertNotEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfter);
-    }
-
-    @Test
-    public void should_Place_BattleShip_On_4X_4Y_When_Horizontally_Is_True() {
-        // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(4, 4);
-
-        // Act
-        game.placeShip(1, ShipType.BATTLESHIP, 4,4,true);
-
-        // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(4, 4);
-        Assertions.assertNotEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfter);
+         Assertions.assertEquals(SquareState.WATER, application.getPlayerSquareState(2, 2));
     }
 
     @Test
     public void should_Not_Place_BattleShip_On_9X_4Y_When_Horizontally_Is_True() {
-        // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(9, 4);
-
-        // Act
+        // Arrange & Act
         game.placeShip(1, ShipType.BATTLESHIP, 9,4,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(9, 4), true), false,null, false));
 
         // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(9, 4);
-        Assertions.assertNotEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfter);
+        assertEquals(SquareState.WATER, application.getPlayerSquareState(9, 4));
     }
 
     @Test
-    public void should_Not_Place_BattleShip_On_4X_5Y_When_Horizontally_Is_False() {
-        // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(4, 5);
-
-        // Act
-        game.placeShip(1, ShipType.BATTLESHIP, 4,5,false);
+    public void should_Not_Place_BattleShip_On_4X_7Y_When_Horizontally_Is_False() {
+        // Arrange & Act
+        game.placeShip(1, ShipType.BATTLESHIP, 4,7,false);
+        client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(4, 7), false), false,null, false));
 
         // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(4, 5);
-        Assertions.assertNotEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfter);
+        assertEquals(SquareState.WATER, application.getPlayerSquareState(4, 7));
     }
 
     @Test
-    public void should_Place_AircraftCarrier_On_1X_1Y_When_Horizontally_Is_True() {
+    public void should_Set_ErrorMessage_When_Player_Is_Already_Ready() {
         // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(1, 1);
-
-        // Act
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
-
-        // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(1, 1);
-        Assertions.assertNotEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertEquals(SquareState.SHIP, playerSquareStateAfter);
-    }
-
-    @Test
-    public void should_Not_Place_AircraftCarrier_On_1X_1Y_When_Horizontally_Is_False() {
-        // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(1, 1);
-
-        // Act
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,false);
-
-        // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(1, 1);
-        Assertions.assertEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertNotEquals(SquareState.SHIP, playerSquareStateAfter);
-    }
-
-    @Test
-    public void should_Not_Place_AircraftCarrier_On_6X_1Y_When_Horizontally_Is_True() {
-        // Arrange
-        final SquareState playerSquareStateBefore = applicationPlayer.getPlayerSquareState(6, 1);
+        client.setMockUpResponse(new PlaceShipResponse(1, new AircraftCarrier(new Point(1, 1), true), true,null, false));
+        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(1, 2), true), true,null, false));
+        game.placeShip(1, ShipType.CRUISER, 1,3,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new Cruiser(new Point(1, 3), true), true,null, false));
+        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new Submarine(new Point(1, 4), true), true,null, false));
+        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new MineSweeper(new Point(1, 5), true), true,null, true));
+        game.notifyWhenReady(1);
+        client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
 
         // Act
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 6,1,true);
+        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
 
         // Assert
-        final SquareState playerSquareStateAfter = applicationPlayer.getPlayerSquareState(6, 1);
-        Assertions.assertEquals(playerSquareStateBefore, playerSquareStateAfter);
-        Assertions.assertNotEquals(SquareState.SHIP, playerSquareStateAfter);
+        assertEquals("You are not allowed to change your ships after readying up.", application.getErrorMessage());
     }
+
 }

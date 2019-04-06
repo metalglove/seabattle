@@ -1,8 +1,8 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.PlaceShipResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -27,17 +27,17 @@ public class PlaceShipResponseChangeListener implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         PlaceShipResponse response = (PlaceShipResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Failed to place the ship!");
             messageLogger.error("Failed to place the ship!");
         } else {
-            if (response.shipToRemove != null) {
-                application.removeShip(playerNumber, response.shipToRemove);
+            if (response.getShipToRemove() != null) {
+                application.removeShip(playerNumber, response.getShipToRemove());
             }
-            if (response.hasPlacedAllShips) {
+            if (response.hasPlacedAllShips()) {
                 game.setHasPlacedAllShips(true);
             }
-            application.placeShip(playerNumber, response.ship);
+            application.placeShip(playerNumber, response.getShip());
         }
         client.removeListener(PlaceShipResponse.class.getSimpleName(), this);
     }

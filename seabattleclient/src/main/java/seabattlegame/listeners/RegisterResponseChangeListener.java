@@ -1,9 +1,9 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.messages.responses.RegisterResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -28,7 +28,7 @@ public class RegisterResponseChangeListener implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         RegisterResponse response = (RegisterResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Failed to register!");
             messageLogger.error("Failed to register!");
         } else {

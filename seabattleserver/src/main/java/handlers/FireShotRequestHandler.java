@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import domain.Point;
 import domain.ShotType;
 import dtos.FireShotResultDto;
@@ -12,7 +13,10 @@ import messaging.messages.requests.FireShotRequest;
 import messaging.messages.responses.FireShotResponse;
 import messaging.messages.responses.OpponentFireShotResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class FireShotRequestHandler implements RequestHandler<FireShotRequest> {
 
@@ -31,17 +35,17 @@ public class FireShotRequestHandler implements RequestHandler<FireShotRequest> {
     @Override
     public void handle(FireShotRequest request, AsyncIdentifiableClientSocket client) {
         // TODO: refactor
-        FireShotResponse response = new FireShotResponse(request.firingPlayerNumber, null, null, null, false);
+        FireShotResponse response = new FireShotResponse(request.getFiringPlayerNumber(), null, null, null, false);
         OpponentFireShotResponse aiResponse = null;
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
         AsyncRequestMessageHandler requestMessageHandlerAI = null;
-        int opponent = 0; // TODO: zds
-        FireShotResultDto fireShotResultDto = gameService.fireShot(request.firingPlayerNumber, request.posX, request.posY);
+        int opponent = 0;
+        FireShotResultDto fireShotResultDto = gameService.fireShot(request.getFiringPlayerNumber(), request.getPosX(), request.getPosY());
         if (fireShotResultDto != null) {
-            Point point = new Point(request.posX, request.posY);
+            Point point = new Point(request.getPosX(), request.getPosY());
             opponent = fireShotResultDto.getReceivingPlayerNumber();
             if (opponent <= 0) {
-                response = new FireShotResponse(request.firingPlayerNumber, fireShotResultDto.getShotType(), point, fireShotResultDto.getShip(),true);
+                response = new FireShotResponse(request.getFiringPlayerNumber(), fireShotResultDto.getShotType(), point, fireShotResultDto.getShip(),true);
                 if (fireShotResultDto.getShotType() != ShotType.ALLSUNK) {
                     requestMessageHandlerAI = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
                     aiResponse = seaBattleGameAI.counterShoot(new OpponentFireShotResponse(fireShotResultDto.getFiringPlayerNumber(), fireShotResultDto.getPoint(), fireShotResultDto.getShotType(), fireShotResultDto.getShip(), true), opponent);
@@ -51,20 +55,27 @@ public class FireShotRequestHandler implements RequestHandler<FireShotRequest> {
                 if (opponentClient != null) {
                     serverSocket.startWriting(opponentClient, new OpponentFireShotResponse(
                             fireShotResultDto.getFiringPlayerNumber(), fireShotResultDto.getPoint(), fireShotResultDto.getShotType(), fireShotResultDto.getShip(), true));
-                    response = new FireShotResponse(request.firingPlayerNumber, fireShotResultDto.getShotType(), point, fireShotResultDto.getShip(),true);
+                    response = new FireShotResponse(request.getFiringPlayerNumber(), fireShotResultDto.getShotType(), point, fireShotResultDto.getShip(),true);
                 } else {
                     // Server faulted
-                    response = new FireShotResponse(request.firingPlayerNumber, null, point,null, false);
+                    response = new FireShotResponse(request.getFiringPlayerNumber(), null, point,null, false);
                 }
             }
         }
         try {
             requestMessageHandler.completed(response, request);
-
         } finally {
             // TODO: hopefully it is not to fast :phapoPOGGERS:
             if (requestMessageHandlerAI != null) {
-                requestMessageHandlerAI.completed(aiResponse, new FireShotRequest(opponent, response.point.getX(), response.point.getY()));
+                ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+                final AsyncRequestMessageHandler finalRequestMessageHandlerAI = requestMessageHandlerAI;
+                final OpponentFireShotResponse finalAiResponse = aiResponse;
+                final int finalOpponent = opponent;
+                final FireShotResponse finalResponse = response;
+                Runnable task = () -> finalRequestMessageHandlerAI.completed(finalAiResponse, new FireShotRequest(finalOpponent, finalResponse.getPoint().getX(), finalResponse.getPoint().getY()));
+                executor.schedule(task, 500, TimeUnit.MILLISECONDS);
+                executor.shutdown();
+                //requestMessageHandlerAI.completed(aiResponse, new FireShotRequest(opponent, response.point.getX(), response.point.getY()));
             }
         }
     }

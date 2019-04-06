@@ -1,5 +1,6 @@
 package seabattleserver;
 
+import common.MessageLogger;
 import handlers.*;
 import interfaces.IFactory;
 import interfaces.ISeaBattleGameService;
@@ -16,7 +17,6 @@ import messaging.messages.Message;
 import messaging.messages.requests.*;
 import messaging.sockets.AsyncIdentifiableClientSocket;
 import messaging.utilities.MessageConverter;
-import messaging.utilities.MessageLogger;
 import services.SeaBattleGameAI;
 
 import java.io.IOException;
@@ -108,7 +108,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
         try {
             object = MessageConverter.convertFromBytes(bytes);
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            serverMessageLogger.error(e.getMessage());
             return;
         }
         serverMessageLogger.info("Message is " + object.getClass().getSimpleName());

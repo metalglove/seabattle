@@ -1,10 +1,8 @@
 package seabattleunittests;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.Message;
-import messaging.messages.requests.RegisterRequest;
-import messaging.messages.responses.RegisterResponse;
-import messaging.utilities.MessageLogger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -18,6 +16,7 @@ public class MockClient implements ObservableClientSocket {
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final MessageLogger messageLogger = new MessageLogger("MOCK-CLIENT");
     private final List<Message> messages = Collections.synchronizedList(new ArrayList<>());
+    private Message response = null;
 
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -52,8 +51,15 @@ public class MockClient implements ObservableClientSocket {
     @Override
     public void startWriting(Message message) {
         messageLogger.info("Started writing...");
-        if (message instanceof RegisterRequest) {
-            addMessage(new RegisterResponse(1, true, -1, "CPU"));
-        }
+        messageLogger.info(format("Sent {%s}", message.getClass().getSimpleName()));
+    }
+
+    public Message getResponse() {
+        return response;
+    }
+
+    public void setMockUpResponse(Message response) {
+        this.response = response;
+        addMessage(response);
     }
 }

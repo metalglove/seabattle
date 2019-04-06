@@ -1,10 +1,10 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import domain.Point;
 import domain.ShotType;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.OpponentFireShotResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -27,18 +27,18 @@ public class OpponentFireShotResponseListener implements PropertyChangeListener 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         OpponentFireShotResponse response = (OpponentFireShotResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Opponent fired but server faulted! try again later.");
             messageLogger.error("Opponent fired but server faulted!");
         } else {
-            if (response.ship != null) {
-                for (Point point : response.ship.getPointsHit()) {
-                    application.opponentFiresShot(response.firingPlayerNumber, response.shotType, point);
+            if (response.getShip() != null) {
+                for (Point point : response.getShip().getPointsHit()) {
+                    application.opponentFiresShot(response.getFiringPlayerNumber(), response.getShotType(), point);
                 }
             } else {
-                application.opponentFiresShot(response.firingPlayerNumber, response.shotType, response.point);
+                application.opponentFiresShot(response.getFiringPlayerNumber(), response.getShotType(), response.getPoint());
             }
-            if (response.shotType == ShotType.ALLSUNK) {
+            if (response.getShotType() == ShotType.ALLSUNK) {
                 application.showErrorMessage("You lost!");
                 messageLogger.info("Player lost.");
                 game.endGame();

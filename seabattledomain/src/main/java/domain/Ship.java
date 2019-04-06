@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
+
 public abstract class Ship implements Serializable {
     private final Point startingPoint;
     private final boolean horizontal;
     private List<Point> points = new ArrayList<>();
     private List<Point> pointsHit = new ArrayList<>();
+
     public Ship(Point startingPoint, boolean horizontal) {
         this.startingPoint = startingPoint;
         this.horizontal = horizontal;
@@ -35,35 +38,32 @@ public abstract class Ship implements Serializable {
     }
 
     public List<Point> getPointsHit() {
-        return pointsHit;
+        return List.copyOf(pointsHit);
     }
 
     public boolean containsPoint(Point point) {
-        for(Point o : points) {
-            if(o.equals(point)) {
-                return true;
-            }
-        }
-        return false;
+        return points.stream().anyMatch(o -> o.equals(point));
     }
 
     public boolean isWithinBounds() {
         return points.stream().noneMatch(point -> !boundCheck(point.getX()) || !boundCheck(point.getY()));
     }
 
-    private boolean boundCheck(int bound) {
-        return bound >= 0 && bound <= 9;
-    }
-    public boolean isHorizontal() {
-        return horizontal;
-    }
-
-    public Point getStartingPoint() {
-        return startingPoint;
+    public boolean isSunk() {
+        return points.size() == 0;
     }
 
     public void removePoint(Point point) {
         points.remove(point);
         pointsHit.add(point);
+    }
+
+    private boolean boundCheck(int bound) {
+        return bound >= 0 && bound <= 9;
+    }
+
+    @Override
+    public String toString() {
+        return format("ShipType: %s, Horizontal: %s, Points: %s", getClass().getSimpleName(), horizontal, points);
     }
 }

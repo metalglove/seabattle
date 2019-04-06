@@ -1,12 +1,21 @@
 package seabattlegametests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import domain.ShipType;
+import domain.Point;
+import domain.Ship;
 import domain.ShotType;
+import domain.ships.*;
+import messaging.messages.responses.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import seabattlegame.ISeaBattleGame;
+import seabattlegame.SeaBattleGame;
+import seabattleunittests.MockClient;
+import seabattleunittests.MockSeaBattleApplication;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import seabattleunittests.SeaBattleGameTests;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Fire a shot at the opponent's square with given coordinates.
@@ -28,170 +37,355 @@ import seabattleunittests.SeaBattleGameTests;
  * param posX     x-coordinate of square
  * param posY     y-coordinate of square
  */
-public class FireShotTests extends SeaBattleGameTests {
+public class FireShotTests {
+    private ISeaBattleGame game;
+    private MockSeaBattleApplication application;
+    private MockClient client;
+
+    @SuppressWarnings("Duplicates")
+    @BeforeEach
+    public void setUp() {
+        // Create the mock socket client
+        client = new MockClient();
+
+        // Create mock Sea Battle GUI for player
+        application = new MockSeaBattleApplication();
+
+        // Create the game
+        game = new SeaBattleGame(application, client);
+        game.registerPlayer("Henk", "Karel32", false);
+        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU"));
+        AircraftCarrier aircraftCarrier = new AircraftCarrier(new Point(1, 1), true);
+        BattleShip battleShip = new BattleShip(new Point(1, 2), true);
+        Cruiser cruiser = new Cruiser(new Point(1, 3), true);
+        MineSweeper mineSweeper = new MineSweeper(new Point(1, 4), true);
+        Submarine submarine = new Submarine(new Point(1, 5), true);
+        List<Ship> ships = new ArrayList<>();
+        ships.add(aircraftCarrier);
+        ships.add(battleShip);
+        ships.add(cruiser);
+        ships.add(mineSweeper);
+        ships.add(submarine);
+        game.placeShipsAutomatically(1);
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
+        game.notifyWhenReady(1);
+        client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
+    }
 
     @Test
     public void should_Hit_Opponents_Ship_On_X1_Y1_When_Shot_On_X1_Y1() {
-        // Arrange
-        game.startNewGame(1, true);
-        game.registerPlayer("player1", "sds", true);
-        game.registerPlayer("player2", "sds", true);
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(1, ShipType.CRUISER, 1,3,true);
-        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+        // Arrange & Act
+        game.fireShot(1, 1, 1);
+        Point x1y1 = new Point(1,1);
+        BattleShip battleShip = new BattleShip(x1y1, true);
+        battleShip.removePoint(x1y1);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, x1y1, battleShip, true));
 
-        game.placeShip(2, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(2, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(2, ShipType.CRUISER, 1,3,true);
-        game.placeShip(2, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(2, ShipType.MINESWEEPER, 1,5,true);
-        game.notifyWhenReady(1);
-        game.notifyWhenReady(2);
-        applicationPlayer.notifyStartGame(1);
-        applicationPlayer.notifyStartGame(2);
+        // Assert
+        assertEquals(ShotType.HIT, application.getLastShotPlayer());
+    }
+
+    @Test
+    public void should_Set_ErrorMessage_When_Game_Has_Not_Yet_Started() {
+        // Arrange
+        game.setStarted(false);
 
         // Act
         game.fireShot(1, 1, 1);
 
         // Assert
-        final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
-        Assertions.assertEquals(ShotType.HIT, lastShotOpponent);
-
+        assertEquals("The game has not yet started.", application.getErrorMessage());
     }
+
     @Test
     public void should_Sink_Opponents_Ship_On_X1_Y1_When_Shot_On_All_Ship_Coordinates() {
         // Arrange
-        game.startNewGame(1, true);
-        game.registerPlayer("player1", "sds", true);
-        game.registerPlayer("player2", "sds", true);
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(1, ShipType.CRUISER, 1,3,true);
-        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
-
-        game.placeShip(2, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(2, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(2, ShipType.CRUISER, 1,3,true);
-        game.placeShip(2, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(2, ShipType.MINESWEEPER, 1,5,true);
-        game.notifyWhenReady(1);
-        game.notifyWhenReady(2);
-        applicationPlayer.notifyStartGame(1);
-        applicationPlayer.notifyStartGame(2);
+        Point xy = new Point(1,1);
+        BattleShip battleShip = new BattleShip(xy, true);
+        Point xy2 = new Point(1,1);
+        BattleShip battleShip2 = new BattleShip(xy2, true);
 
         // Act
+        // Player shot: 1
         game.fireShot(1, 1, 1);
+        battleShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, battleShip, true));
+
+        // Opponent shot: 1
+        game.fireShot(-1, 1, 1);
+        battleShip2.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, battleShip2, true));
+
+        // Player shot: 2
         game.fireShot(1, 2, 1);
+        xy = new Point(2, 1);
+        battleShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, battleShip, true));
+
+        // Opponent shot: 2
+        game.fireShot(-1, 2, 1);
+        xy2 = new Point(2, 1);
+        battleShip2.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, battleShip2, true));
+
+        // Player shot: 3
         game.fireShot(1, 3, 1);
+        xy = new Point(3, 1);
+        battleShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, battleShip, true));
+
+        // Opponent shot: 3
+        game.fireShot(-1, 3, 1);
+        xy2 = new Point(3, 1);
+        battleShip2.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, battleShip2, true));
+
+        // Player shot: 4
         game.fireShot(1, 4, 1);
-        game.fireShot(1, 5, 1);
+        xy = new Point(4, 1);
+        battleShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.SUNK, xy, battleShip, true));
 
         // Assert
-        final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
-
-        Assertions.assertEquals(ShotType.SUNK, lastShotOpponent);
+        assertEquals(ShotType.SUNK, application.getLastShotPlayer());
     }
     @Test
     public void should_Return_AllSunk_When_All_Ship_Coordinates_Sunk() {
-        // Arrange
-        game.startNewGame(1, true);
-        game.registerPlayer("player1", "sds", true);
-        game.registerPlayer("player2", "sds", true);
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(1, ShipType.CRUISER, 1,3,true);
-        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+        // Arrange & Act
+        Point xy = new Point(1,1);
+        Ship playerShip = new BattleShip(xy, true);
+        Point xy2 = new Point(1,1);
+        Ship opponentShip = new BattleShip(xy2, true);
 
-        game.placeShip(2, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(2, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(2, ShipType.CRUISER, 1,3,true);
-        game.placeShip(2, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(2, ShipType.MINESWEEPER, 1,5,true);
-        game.notifyWhenReady(1);
-        game.notifyWhenReady(2);
-        applicationPlayer.notifyStartGame(1);
-        applicationPlayer.notifyStartGame(2);
-
-        // Act
-        // AIRCRAFTCARRIER
+        // Player shot: 1
         game.fireShot(1, 1, 1);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 1
+        game.fireShot(-1, 1, 1);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 2
         game.fireShot(1, 2, 1);
+        xy = new Point(2, 1);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 2
+        game.fireShot(-1, 2, 1);
+        xy2 = new Point(2, 1);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 3
         game.fireShot(1, 3, 1);
+        xy = new Point(3, 1);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 3
+        game.fireShot(-1, 3, 1);
+        xy2 = new Point(3, 1);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 4
         game.fireShot(1, 4, 1);
-        game.fireShot(1, 5, 1);
-        // BATTLESHIP
+        xy = new Point(4, 1);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.SUNK, xy, playerShip, true));
+
+        // Opponent shot: 4
+        game.fireShot(-1, 4, 1);
+        xy2 = new Point(4, 1);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.SUNK, opponentShip, true));
+
+        playerShip = new AircraftCarrier(xy, true);
+        opponentShip = new AircraftCarrier(xy2, true);
+
+        // Player shot: 1
         game.fireShot(1, 1, 2);
+        xy = new Point(1,2);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 1
+        game.fireShot(-1, 1, 2);
+        xy2 = new Point(1,2);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 2
         game.fireShot(1, 2, 2);
+        xy = new Point(2,2);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 2
+        game.fireShot(-1, 2, 2);
+        xy2 = new Point(2,2);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 3
         game.fireShot(1, 3, 2);
+        xy = new Point(3,2);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 3
+        game.fireShot(-1, 3, 2);
+        xy2 = new Point(3,2);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 4
         game.fireShot(1, 4, 2);
-        //CRUISER
+        xy = new Point(4,2);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 4
+        game.fireShot(-1, 4, 2);
+        xy2 = new Point(4,2);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 5
+        game.fireShot(1, 5, 2);
+        xy = new Point(5,2);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.SUNK, xy, playerShip, true));
+
+        // Opponent shot: 5
+        game.fireShot(-1, 5, 2);
+        xy2 = new Point(5,2);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.SUNK, opponentShip, true));
+
+        playerShip = new Submarine(xy, true);
+        opponentShip = new Submarine(xy2, true);
+
+        // Player shot: 1
         game.fireShot(1, 1, 3);
+        xy = new Point(1,3);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 1
+        game.fireShot(-1, 1, 3);
+        xy2 = new Point(1,3);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 2
         game.fireShot(1, 2, 3);
+        xy = new Point(2,3);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 2
+        game.fireShot(-1, 2, 3);
+        xy2 = new Point(2,3);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 3
         game.fireShot(1, 3, 3);
-        //SUBMARINE
+        xy = new Point(3,3);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.SUNK, xy, playerShip, true));
+
+        // Opponent shot: 3
+        game.fireShot(-1, 3, 3);
+        xy2 = new Point(3,3);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.SUNK, opponentShip, true));
+
+        playerShip = new MineSweeper(xy, true);
+        opponentShip = new MineSweeper(xy2, true);
+
+        // Player shot: 1
         game.fireShot(1, 1, 4);
+        xy = new Point(1,4);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 1
+        game.fireShot(-1, 1, 4);
+        xy2 = new Point(1,4);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 2
         game.fireShot(1, 2, 4);
-        game.fireShot(1, 3, 4);
-        //MINESWEEPER
+        xy = new Point(2,4);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.SUNK, xy, playerShip, true));
+
+        // Opponent shot: 2
+        game.fireShot(-1, 2, 4);
+        xy2 = new Point(2,4);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.SUNK, opponentShip, true));
+
+        playerShip = new Cruiser(xy, true);
+        opponentShip = new Cruiser(xy2, true);
+
+        // Player shot: 1
         game.fireShot(1, 1, 5);
+        xy = new Point(1,5);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 1
+        game.fireShot(-1, 1, 5);
+        xy2 = new Point(1,5);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 2
         game.fireShot(1, 2, 5);
+        xy = new Point(2,5);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.HIT, xy, playerShip, true));
+
+        // Opponent shot: 2
+        game.fireShot(-1, 2, 5);
+        xy2 = new Point(2,5);
+        opponentShip.removePoint(xy2);
+        client.setMockUpResponse(new OpponentFireShotResponse(-1, xy2, ShotType.HIT, opponentShip, true));
+
+        // Player shot: 3
+        game.fireShot(1, 3, 5);
+        xy = new Point(3,5);
+        playerShip.removePoint(xy);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.ALLSUNK, xy, playerShip, true));
 
         // Assert
-        final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
-
-        Assertions.assertEquals(ShotType.ALLSUNK, lastShotOpponent);
+        assertEquals(ShotType.ALLSUNK, application.getLastShotPlayer());
     }
+
     @Test
     public void should_Miss_Opponents_Ship_When_Shot_On_X6_Y6() {
-        // Arrange
-        game.startNewGame(1, true);
-        game.registerPlayer("player1", "sds", true);
-        game.registerPlayer("player2", "sds", true);
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(1, ShipType.CRUISER, 1,3,true);
-        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
-
-        game.placeShip(2, ShipType.AIRCRAFTCARRIER, 1,1,true);
-        game.placeShip(2, ShipType.BATTLESHIP, 1,2,true);
-        game.placeShip(2, ShipType.CRUISER, 1,3,true);
-        game.placeShip(2, ShipType.SUBMARINE, 1,4,true);
-        game.placeShip(2, ShipType.MINESWEEPER, 1,5,true);
-        game.notifyWhenReady(1);
-        game.notifyWhenReady(2);
-        applicationPlayer.notifyStartGame(1);
-        applicationPlayer.notifyStartGame(2);
-
-        // Act
+        // Arrange & Act
         game.fireShot(1, 6, 6);
+        client.setMockUpResponse(new FireShotResponse(1, ShotType.MISSED, new Point(6, 6), null, true));
 
         // Assert
-        final ShotType lastShotOpponent = applicationOpponent.getLastShotOpponent();
-        Assertions.assertEquals(ShotType.MISSED, lastShotOpponent);
+        assertEquals(ShotType.MISSED, application.getLastShotPlayer());
     }
+
     @Test
     public void should_Be_Out_Of_Range_When_Shot_On_X11_Y11() {
-        // Arrange
-        game.startNewGame(1, true);
-        game.registerPlayer("player1", "sds", true);
-        game.registerPlayer("player2", "sds", true);
-
-        game.notifyWhenReady(1);
-        game.notifyWhenReady(2);
-        applicationPlayer.notifyStartGame(1);
-        applicationPlayer.notifyStartGame(2);
-
-        // Act
-        Exception thrown = assertThrows(Exception.class,
-                        () -> game.fireShot(1,11,11),
-                        "Tried to fireShot(), but position was out of range.");
+        // Arrange & Act
+        game.fireShot(1,11,11);
+        // Mock response not even needed it will check before hand..
 
         // Assert
-        Assertions.assertTrue(thrown.getMessage().contains("Tried to fireShot(), but position was out of range."));
+        assertEquals("Position is out of range!", application.getErrorMessage());
     }
 }

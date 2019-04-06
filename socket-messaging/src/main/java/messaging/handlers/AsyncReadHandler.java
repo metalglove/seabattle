@@ -1,9 +1,9 @@
 package messaging.handlers;
 
+import common.MessageLogger;
 import messaging.interfaces.ReadableSocket;
 import messaging.messages.Message;
 import messaging.utilities.MessageConverter;
-import messaging.utilities.MessageLogger;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -30,7 +30,6 @@ public class AsyncReadHandler implements CompletionHandler<Integer, ByteBuffer> 
             readableSocket.addMessage(message);
         } catch (IOException | ClassNotFoundException e) {
             messageLogger.error("Failed to read message (while converting)! " + e.getMessage());
-            //e.printStackTrace();
         }
     }
 

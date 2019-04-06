@@ -7,11 +7,19 @@ import java.util.List;
 
 public class RemoveAllShipsResponse extends Message {
     private final Integer playerNumber;
-    public final List<Ship> removedShips;
+    private final List<Ship> removedShips;
+
     public RemoveAllShipsResponse(Integer playerNumber, List<Ship> removedShips, boolean success) {
         this.playerNumber = playerNumber;
         this.removedShips = removedShips;
         super.success = success;
+    }
 
+    public List<Ship> getRemovedShips() {
+        return removedShips;
+    }
+
+    public Integer getPlayerNumber() {
+        return playerNumber;
     }
 }

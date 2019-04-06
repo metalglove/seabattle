@@ -1,9 +1,9 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import domain.Ship;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.RemoveAllShipsResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -28,11 +28,11 @@ public class RemoveAllShipsResponseChangeListener implements PropertyChangeListe
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         RemoveAllShipsResponse response = (RemoveAllShipsResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Failed to remove all ships.");
             messageLogger.error("Failed to remove all ships.");
         } else {
-            for(Ship ship : response.removedShips){
+            for(Ship ship : response.getRemovedShips()){
                 application.removeShip(playerNr, ship);
             }
             game.setHasPlacedAllShips(false);

@@ -1,8 +1,8 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.OpponentRegisterResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
@@ -22,11 +22,11 @@ public class OpponentRegisterResponseListener implements PropertyChangeListener 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         OpponentRegisterResponse response = (OpponentRegisterResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Opponent registered but server faulted!");
             messageLogger.error("Opponent registered but server faulted!");
         } else {
-            application.setOpponentName(response.opponentNumber, response.opponentName);
+            application.setOpponentName(response.getOpponentNumber(), response.getOpponentName());
             client.removeListener(OpponentRegisterResponse.class.getSimpleName(), this);
         }
     }

@@ -1,11 +1,13 @@
 package services;
 
+import common.MessageLogger;
 import domain.*;
+import domain.actions.AddShipAction;
+import domain.actions.FireShotAction;
+import domain.actions.ReadyUpAction;
+import domain.interfaces.IFactoryWithArgument;
 import dtos.*;
-import interfaces.IFactoryWithArgument;
 import interfaces.ISeaBattleGameService;
-import messaging.utilities.MessageLogger;
-import utilities.ShipCreationArgument;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,12 +16,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class SeaBattleGameService implements ISeaBattleGameService {
     private final List<Game> games;
-    private final IFactoryWithArgument<Ship, ShipCreationArgument> _shipFactory;
+    private final IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
     private final MessageLogger messageLogger;
     private static AtomicLong aiIDCounter = new AtomicLong();
 
     public SeaBattleGameService(IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory, MessageLogger messageLogger) {
-        this._shipFactory = shipFactory;
+        this.shipFactory = shipFactory;
         this.messageLogger = messageLogger;
         games = Collections.synchronizedList(new ArrayList<>());
     }
@@ -91,8 +93,9 @@ public class SeaBattleGameService implements ISeaBattleGameService {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
                     Player player = game.getPlayerFromNumber(playerNumber);
-                    Ship ship = _shipFactory.create(new ShipCreationArgument(shipType, bowX, bowY, horizontal));
-                    placeShipResultDto = player.addShip(ship);
+                    Ship ship = shipFactory.create(new ShipCreationArgument(shipType, bowX, bowY, horizontal));
+                    AddShipAction addShipAction = player.addShip(ship);
+                    placeShipResultDto = new PlaceShipResultDto(ship, addShipAction.getOldShip(), addShipAction.hasPlacedAllShips(), addShipAction.isSuccess());
                     break;
                 }
             }
@@ -102,15 +105,16 @@ public class SeaBattleGameService implements ISeaBattleGameService {
 
     @Override
     public RegisterPlayerResultDto registerPlayer(Player player, boolean multiPlayer) {
+        MessageLogger gameMessageLogger = new MessageLogger("GAME");
         synchronized (games) {
             if (!multiPlayer) {
-                Game game = new Game();
+                Game game = new Game(shipFactory, gameMessageLogger);
                 game.registerPlayer(player);
-                int x = (int)aiIDCounter.getAndIncrement() * -1;
-                messageLogger.info("CPU ID: " + x);
-                game.registerPlayer(new Player("CPU", "", x));
-                game.placeShipsAutomatically(x);
-                game.readyUp(x);
+                int aiId = (int)aiIDCounter.getAndIncrement() * -1;
+                messageLogger.info("SinglePlayer AI ID: " + aiId);
+                game.registerPlayer(new Player("CPU", "", aiId));
+                game.placeShipsAutomatically(aiId);
+                game.readyUp(aiId);
                 Player opponent = game.getOpponentPlayer(player.getPlayerNumber());
                 games.add(game);
                 return new RegisterPlayerResultDto(opponent.getPlayerNumber(), opponent.getUsername(), true);
@@ -122,7 +126,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
                 }
             }
         }
-        Game game = new Game();
+        Game game = new Game(shipFactory, gameMessageLogger);
         game.registerPlayer(player);
         games.add(game);
         return new RegisterPlayerResultDto(null, null, true);
@@ -131,11 +135,15 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     @Override
     public FireShotResultDto fireShot(int firingPlayerNumber, int posX, int posY) {
         FireShotResultDto fireShotResultDto = null;
+        if (posX < 0 || posX > 9 || posY < 0 || posY > 9) {
+            return fireShotResultDto;
+        }
         synchronized (games) {
             Game gameToRemove = null;
             for (Game game : games) {
                 if (game.containsPlayer(firingPlayerNumber)) {
-                    fireShotResultDto = game.fireShot(firingPlayerNumber, posX, posY);
+                    FireShotAction fireShotAction = game.fireShot(firingPlayerNumber, posX, posY);
+                    fireShotResultDto = new FireShotResultDto(firingPlayerNumber, fireShotAction.getPlayerNumber(), new Point(posX, posY), fireShotAction.getShotType(), fireShotAction.getOpponentShip(), fireShotAction.isSuccess());
                     if (fireShotResultDto.getShotType() == ShotType.ALLSUNK) {
                         gameToRemove = game;
                     }
@@ -159,7 +167,8 @@ public class SeaBattleGameService implements ISeaBattleGameService {
         synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
-                    setReadyResultDto = game.readyUp(playerNumber);
+                    ReadyUpAction readyUpAction = game.readyUp(playerNumber);
+                    setReadyResultDto = new SetReadyResultDto(readyUpAction.getPlayerNumber(), readyUpAction.getOpponentNumber(), readyUpAction.isBothReady());
                     break;
                 }
             }

@@ -1,8 +1,8 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.ErrorResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -25,9 +25,9 @@ public class ErrorResponseChangeListener implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ErrorResponse response = (ErrorResponse) evt.getNewValue();
-        if (response.errorMessage != null) {
-            application.showErrorMessage(response.errorMessage);
-            messageLogger.error("ErrorResponse resulted in: " + response.errorMessage);
+        if (response.getErrorMessage() != null) {
+            application.showErrorMessage(response.getErrorMessage());
+            messageLogger.error("ErrorResponse resulted in: " + response.getErrorMessage());
             game.resetGame();
         } else {
             application.showErrorMessage("Something happened server side. The game has ended.");

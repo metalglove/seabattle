@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import dtos.RemoveShipResultDto;
 import interfaces.ISeaBattleGameService;
 import interfaces.RequestHandler;
@@ -8,7 +9,6 @@ import messaging.interfaces.WritingSocket;
 import messaging.messages.requests.RemoveShipRequest;
 import messaging.messages.responses.RemoveShipResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 public class RemoveShipRequestHandler implements RequestHandler<RemoveShipRequest> {
 
@@ -24,12 +24,12 @@ public class RemoveShipRequestHandler implements RequestHandler<RemoveShipReques
 
     @Override
     public void handle(RemoveShipRequest request, AsyncIdentifiableClientSocket client) {
-        RemoveShipResponse response = new RemoveShipResponse(request.playerNumber, null, false);
-        RemoveShipResultDto removeShipResultDto = gameService.removeShip(request.playerNumber, request.posX, request.posY);
+        RemoveShipResponse response = new RemoveShipResponse(request.getPlayerNumber(), null, false);
+        RemoveShipResultDto removeShipResultDto = gameService.removeShip(request.getPlayerNumber(), request.getPosX(), request.getPosY());
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
 
         if(removeShipResultDto.isSuccess())
-        response = new RemoveShipResponse(request.playerNumber, removeShipResultDto.getShipToRemove() ,true);
+        response = new RemoveShipResponse(request.getPlayerNumber(), removeShipResultDto.getShipToRemove() ,true);
 
         requestMessageHandler.completed(response, request);
     }

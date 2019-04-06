@@ -8,6 +8,8 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/seabattledomain/pom.xml" />
+        <option value="$PROJECT_DIR$/seabattledtos/pom.xml" />
+        <option value="$PROJECT_DIR$/seabattlecommon/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

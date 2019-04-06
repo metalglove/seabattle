@@ -6,13 +6,19 @@ package seabattleunittests;
 import domain.Point;
 import domain.Ship;
 import domain.ShotType;
+import javafx.application.Platform;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import seabattlegui.ISeaBattleGUI;
 import seabattlegui.SquareState;
+
+import java.util.List;
 
 /**
  * Mock Sea Battle application to support unit testing of the Sea Battle game.
  * @author Nico Kuijpers
  */
+@SuppressWarnings("ALL")
 public class MockSeaBattleApplication implements ISeaBattleGUI {
     
     private final int XSIZE = 10;
@@ -31,7 +37,8 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
     
     private SquareState[][] playerGrid = new SquareState[XSIZE][YSIZE];
     private SquareState[][] opponentGrid = new SquareState[XSIZE][YSIZE];
-    
+    private Rectangle[][] squaresOceanArea = new Rectangle[XSIZE][YSIZE];
+
     @Override
     public void setPlayerNumber(int playerNr, String name) {
         // Set player number and player name
@@ -103,12 +110,16 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
 
     @Override
     public void placeShip(int playerNr, Ship ship) {
-        // TODO: fix place ship in MOCK
+        for (Point point : ship.getPoints()) {
+            playerGrid[point.getX() - 1][point.getY() - 1] = SquareState.SHIP;
+        }
     }
 
     @Override
     public void removeShip(int playerNumber, Ship shipToRemove) {
-        // TODO: fix remove ship in MOCK
+        for (Point point : shipToRemove.getPoints()) {
+            playerGrid[point.getX() - 1][point.getY() - 1] = SquareState.WATER;
+        }
     }
 
     @Override
@@ -188,8 +199,8 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
      * @return state of square (posX,posY) in ocean area
      */
     public SquareState getPlayerSquareState(int posX, int posY) {
-        if (0 <= posX && posX < XSIZE && 0 <= posY && posY < YSIZE) {
-            return playerGrid[posX][posY];
+        if (1 <= posX && posX < XSIZE + 1 && 1 <= posY && posY < YSIZE + 1) {
+            return playerGrid[posX - 1][posY - 1];
         }
         System.err.println("MockSeaBattleApplication: Wrong coordinates "
                 + "(" + posX + "," + posY + ") method call getPlayerSquareState()");
@@ -203,8 +214,8 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
      * @return state of square (posX,posY) in target area
      */
     public SquareState getOpponentSquareState(int posX, int posY) {
-        if (0 <= posX && posX < XSIZE && 0 <= posY && posY < YSIZE) {
-            return opponentGrid[posX][posY];
+        if (1 <= posX && posX < XSIZE + 1 && 1 <= posY && posY < YSIZE - 1) {
+            return opponentGrid[posX - 1][posY - 1];
         }
         System.err.println("MockSeaBattleApplication: Wrong coordinates "
                 + "(" + posX + "," + posY + ") method call getOpponentSquareState()");
@@ -244,6 +255,7 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
         }
         return count;
     }
+
 //
 //    /**
 //     * Check player number and show message in case player number is wrong.

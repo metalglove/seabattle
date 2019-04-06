@@ -1,9 +1,9 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.OpponentFireShotResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
@@ -26,15 +26,15 @@ public class NotifyWhenReadyResponseChangeListener implements PropertyChangeList
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         NotifyWhenReadyResponse response = (NotifyWhenReadyResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Notify from other player failed!");
             messageLogger.error("Notify from other player failed!");
         } else {
             game.setStarted(true);
-            game.setPlayerTurn(response.isPlayersTurn);
-            application.notifyStartGame(response.playerNumber);
-            application.showErrorMessage(response.isPlayersTurn ? "You start." : "Opponent starts.");
-            messageLogger.info(response.isPlayersTurn ? "Player starts." : "Opponent starts.");
+            game.setPlayerTurn(response.isPlayersTurn());
+            application.notifyStartGame(response.getPlayerNumber());
+            application.showErrorMessage(response.isPlayersTurn() ? "You start." : "Opponent starts.");
+            messageLogger.info(response.isPlayersTurn() ? "Player starts." : "Opponent starts.");
             client.addListener(OpponentFireShotResponse.class.getSimpleName(), new OpponentFireShotResponseListener(application, game, client, messageLogger));
             client.removeListener(NotifyWhenReadyResponse.class.getSimpleName(), this);
         }
