@@ -1,11 +1,11 @@
 package seabattleserver;
 
+import common.MessageLogger;
+import domain.ShipFactory;
 import interfaces.ISeaBattleGameService;
 import interfaces.ISeaBattleServerRest;
-import messaging.utilities.MessageLogger;
 import seabattleserverrest.SeaBattleServerRest;
 import services.SeaBattleGameService;
-import utilities.ShipFactory;
 
 import java.io.IOException;
 

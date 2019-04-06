@@ -1,8 +1,8 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.OpponentRegisterResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;

@@ -3,6 +3,7 @@
  */
 package seabattlegui;
 
+import common.MessageLogger;
 import domain.Point;
 import domain.Ship;
 import domain.ShipType;
@@ -23,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import messaging.utilities.MessageLogger;
 import seabattlegame.Client;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;

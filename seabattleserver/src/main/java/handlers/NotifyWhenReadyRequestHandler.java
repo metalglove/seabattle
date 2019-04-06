@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import dtos.SetReadyResultDto;
 import interfaces.ISeaBattleGameService;
 import interfaces.RequestHandler;
@@ -8,7 +9,6 @@ import messaging.interfaces.ClientAwareWritingSocket;
 import messaging.messages.requests.NotifyWhenReadyRequest;
 import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 import java.util.Random;
 

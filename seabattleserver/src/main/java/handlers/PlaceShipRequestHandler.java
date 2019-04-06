@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import dtos.PlaceShipResultDto;
 import interfaces.ISeaBattleGameService;
 import interfaces.RequestHandler;
@@ -8,7 +9,6 @@ import messaging.interfaces.WritingSocket;
 import messaging.messages.requests.PlaceShipRequest;
 import messaging.messages.responses.PlaceShipResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 public class PlaceShipRequestHandler implements RequestHandler<PlaceShipRequest> {
 

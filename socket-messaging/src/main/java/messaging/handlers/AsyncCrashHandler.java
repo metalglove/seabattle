@@ -1,9 +1,9 @@
 package messaging.handlers;
 
+import common.MessageLogger;
 import messaging.interfaces.ClientAwareWritingSocket;
 import messaging.interfaces.CrashHandler;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 public class AsyncCrashHandler implements CrashHandler {
     private final ClientAwareWritingSocket server;

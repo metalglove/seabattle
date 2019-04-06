@@ -1,5 +1,6 @@
-package messaging.utilities;
+package common;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MessageLogger {
@@ -26,6 +27,10 @@ public class MessageLogger {
     public void error(String message) {
         String strippedMessage = message.replace("\r\n","");
         System.out.println(ANSI_CYAN + getMessagePrefix() + ANSI_RED + " [ERROR] " + strippedMessage + ANSI_RESET);
+    }
+
+    public void list(List<?> list) {
+        list.forEach(obj -> info(obj.toString()));
     }
 
     private String getMessagePrefix() {

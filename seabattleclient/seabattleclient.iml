@@ -14,6 +14,7 @@
     <orderEntry type="module" module-name="seabattledomain" />
     <orderEntry type="library" name="Maven: nl.fhict.s3:seabattledomain:1.0-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="socketmessaging" />
+    <orderEntry type="module" module-name="seabattlecommon" />
     <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-client-api:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:javax-websocket-client-impl:9.4.7.v20170914" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-client:9.4.7.v20170914" level="project" />
