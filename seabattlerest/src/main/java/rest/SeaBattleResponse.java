@@ -1,4 +1,6 @@
-import dtos.UserResultDto;
+package rest;
+
+import daldtos.UserResultDto;
 
 public class SeaBattleResponse {
 

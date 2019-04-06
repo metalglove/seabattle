@@ -1,4 +1,4 @@
-package dtos;
+package daldtos;
 
 public class UserResultDto {
     public String username;

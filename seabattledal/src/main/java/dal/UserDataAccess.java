@@ -1,6 +1,8 @@
-import dtos.UserResultDto;
+package dal;
 
-import java.math.BigDecimal;
+import daldtos.UserResultDto;
+import jdbcproperties.JDBCPropertiesGetter;
+
 import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -64,7 +66,46 @@ public class UserDataAccess {
         }
         return null;
     }
+    public boolean getUsernameInUse(String username) {
+        try {
+            setUrlAndDrivers();
+            // load the sqlite-JDBC driver using the current class loader
+            Class.forName(drivers);
+            try {
+                // create a database connection
+                connection = DriverManager.getConnection(url);
+                PreparedStatement statement = connection.prepareStatement("SELECT * FROM person WHERE username = ?");
+                statement.setString(1, username);
 
+                // execute query: get all persons
+                ResultSet rs = statement.executeQuery();
+
+                while (rs.next()) {
+                    // read the result set
+                    System.out.println("user id = " + rs.getString("id"));
+                    System.out.println("username = " + rs.getString("username"));
+
+                    return !rs.getString("username").equals("");
+                }
+            } catch (SQLException ex) {
+                // if the error message is "out of memory",
+                // it probably means no database file is found
+                Logger.getLogger(UserDataAccess.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    // connection close failed.
+                    System.err.println(e);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public boolean resgisterUser(String username, String password) {
         boolean success = false;
         try {

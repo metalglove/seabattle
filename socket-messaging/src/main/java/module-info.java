@@ -1,5 +1,4 @@
 module socketmessaging {
-    requires seabattledomain;
     requires java.desktop;
     requires seabattlecommon;
 

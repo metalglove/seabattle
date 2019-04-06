@@ -1,3 +1,7 @@
+package dal;
+
+import jdbcproperties.JDBCPropertiesGetter;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -33,6 +37,7 @@ public class UserDataTable {
                 statement.executeUpdate("DROP TABLE if EXISTS person");
                 // create new table "person"
                 statement.executeUpdate("CREATE TABLE person (id INTEGER, username VARCHAR, password VARCHAR )");
+                statement.executeUpdate("INSERT INTO person VALUES(1, 'Admin', 'Admin')");
 
             } catch (SQLException ex) {
                 // if the error message is "out of memory",
