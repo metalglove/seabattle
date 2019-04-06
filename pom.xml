@@ -170,6 +170,18 @@
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
+      <dependency>
+          <groupId>nl.fhict.s3</groupId>
+          <artifactId>seabattleclient</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
+    <dependency>
+      <groupId>nl.fhict.s3</groupId>
+      <artifactId>seabattleserver</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 </project>

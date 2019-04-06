@@ -3,9 +3,10 @@ module seabattleclient {
     requires java.sql;
     requires java.logging;
     requires java.desktop;
-    requires javafx.controls;
     requires seabattledomain;
     requires seabattlecommon;
+    requires javafx.graphics;
+    requires javafx.controls;
 
     exports seabattlegui;
     exports seabattlegame;

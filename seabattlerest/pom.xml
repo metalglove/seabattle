@@ -79,6 +79,11 @@
         <artifactId>jersey-container-servlet-core</artifactId>
         <version>2.7</version>
     </dependency>
+    <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>9.4.14.v20181114</version>
+    </dependency>
 </dependencies>
 
 </project>

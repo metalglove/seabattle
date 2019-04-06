@@ -5,6 +5,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+//import static sun.net.www.protocol.http.AuthCacheValue.Type.Server;
+
 public class SeaBattleRestServer {
     public static void main(String[] args) throws Exception {
 
