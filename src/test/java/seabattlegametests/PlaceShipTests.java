@@ -8,7 +8,6 @@ import messaging.messages.responses.PlaceShipResponse;
 import messaging.messages.responses.RegisterResponse;
 import mocks.MockClient;
 import mocks.MockSeaBattleApplication;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seabattlegame.ISeaBattleGame;
@@ -64,7 +63,7 @@ public class PlaceShipTests {
         client.setMockUpResponse(new PlaceShipResponse(1, new Cruiser(new Point(3, 3), true), false, null, false));
 
         // Assert
-        Assertions.assertEquals(SquareState.WATER, application.getPlayerSquareState(4, 3));
+        assertEquals(SquareState.WATER, application.getPlayerSquareState(4, 3));
     }
 
     @Test
@@ -96,7 +95,7 @@ public class PlaceShipTests {
          client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(3, 3), true), true, new BattleShip(new Point(2, 2), false), false));
 
         // Assert
-         Assertions.assertEquals(SquareState.WATER, application.getPlayerSquareState(2, 2));
+         assertEquals(SquareState.WATER, application.getPlayerSquareState(2, 2));
     }
 
     @Test
