@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
+
 public abstract class Ship implements Serializable {
     private final Point startingPoint;
     private final boolean horizontal;
@@ -58,5 +60,10 @@ public abstract class Ship implements Serializable {
 
     private boolean boundCheck(int bound) {
         return bound >= 0 && bound <= 9;
+    }
+
+    @Override
+    public String toString() {
+        return format("ShipType: %s, Horizontal: %s, Points: %s", getClass().getSimpleName(), horizontal, points);
     }
 }

@@ -1,0 +1,3 @@
+module seabattlecommon {
+    exports common;
+}

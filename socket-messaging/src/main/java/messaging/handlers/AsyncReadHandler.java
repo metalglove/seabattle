@@ -1,9 +1,9 @@
 package messaging.handlers;
 
+import common.MessageLogger;
 import messaging.interfaces.ReadableSocket;
 import messaging.messages.Message;
 import messaging.utilities.MessageConverter;
-import messaging.utilities.MessageLogger;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

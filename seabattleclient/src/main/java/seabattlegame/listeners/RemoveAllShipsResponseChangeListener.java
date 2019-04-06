@@ -1,9 +1,9 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import domain.Ship;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.RemoveAllShipsResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 

@@ -1,11 +1,11 @@
 package handlers;
 
+import common.MessageLogger;
 import dtos.EndgameResultDto;
 import interfaces.ISeaBattleGameService;
 import messaging.interfaces.ClientAwareWritingSocket;
 import messaging.messages.responses.ErrorResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 import java.io.IOException;
 import java.util.function.BiFunction;

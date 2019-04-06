@@ -1,12 +1,12 @@
 package seabattlegame;
 
+import common.MessageLogger;
 import messaging.handlers.AsyncReadHandler;
 import messaging.handlers.AsyncWriteHandler;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.Message;
 import messaging.sockets.AsyncClientSocket;
 import messaging.utilities.MessageConverter;
-import messaging.utilities.MessageLogger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

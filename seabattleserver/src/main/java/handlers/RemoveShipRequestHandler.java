@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import dtos.RemoveShipResultDto;
 import interfaces.ISeaBattleGameService;
 import interfaces.RequestHandler;
@@ -8,7 +9,6 @@ import messaging.interfaces.WritingSocket;
 import messaging.messages.requests.RemoveShipRequest;
 import messaging.messages.responses.RemoveShipResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 public class RemoveShipRequestHandler implements RequestHandler<RemoveShipRequest> {
 

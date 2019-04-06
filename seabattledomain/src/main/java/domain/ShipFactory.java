@@ -1,8 +1,8 @@
-package utilities;
+package domain;
 
-import domain.Ship;
+import domain.interfaces.IFactoryWithArgument;
 import domain.ships.*;
-import interfaces.IFactoryWithArgument;
+
 
 public class ShipFactory implements IFactoryWithArgument<Ship, ShipCreationArgument> {
     @Override
@@ -25,7 +25,6 @@ public class ShipFactory implements IFactoryWithArgument<Ship, ShipCreationArgum
                 ship = new MineSweeper(shipCreationArgument.getPoint(), shipCreationArgument.isHorizontal());
                 break;
             default:
-                // TODO: log
                 ship = null;
                 break;
         }

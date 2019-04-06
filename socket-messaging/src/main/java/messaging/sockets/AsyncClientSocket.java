@@ -1,9 +1,9 @@
 package messaging.sockets;
 
+import common.MessageLogger;
 import messaging.handlers.AsyncConnectionHandler;
 import messaging.interfaces.ReadableSocket;
 import messaging.interfaces.WritableSocket;
-import messaging.utilities.MessageLogger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

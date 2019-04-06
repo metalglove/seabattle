@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import domain.Point;
 import domain.ShotType;
 import dtos.FireShotResultDto;
@@ -12,7 +13,6 @@ import messaging.messages.requests.FireShotRequest;
 import messaging.messages.responses.FireShotResponse;
 import messaging.messages.responses.OpponentFireShotResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

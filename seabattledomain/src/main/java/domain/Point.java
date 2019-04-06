@@ -2,6 +2,8 @@ package domain;
 
 import java.io.Serializable;
 
+import static java.lang.String.format;
+
 public class Point implements Serializable {
     private final int x;
     private final int y;
@@ -24,5 +26,10 @@ public class Point implements Serializable {
     public boolean equals(Object point) {
         if (!(point instanceof Point)) return false;
         return ((Point)point).getX() == x && ((Point)point).getY() == y;
+    }
+
+    @Override
+    public String toString() {
+        return format("{X: %s, Y: %s}", x, y);
     }
 }

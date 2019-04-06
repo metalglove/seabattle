@@ -1,14 +1,13 @@
 package services;
 
+import common.MessageLogger;
 import domain.*;
 import domain.actions.AddShipAction;
 import domain.actions.FireShotAction;
 import domain.actions.ReadyUpAction;
+import domain.interfaces.IFactoryWithArgument;
 import dtos.*;
-import interfaces.IFactoryWithArgument;
 import interfaces.ISeaBattleGameService;
-import messaging.utilities.MessageLogger;
-import utilities.ShipCreationArgument;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,12 +16,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class SeaBattleGameService implements ISeaBattleGameService {
     private final List<Game> games;
-    private final IFactoryWithArgument<Ship, ShipCreationArgument> _shipFactory;
+    private final IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
     private final MessageLogger messageLogger;
     private static AtomicLong aiIDCounter = new AtomicLong();
 
     public SeaBattleGameService(IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory, MessageLogger messageLogger) {
-        this._shipFactory = shipFactory;
+        this.shipFactory = shipFactory;
         this.messageLogger = messageLogger;
         games = Collections.synchronizedList(new ArrayList<>());
     }
@@ -94,7 +93,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
                     Player player = game.getPlayerFromNumber(playerNumber);
-                    Ship ship = _shipFactory.create(new ShipCreationArgument(shipType, bowX, bowY, horizontal));
+                    Ship ship = shipFactory.create(new ShipCreationArgument(shipType, bowX, bowY, horizontal));
                     AddShipAction addShipAction = player.addShip(ship);
                     placeShipResultDto = new PlaceShipResultDto(ship, addShipAction.getOldShip(), addShipAction.hasPlacedAllShips(), addShipAction.isSuccess());
                     break;
@@ -106,9 +105,10 @@ public class SeaBattleGameService implements ISeaBattleGameService {
 
     @Override
     public RegisterPlayerResultDto registerPlayer(Player player, boolean multiPlayer) {
+        MessageLogger gameMessageLogger = new MessageLogger("GAME");
         synchronized (games) {
             if (!multiPlayer) {
-                Game game = new Game();
+                Game game = new Game(shipFactory, gameMessageLogger);
                 game.registerPlayer(player);
                 int aiId = (int)aiIDCounter.getAndIncrement() * -1;
                 messageLogger.info("SinglePlayer AI ID: " + aiId);
@@ -126,7 +126,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
                 }
             }
         }
-        Game game = new Game();
+        Game game = new Game(shipFactory, gameMessageLogger);
         game.registerPlayer(player);
         games.add(game);
         return new RegisterPlayerResultDto(null, null, true);

@@ -1,5 +1,6 @@
 package handlers;
 
+import common.MessageLogger;
 import domain.Player;
 import dtos.RegisterPlayerResultDto;
 import interfaces.ISeaBattleGameService;
@@ -11,7 +12,6 @@ import messaging.messages.requests.RegisterRequest;
 import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.messages.responses.RegisterResponse;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 public class RegisterRequestHandler implements RequestHandler<RegisterRequest> {
 

@@ -1,9 +1,9 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.OpponentFireShotResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 

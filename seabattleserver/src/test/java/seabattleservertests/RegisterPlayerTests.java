@@ -1,16 +1,16 @@
 package seabattleservertests;
 
+import common.MessageLogger;
 import domain.Player;
 import domain.Ship;
+import domain.ShipCreationArgument;
+import domain.ShipFactory;
+import domain.interfaces.IFactoryWithArgument;
 import dtos.RegisterPlayerResultDto;
-import interfaces.IFactoryWithArgument;
 import interfaces.ISeaBattleGameService;
-import messaging.utilities.MessageLogger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import services.SeaBattleGameService;
-import utilities.ShipCreationArgument;
-import utilities.ShipFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
