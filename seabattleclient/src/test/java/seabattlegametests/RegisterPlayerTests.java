@@ -1,5 +1,6 @@
 package seabattlegametests;
 
+import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.messages.responses.RegisterResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,6 +62,22 @@ public class RegisterPlayerTests {
     }
 
     @Test()
+    public void should_Set_Opponent_PlayerName_To_Jan_When_Opponent_Registers() {
+        // Arrange
+        String name = "Henk";
+        String password = "Karel32";
+        final boolean multiPlayerMode = true;
+        game.registerPlayer(name, password, multiPlayerMode);
+        client.setMockUpResponse(new RegisterResponse(1, true, null, null));
+
+        // Act
+        client.setMockUpResponse(new OpponentRegisterResponse("Jan", 2, true));
+
+        // Assert
+        assertEquals("Jan", application.getOpponentName());
+    }
+
+    @Test()
     public void should_Throw_When_Name_Is_Null_And_Password_Is_Karel32_And_MultiPlayerMode_Is_False() {
         // Arrange
         String name = null;
@@ -110,5 +127,35 @@ public class RegisterPlayerTests {
         // Act & Assert
         game.registerPlayer(name, password, multiPlayerMode);
         assertEquals("You are not allowed to be named CPU, this is reserved for the AI in SinglePlayer Mode.", application.getErrorMessage());
+    }
+    @Test()
+    public void should_Set_ErrorMessage_When_Success_Is_False() {
+        // Arrange
+        String name = "Henk";
+        String password = "Karel32";
+        final boolean multiPlayerMode = true;
+
+        // act
+        game.registerPlayer(name, password, multiPlayerMode);
+        client.setMockUpResponse(new RegisterResponse(null, false, null, null));
+
+        // Assert
+        assertEquals("Failed to register!", application.getErrorMessage());
+    }
+    @Test()
+    public void should_Set_ErrorMessage_When_Success_Is_False_From_Opponent() {
+        // Arrange
+        String name = "Henk";
+        String password = "Karel32";
+        final boolean multiPlayerMode = true;
+
+        // act
+        game.registerPlayer(name, password, multiPlayerMode);
+        client.setMockUpResponse(new RegisterResponse(1, true, null, null));
+
+        client.setMockUpResponse(new OpponentRegisterResponse("Jan", 2, false));
+
+        // Assert
+        assertEquals("Opponent registered but server faulted!", application.getErrorMessage());
     }
 }

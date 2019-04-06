@@ -103,5 +103,14 @@ public class PlaceShipsAutomaticallyTests {
         // Assert
         assertEquals(SquareState.WATER, application.getPlayerSquareState(1, 9));
     }
+    @Test()
+    public void should_Set_ErrorMessage_When_Success_Is_False() {
+        // Arrange & Act
+        game.placeShipsAutomatically(1);
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, null, null, false));
+
+        // Assert
+        assertEquals("Failed to automatically place all ships!", application.getErrorMessage());
+    }
 
 }

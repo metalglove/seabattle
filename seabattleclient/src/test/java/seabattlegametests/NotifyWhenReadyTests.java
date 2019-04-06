@@ -103,4 +103,18 @@ public class NotifyWhenReadyTests {
         String errorMessage = application.getErrorMessage();
         assertEquals("You have not yet placed all your ships.", errorMessage);
     }
+
+    @Test()
+    public void should_Set_ErrorMessage_When_Success_Is_False() {
+        // Arrange
+        game.placeShipsAutomatically(1);
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
+
+        // Act
+        game.notifyWhenReady(1);
+        client.setMockUpResponse(new NotifyWhenReadyResponse(null, false, true));
+
+        // Assert
+        assertEquals("Notify from other player failed!", application.getErrorMessage());
+    }
 }

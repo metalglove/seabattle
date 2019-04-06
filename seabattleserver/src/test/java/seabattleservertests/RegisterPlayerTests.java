@@ -39,7 +39,7 @@ public class RegisterPlayerTests {
     }
 
     @Test
-    public void should_Throw_Null_Pointer_Error_When_Registering_Player_Henk_With_Password_Karel32_To_A_Multiplayer_Game_When_MultiPlayer_Is_True_And_No_Opponent_Registers() {
+    public void should_Throw_Null_Pointer_Error_When_Registering_Player_Henk_With_Password_Karel32_To_A_MultiPlayer_Game_When_MultiPlayer_Is_True_And_No_Opponent_Registers() {
         // Arrange
         Player player = new Player("Henk", "Karel32", 1);
         boolean multiPlayer = true;
