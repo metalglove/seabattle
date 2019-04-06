@@ -61,11 +61,8 @@ public class PlaceShipsAutomaticallyTests {
         ships.add(cruiser);
         ships.add(mineSweeper);
         ships.add(submarine);
-        game.notifyWhenReady(1);
-        client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
     }
 
-    //
     @Test
     public void should_Place_All_Ships_Successfully() {
         // Arrange & Act
@@ -74,6 +71,21 @@ public class PlaceShipsAutomaticallyTests {
 
         // Assert
         assertEquals(17, application.numberSquaresPlayerWithSquareState(SquareState.SHIP));
+    }
+
+    @Test
+    public void should_Set_ErrorMessage_When_Player_Is_Already_Ready() {
+        // Arrange
+        game.placeShipsAutomatically(1);
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
+
+        game.notifyWhenReady(1);
+        client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
+        // Act
+        game.placeShipsAutomatically(1);
+
+        // Assert
+        assertEquals("You are not allowed to change your ships after readying up.", application.getErrorMessage());
     }
 
     @Test

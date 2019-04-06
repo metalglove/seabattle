@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Fire a shot at the opponent's square with given coordinates.
@@ -85,6 +83,18 @@ public class FireShotTests {
 
         // Assert
         assertEquals(ShotType.HIT, application.getLastShotPlayer());
+    }
+
+    @Test
+    public void should_Set_ErrorMessage_When_Game_Has_Not_Yet_Started() {
+        // Arrange
+        game.setStarted(false);
+
+        // Act
+        game.fireShot(1, 1, 1);
+
+        // Assert
+        assertEquals("The game has not yet started.", application.getErrorMessage());
     }
 
     @Test

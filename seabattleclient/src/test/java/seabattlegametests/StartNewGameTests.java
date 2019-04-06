@@ -31,7 +31,6 @@ public class StartNewGameTests {
     private ISeaBattleGame game;
     private MockSeaBattleApplication application;
     private MockClient client;
-    private List<Ship> ships;
 
     @SuppressWarnings("Duplicates")
     @BeforeEach
@@ -52,7 +51,7 @@ public class StartNewGameTests {
         Cruiser cruiser = new Cruiser(new Point(1, 3), true);
         MineSweeper mineSweeper = new MineSweeper(new Point(1, 4), true);
         Submarine submarine = new Submarine(new Point(1, 5), true);
-        ships = new ArrayList<>();
+        List<Ship> ships = new ArrayList<>();
         ships.add(aircraftCarrier);
         ships.add(battleShip);
         ships.add(cruiser);

@@ -3,6 +3,7 @@ package seabattlegametests;
 import domain.Point;
 import domain.Ship;
 import domain.ships.*;
+import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.RegisterResponse;
 import messaging.messages.responses.RemoveAllShipsResponse;
@@ -69,5 +70,20 @@ public class RemoveAllShipsTests {
 
         // Assert
         assertEquals(0, application.numberSquaresPlayerWithSquareState(SquareState.SHIP));
+    }
+
+    @Test
+    public void should_Set_ErrorMessage_When_Player_Is_Already_Ready() {
+        // Arrange
+        game.placeShipsAutomatically(1);
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
+        game.notifyWhenReady(1);
+        client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
+
+        // Act
+        game.removeAllShips(1);
+
+        // Assert
+        assertEquals("You are not allowed to change your ships after readying up.", application.getErrorMessage());
     }
 }

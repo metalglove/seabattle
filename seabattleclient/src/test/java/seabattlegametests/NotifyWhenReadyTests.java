@@ -76,6 +76,21 @@ public class NotifyWhenReadyTests {
     }
 
     @Test
+    public void should_Set_ErrorMessage_When_Player_Is_Already_Ready() {
+        // Arrange
+        game.placeShipsAutomatically(1);
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
+        game.notifyWhenReady(1);
+        client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
+
+        // Act
+        game.notifyWhenReady(1);
+
+        // Assert
+        assertEquals("You are already ready.", application.getErrorMessage());
+    }
+
+    @Test
     public void should_Not_Set_GameStarted_In_Application_When_Not_All_Ships_Have_Been_Placed_After_Calling_NotifyWhenReady() {
         // Arrange
         game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1, 1,true);

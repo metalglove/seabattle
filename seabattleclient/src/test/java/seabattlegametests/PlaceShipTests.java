@@ -3,6 +3,7 @@ package seabattlegametests;
 import domain.Point;
 import domain.ShipType;
 import domain.ships.*;
+import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.PlaceShipResponse;
 import messaging.messages.responses.RegisterResponse;
 import org.junit.jupiter.api.Assertions;
@@ -117,4 +118,28 @@ public class PlaceShipTests {
         // Assert
         assertEquals(SquareState.WATER, application.getPlayerSquareState(4, 7));
     }
+
+    @Test
+    public void should_Set_ErrorMessage_When_Player_Is_Already_Ready() {
+        // Arrange
+        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1,1,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new AircraftCarrier(new Point(1, 1), true), true,null, false));
+        game.placeShip(1, ShipType.BATTLESHIP, 1,2,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new BattleShip(new Point(1, 2), true), true,null, false));
+        game.placeShip(1, ShipType.CRUISER, 1,3,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new Cruiser(new Point(1, 3), true), true,null, false));
+        game.placeShip(1, ShipType.SUBMARINE, 1,4,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new Submarine(new Point(1, 4), true), true,null, false));
+        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new MineSweeper(new Point(1, 5), true), true,null, true));
+        game.notifyWhenReady(1);
+        client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
+
+        // Act
+        game.placeShip(1, ShipType.MINESWEEPER, 1,5,true);
+
+        // Assert
+        assertEquals("You are not allowed to change your ships after readying up.", application.getErrorMessage());
+    }
+
 }

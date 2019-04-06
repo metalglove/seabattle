@@ -1,18 +1,15 @@
 package seabattlegametests;
 
-import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.RegisterResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
-import seabattlegui.ISeaBattleGUI;
 import seabattleunittests.MockClient;
 import seabattleunittests.MockSeaBattleApplication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -102,5 +99,16 @@ public class RegisterPlayerTests {
 
         // Act & Assert
         Assertions.assertThrows(IllegalArgumentException.class ,() -> game.registerPlayer(name, password, multiPlayerMode));
+    }
+    @Test()
+    public void should_Set_ErrorMessage_When_Name_Is_CPU() {
+        // Arrange
+        String name = "CPU";
+        String password = "Karel32";
+        final boolean multiPlayerMode = false;
+
+        // Act & Assert
+        game.registerPlayer(name, password, multiPlayerMode);
+        assertEquals("You are not allowed to be named CPU, this is reserved for the AI in SinglePlayer Mode.", application.getErrorMessage());
     }
 }
