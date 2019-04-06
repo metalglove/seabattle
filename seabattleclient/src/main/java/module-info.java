@@ -9,4 +9,6 @@ module seabattleclient {
     requires seabattlecommon;
 
     exports seabattlegui;
+    exports mocks;
+    exports seabattlegame;
 }

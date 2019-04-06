@@ -1,4 +1,4 @@
-package seabattleunittests;
+package mocks;
 
 import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
@@ -41,11 +41,6 @@ public class MockClient implements ObservableClientSocket {
         propertyChangeSupport.firePropertyChange(messageType, null, message);
         messageLogger.info(format("Successfully received {%s} message!", messageType));
         messages.add(message);
-    }
-
-    @Override
-    public List<Message> getMessages() {
-        return messages;
     }
 
     @Override
