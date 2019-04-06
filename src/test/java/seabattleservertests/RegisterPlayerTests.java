@@ -35,7 +35,7 @@ public class RegisterPlayerTests {
 
         // Assert
         assertTrue(registerPlayerResultDto.isSuccess());
-        assertEquals(0, (int)registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is higher than 0 and thus is not an AI which rules out it being a SinglePlayer game.");
+        assertEquals(-1, (int)registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is higher than 0 and thus is not an AI which rules out it being a SinglePlayer game.");
     }
 
     @Test
