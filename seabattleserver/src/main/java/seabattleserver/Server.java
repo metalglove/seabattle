@@ -66,7 +66,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
         requestHandlerMapping.put(StartNewGameRequest.class, () -> new StartNewGameRequestHandler(this, gameService, rest, requestMessageLogger));
     }
 
-    void await() throws InterruptedException {
+    public void await() throws InterruptedException {
         group.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
     }
 

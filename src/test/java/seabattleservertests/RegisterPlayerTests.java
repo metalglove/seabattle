@@ -24,6 +24,7 @@ public class RegisterPlayerTests {
         seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
     }
 
+    //TODO: More register tests needed?
     @Test
     public void should_Register_Player_Henk_With_Password_Karel32_To_A_SinglePlayer_Game_When_MultiPlayer_Is_False() {
         // Arrange
@@ -35,7 +36,7 @@ public class RegisterPlayerTests {
 
         // Assert
         assertTrue(registerPlayerResultDto.isSuccess());
-        assertEquals(0, (int)registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is higher than 0 and thus is not an AI which rules out it being a SinglePlayer game.");
+        assertEquals(-1, (int)registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is higher than 0 and thus is not an AI which rules out it being a SinglePlayer game.");
     }
 
     @Test

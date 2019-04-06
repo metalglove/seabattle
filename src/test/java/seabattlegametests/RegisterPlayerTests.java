@@ -2,13 +2,13 @@ package seabattlegametests;
 
 import messaging.messages.responses.OpponentRegisterResponse;
 import messaging.messages.responses.RegisterResponse;
+import mocks.MockClient;
+import mocks.MockSeaBattleApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
-import seabattleunittests.MockClient;
-import seabattleunittests.MockSeaBattleApplication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

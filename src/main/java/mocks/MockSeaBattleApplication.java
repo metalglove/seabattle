@@ -1,18 +1,13 @@
 /*
  * Sea Battle Start project.
  */
-package seabattleunittests;
+package mocks;
 
 import domain.Point;
 import domain.Ship;
 import domain.ShotType;
-import javafx.application.Platform;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import seabattlegui.ISeaBattleGUI;
 import seabattlegui.SquareState;
-
-import java.util.List;
 
 /**
  * Mock Sea Battle application to support unit testing of the Sea Battle game.
@@ -37,7 +32,6 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
     
     private SquareState[][] playerGrid = new SquareState[XSIZE][YSIZE];
     private SquareState[][] opponentGrid = new SquareState[XSIZE][YSIZE];
-    private Rectangle[][] squaresOceanArea = new Rectangle[XSIZE][YSIZE];
 
     @Override
     public void setPlayerNumber(int playerNr, String name) {
@@ -62,49 +56,41 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
 
     @Override
     public void setOpponentName(int playerNr, String name) {
-        //checkPlayerNumber("setOpponentName()",playerNr);
         this.opponentName = name;
     }
     
     @Override
     public void notifyStartGame(int playerNr) {
-        //checkPlayerNumber("notifyStartGame()",playerNr);
         this.gameStarted = true;
     }
 
     @Override
     public void playerFiresShot(int playerNr, ShotType shotType, Point point) {
-        //checkPlayerNumber("playerFiresShot()",playerNr);
         this.lastShotPlayer = shotType;
     }
 
     @Override
     public void opponentFiresShot(int playerNr, ShotType shotType, Point point) {
-        //checkPlayerNumber("opponentFiresShot()",playerNr);
         this.lastShotOpponent = shotType;
     }
 
     @Override
     public void showSquarePlayer(int playerNr, int posX, int posY, SquareState squareState) {
-        //checkPlayerNumber("showSquarePlayer()",playerNr);
         this.playerGrid[posX][posY] = squareState;
     }
 
     @Override
     public void showSquareOpponent(int playerNr, int posX, int posY, SquareState squareState) {
-        //checkPlayerNumber("showSquareOpponent()",playerNr);
         this.opponentGrid[posX][posY] = squareState;
     }
 
     @Override
     public void showErrorMessage(int playerNr, String errorMessage) {
-        //checkPlayerNumber("showErrorMessage()",playerNr);
         this.errorMessage = errorMessage;
     }
 
     @Override
     public void showErrorMessage(String errorMessage) {
-        //checkPlayerNumber("showErrorMessage()",playerNr);
         this.errorMessage = errorMessage;
     }
 
@@ -255,19 +241,4 @@ public class MockSeaBattleApplication implements ISeaBattleGUI {
         }
         return count;
     }
-
-//
-//    /**
-//     * Check player number and show message in case player number is wrong.
-//     * The flag wrongPlayerNumberReceived will be raised when the player number
-//     * does not correspond to the player number for this application.
-//     * @param methodCall method for which the check is performed
-//     * @param playerNr player number to be checked
-//     */
-//    private void checkPlayerNumber(String methodCall, int playerNr) {
-//        if (playerNr != this.playerNr) {
-//            System.err.println("MockSeaBattleApplication: Wrong player number method call " + methodCall);
-//        }
-//        wrongPlayerNumberReceived = true;
-//    }
 }

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class PlaceShipsAutomaticallyTest {
 
     @Test
@@ -18,5 +20,7 @@ public class PlaceShipsAutomaticallyTest {
         game.registerPlayer(new Player("Henk", "Kerel32", 2));
 
         List<Ship> ships = game.placeShipsAutomatically(1);
+
+        assertEquals(5, (long) ships.size());
     }
 }

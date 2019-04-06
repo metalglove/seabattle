@@ -5,12 +5,12 @@ import domain.Ship;
 import domain.ShotType;
 import domain.ships.*;
 import messaging.messages.responses.*;
+import mocks.MockClient;
+import mocks.MockSeaBattleApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
-import seabattleunittests.MockClient;
-import seabattleunittests.MockSeaBattleApplication;
 
 import java.util.ArrayList;
 import java.util.List;

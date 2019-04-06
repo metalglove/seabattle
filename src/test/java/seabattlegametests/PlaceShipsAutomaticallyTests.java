@@ -8,27 +8,29 @@ import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.PlaceShipResponse;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.RegisterResponse;
+import mocks.MockClient;
+import mocks.MockSeaBattleApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
-import seabattleunittests.MockClient;
-import seabattleunittests.MockSeaBattleApplication;
+import seabattlegui.SquareState;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Notify that the player is ready to play the game, i.e., all ships have
- * been placed. When not all ships have been placed, the message
- * "You have not yet placed all your ships." will be sent to the player's application
- * by a method call of showErrorMessage().
- * param playerNr identification of player who is ready to play the game
+ * Place ships automatically. Ships that are already placed will be removed.
+ * All ships will be placed such that they fit entirely within the grid
+ * and have no overlap with each other. The state of the ocean area in the
+ * player's application will be kept up-to-date by method calls of
+ * showSquarePlayer().
+ * param playerNr identification of player for which ships will be placed
  */
-public class NotifyWhenReadyTests {
+public class PlaceShipsAutomaticallyTests {
+
     private ISeaBattleGame game;
     private MockSeaBattleApplication application;
     private MockClient client;
@@ -62,17 +64,13 @@ public class NotifyWhenReadyTests {
     }
 
     @Test
-    public void should_Notify_Player_When_All_Ships_Have_Been_Placed() {
-        // Arrange
+    public void should_Place_All_Ships_Successfully() {
+        // Arrange & Act
         game.placeShipsAutomatically(1);
         client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
 
-        // Act
-        game.notifyWhenReady(1);
-        client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
-
         // Assert
-        assertTrue(application.isGameStarted());
+        assertEquals(17, application.numberSquaresPlayerWithSquareState(SquareState.SHIP));
     }
 
     @Test
@@ -80,41 +78,39 @@ public class NotifyWhenReadyTests {
         // Arrange
         game.placeShipsAutomatically(1);
         client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
+
         game.notifyWhenReady(1);
         client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
-
         // Act
-        game.notifyWhenReady(1);
+        game.placeShipsAutomatically(1);
 
         // Assert
-        assertEquals("You are already ready.", application.getErrorMessage());
+        assertEquals("You are not allowed to change your ships after readying up.", application.getErrorMessage());
     }
 
     @Test
-    public void should_Not_Set_GameStarted_In_Application_When_Not_All_Ships_Have_Been_Placed_After_Calling_NotifyWhenReady() {
+    public void should_Remove_All_Previous_Placed_Ships_Successfully() {
         // Arrange
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1, 1,true);
-        client.setMockUpResponse(new PlaceShipResponse(1, new AircraftCarrier(new Point(1, 1), true), true,null, false));
+        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1, 9,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new AircraftCarrier(new Point(1, 9), true), true,null, false));
 
         // Act
-        game.notifyWhenReady(1);
+        game.placeShipsAutomatically(1);
+        List<Ship> shipsToRemove = new ArrayList<>();
+        shipsToRemove.add(new AircraftCarrier(new Point(1, 9), true));
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, shipsToRemove, true));
 
         // Assert
-        String errorMessage = application.getErrorMessage();
-        assertEquals("You have not yet placed all your ships.", errorMessage);
+        assertEquals(SquareState.WATER, application.getPlayerSquareState(1, 9));
     }
-
     @Test()
     public void should_Set_ErrorMessage_When_Success_Is_False() {
-        // Arrange
+        // Arrange & Act
         game.placeShipsAutomatically(1);
-        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
-
-        // Act
-        game.notifyWhenReady(1);
-        client.setMockUpResponse(new NotifyWhenReadyResponse(null, false, true));
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, null, null, false));
 
         // Assert
-        assertEquals("Notify from other player failed!", application.getErrorMessage());
+        assertEquals("Failed to automatically place all ships!", application.getErrorMessage());
     }
+
 }

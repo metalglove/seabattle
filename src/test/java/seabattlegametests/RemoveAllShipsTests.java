@@ -2,19 +2,18 @@ package seabattlegametests;
 
 import domain.Point;
 import domain.Ship;
-import domain.ShipType;
 import domain.ships.*;
 import messaging.messages.responses.NotifyWhenReadyResponse;
-import messaging.messages.responses.PlaceShipResponse;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.RegisterResponse;
+import messaging.messages.responses.RemoveAllShipsResponse;
+import mocks.MockClient;
+import mocks.MockSeaBattleApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
-import seabattleunittests.MockClient;
-import seabattleunittests.MockSeaBattleApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +21,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Place ships automatically. Ships that are already placed will be removed.
- * All ships will be placed such that they fit entirely within the grid
- * and have no overlap with each other. The state of the ocean area in the
+ * Remove all ships that are placed. The state of the ocean area in the
  * player's application will be kept up-to-date by method calls of
  * showSquarePlayer().
- * param playerNr identification of player for which ships will be placed
+ * param playerNr  identification of player for which ships will be removed
  */
-public class PlaceShipsAutomaticallyTests {
-
+public class RemoveAllShipsTests {
     private ISeaBattleGame game;
     private MockSeaBattleApplication application;
     private MockClient client;
@@ -47,8 +43,7 @@ public class PlaceShipsAutomaticallyTests {
 
         // Create the game
         game = new SeaBattleGame(application, client);
-
-        game.registerPlayer("Mario", "password",false);
+        game.registerPlayer("Henk", "Karel32", false);
         client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU"));
         AircraftCarrier aircraftCarrier = new AircraftCarrier(new Point(1, 1), true);
         BattleShip battleShip = new BattleShip(new Point(1, 2), true);
@@ -64,13 +59,17 @@ public class PlaceShipsAutomaticallyTests {
     }
 
     @Test
-    public void should_Place_All_Ships_Successfully() {
-        // Arrange & Act
+    public void should_Remove_All_Ships_When_Ships_Have_Previously_Been_Placed() {
+        // Arrange
         game.placeShipsAutomatically(1);
         client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
 
+        // Act
+        game.removeAllShips(1);
+        client.setMockUpResponse(new RemoveAllShipsResponse(1, ships, true));
+
         // Assert
-        assertEquals(17, application.numberSquaresPlayerWithSquareState(SquareState.SHIP));
+        assertEquals(0, application.numberSquaresPlayerWithSquareState(SquareState.SHIP));
     }
 
     @Test
@@ -78,39 +77,27 @@ public class PlaceShipsAutomaticallyTests {
         // Arrange
         game.placeShipsAutomatically(1);
         client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
-
         game.notifyWhenReady(1);
         client.setMockUpResponse(new NotifyWhenReadyResponse(1, true, true));
+
         // Act
-        game.placeShipsAutomatically(1);
+        game.removeAllShips(1);
 
         // Assert
         assertEquals("You are not allowed to change your ships after readying up.", application.getErrorMessage());
     }
 
     @Test
-    public void should_Remove_All_Previous_Placed_Ships_Successfully() {
+    public void should_Set_ErrorMessage_When_Success_Is_False() {
         // Arrange
-        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1, 9,true);
-        client.setMockUpResponse(new PlaceShipResponse(1, new AircraftCarrier(new Point(1, 9), true), true,null, false));
+        game.placeShipsAutomatically(1);
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
 
         // Act
-        game.placeShipsAutomatically(1);
-        List<Ship> shipsToRemove = new ArrayList<>();
-        shipsToRemove.add(new AircraftCarrier(new Point(1, 9), true));
-        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, shipsToRemove, true));
+        game.removeAllShips(1);
+        client.setMockUpResponse(new RemoveAllShipsResponse(null, null, false));
 
         // Assert
-        assertEquals(SquareState.WATER, application.getPlayerSquareState(1, 9));
+        assertEquals("Failed to remove all ships.", application.getErrorMessage());
     }
-    @Test()
-    public void should_Set_ErrorMessage_When_Success_Is_False() {
-        // Arrange & Act
-        game.placeShipsAutomatically(1);
-        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, null, null, false));
-
-        // Assert
-        assertEquals("Failed to automatically place all ships!", application.getErrorMessage());
-    }
-
 }
