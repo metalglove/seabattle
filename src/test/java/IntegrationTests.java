@@ -44,7 +44,6 @@ public class IntegrationTests {
         };
         exService.execute(task);
 
-
         // Start up client 1
         try {
             client = new Client("127.0.0.1", 9999, new MessageLogger("CLIENT"));
@@ -53,7 +52,6 @@ public class IntegrationTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         // Create mock Sea Battle GUI for player
         application = new MockSeaBattleApplication();

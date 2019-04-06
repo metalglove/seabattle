@@ -24,6 +24,7 @@ public class RegisterPlayerTests {
         seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
     }
 
+    //TODO: More register tests needed?
     @Test
     public void should_Register_Player_Henk_With_Password_Karel32_To_A_SinglePlayer_Game_When_MultiPlayer_Is_False() {
         // Arrange
