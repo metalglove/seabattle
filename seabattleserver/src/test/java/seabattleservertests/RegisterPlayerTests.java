@@ -14,7 +14,7 @@ import utilities.ShipFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegisterPlayerTest {
+public class RegisterPlayerTests {
     private ISeaBattleGameService seaBattleGameService;
 
     @BeforeEach
