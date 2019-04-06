@@ -1,7 +1,4 @@
-package utilities;
-
-import domain.Point;
-import domain.ShipType;
+package domain;
 
 public class ShipCreationArgument {
     private final ShipType shipType;

@@ -3,11 +3,11 @@
  */
 package seabattlegame;
 
+import common.MessageLogger;
 import domain.ShipType;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.requests.*;
 import messaging.messages.responses.*;
-import messaging.utilities.MessageLogger;
 import seabattlegame.listeners.*;
 import seabattlegui.ISeaBattleGUI;
 import seabattlegui.SquareState;

@@ -1,10 +1,10 @@
 package seabattlegame.listeners;
 
+import common.MessageLogger;
 import domain.Point;
 import domain.ShotType;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.FireShotResponse;
-import messaging.utilities.MessageLogger;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 

@@ -1,8 +1,8 @@
 package messaging.handlers;
 
+import common.MessageLogger;
 import messaging.interfaces.AcceptingSocket;
 import messaging.sockets.AsyncIdentifiableClientSocket;
-import messaging.utilities.MessageLogger;
 
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;

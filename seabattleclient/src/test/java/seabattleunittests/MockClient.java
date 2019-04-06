@@ -1,8 +1,8 @@
 package seabattleunittests;
 
+import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.Message;
-import messaging.utilities.MessageLogger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
