@@ -18,7 +18,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     private final List<Game> games;
     private final IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
     private final MessageLogger messageLogger;
-    private static AtomicLong aiIDCounter = new AtomicLong();
+    private AtomicLong aiIDCounter = new AtomicLong(); // static
 
     public SeaBattleGameService(IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory, MessageLogger messageLogger) {
         this.shipFactory = shipFactory;

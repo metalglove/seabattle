@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class PlaceShipTests {
     private ISeaBattleGameService seaBattleGameService;
@@ -60,7 +60,7 @@ public class PlaceShipTests {
     }
 
     @Test
-    public void  should_Fail_To_Place_Submarine_Horizontally_On_x2_And_y4_With_Minesweeper_Place_On_x2_y3_Vertically(){
+    public void should_Fail_To_Place_Submarine_Horizontally_On_x2_And_y4_With_Minesweeper_Place_On_x2_y3_Vertically(){
         // Arrange
         seaBattleGameService.placeShip(1, ShipType.MINESWEEPER, 2,3, false);
 
@@ -68,16 +68,16 @@ public class PlaceShipTests {
         PlaceShipResultDto placeShipResultDto = seaBattleGameService.placeShip(1, ShipType.SUBMARINE, 2,4,true);
 
         // Assert
-        assertNull(placeShipResultDto.getShip());
+        assertFalse(placeShipResultDto.isSuccess());
     }
 
     @Test
-    public void should_Fail_To_Place_Submarine_Vertically_On_x9_And_y2_With_No_Other_Ships_Placed(){
+    public void should_Fail_To_Place_Submarine_Vertically_On_x2_And_y9_With_No_Other_Ships_Placed(){
         // Act
-        PlaceShipResultDto placeShipResultDto = seaBattleGameService.placeShip(1, ShipType.SUBMARINE, 9,2,false);
+        PlaceShipResultDto placeShipResultDto = seaBattleGameService.placeShip(1, ShipType.SUBMARINE, 2,9,false);
 
         // Assert
-        assertNull(placeShipResultDto.getShip());
+        assertFalse(placeShipResultDto.isSuccess());
     }
 
     @Test
@@ -89,6 +89,6 @@ public class PlaceShipTests {
         PlaceShipResultDto placeShipResultDto = seaBattleGameService.placeShip(1, ShipType.BATTLESHIP, 9,2,true);
 
         // Assert
-        assertNull(placeShipResultDto.getShip());
+        assertFalse(placeShipResultDto.isSuccess());
     }
 }
