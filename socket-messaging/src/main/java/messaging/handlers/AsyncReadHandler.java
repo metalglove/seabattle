@@ -30,7 +30,6 @@ public class AsyncReadHandler implements CompletionHandler<Integer, ByteBuffer> 
             readableSocket.addMessage(message);
         } catch (IOException | ClassNotFoundException e) {
             messageLogger.error("Failed to read message (while converting)! " + e.getMessage());
-            //e.printStackTrace();
         }
     }
 

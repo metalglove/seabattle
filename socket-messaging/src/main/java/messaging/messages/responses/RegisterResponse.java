@@ -25,8 +25,4 @@ public class RegisterResponse extends Message {
     public String getOpponentName() {
         return opponentName;
     }
-
-    public boolean getSuccess() {
-        return super.success;
-    }
 }

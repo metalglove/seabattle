@@ -32,13 +32,13 @@ public class RegisterRequestHandler implements RequestHandler<RegisterRequest> {
         RegisterResponse response = new RegisterResponse(null, false, null, null);
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
         RegisterPlayerResultDto registerPlayerResultDto;
-        if (rest.register(request.playerName, request.password)) {
-            client.setName(request.playerName);
-            int playerNumber = rest.getPlayerNumber(request.playerName);
+        if (rest.register(request.getPlayerName(), request.getPassword())) {
+            client.setName(request.getPlayerName());
+            int playerNumber = rest.getPlayerNumber(request.getPlayerName());
             client.setNumber(playerNumber);
             serverSocket.registerClient(client);
-            Player player = rest.getPlayer(request.playerName);
-            if (!request.multiPlayer) {
+            Player player = rest.getPlayer(request.getPlayerName());
+            if (!request.isMultiPlayer()) {
                 registerPlayerResultDto = gameService.registerPlayer(player, false);
             } else {
                 registerPlayerResultDto = gameService.registerPlayer(player, true);

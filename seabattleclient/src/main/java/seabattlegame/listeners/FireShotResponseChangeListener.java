@@ -27,18 +27,18 @@ public class FireShotResponseChangeListener implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         FireShotResponse response = (FireShotResponse) evt.getNewValue();
-        if (!response.success) {
+        if (!response.isSuccess()) {
             application.showErrorMessage("Fire shot failed!");
             messageLogger.error("Fire shot failed!");
         } else {
-            if (response.ship != null) {
-                for (Point point : response.ship.getPointsHit()) {
-                    application.playerFiresShot(response.firingPlayerNumber, response.shotType, point);
+            if (response.getShip() != null) {
+                for (Point point : response.getShip().getPointsHit()) {
+                    application.playerFiresShot(response.getFiringPlayerNumber(), response.getShotType(), point);
                 }
             } else {
-                application.playerFiresShot(response.firingPlayerNumber, response.shotType, response.point);
+                application.playerFiresShot(response.getFiringPlayerNumber(), response.getShotType(), response.getPoint());
             }
-            if (response.shotType == ShotType.ALLSUNK) {
+            if (response.getShotType() == ShotType.ALLSUNK) {
                 application.showErrorMessage("You won!");
                 messageLogger.info("Player won");
                 game.endGame();

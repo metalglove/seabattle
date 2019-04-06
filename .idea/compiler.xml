@@ -19,6 +19,7 @@
       <module name="seabattleclient" target="11" />
       <module name="seabattledal" target="11" />
       <module name="seabattledomain" target="11" />
+      <module name="seabattledtos" target="11" />
       <module name="seabattlerest" target="11" />
       <module name="seabattleserver" target="11" />
       <module name="SeaBattleStart" target="11" />

@@ -16,7 +16,7 @@ public class SeaBattleGameAI implements ISeaBattleGameAI {
     @Override
     public OpponentFireShotResponse counterShoot(OpponentFireShotResponse opponentFireShotResponse, Integer cpuID) {
         // TODO: state machine?
-        FireShotResultDto fireShotResultDto = gameService.fireShot(cpuID, opponentFireShotResponse.point.getX(), opponentFireShotResponse.point.getY());
+        FireShotResultDto fireShotResultDto = gameService.fireShot(cpuID, opponentFireShotResponse.getPoint().getX(), opponentFireShotResponse.getPoint().getY());
         return new OpponentFireShotResponse(cpuID, fireShotResultDto.getPoint(), fireShotResultDto.getShotType(), fireShotResultDto.getShip(), fireShotResultDto.isSuccess());
     }
 }
