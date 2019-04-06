@@ -7,13 +7,13 @@ import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
 import messaging.messages.responses.RegisterResponse;
 import messaging.messages.responses.RemoveAllShipsResponse;
+import mocks.MockClient;
+import mocks.MockSeaBattleApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seabattlegame.ISeaBattleGame;
 import seabattlegame.SeaBattleGame;
 import seabattlegui.SquareState;
-import seabattleunittests.MockClient;
-import seabattleunittests.MockSeaBattleApplication;
 
 import java.util.ArrayList;
 import java.util.List;
