@@ -95,4 +95,18 @@ public class RemoveShipTests {
         // Assert
         assertEquals("You are not allowed to change your ships after readying up.", application.getErrorMessage());
     }
+
+    @Test
+    public void should_Set_ErrorMessage_When_Success_Is_False() {
+        // Arrange
+        game.placeShip(1, ShipType.AIRCRAFTCARRIER, 1, 1,true);
+        client.setMockUpResponse(new PlaceShipResponse(1, new AircraftCarrier(new Point(1,1), true), true, null,false));
+
+        // Act
+        game.removeShip(1,2,1);
+        client.setMockUpResponse(new RemoveShipResponse(null, null, false));
+
+        // Assert
+        assertEquals("Failed to remove ship from proposed point.", application.getErrorMessage());
+    }
 }

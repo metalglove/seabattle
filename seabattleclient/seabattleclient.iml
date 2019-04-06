@@ -12,7 +12,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="seabattledomain" />
-    <orderEntry type="library" name="Maven: nl.fhict.s3:seabattledomain:1.0-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="socketmessaging" />
     <orderEntry type="module" module-name="seabattlecommon" />
     <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-client-api:1.1" level="project" />

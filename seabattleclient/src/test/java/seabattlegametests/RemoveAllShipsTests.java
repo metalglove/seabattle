@@ -86,4 +86,18 @@ public class RemoveAllShipsTests {
         // Assert
         assertEquals("You are not allowed to change your ships after readying up.", application.getErrorMessage());
     }
+
+    @Test
+    public void should_Set_ErrorMessage_When_Success_Is_False() {
+        // Arrange
+        game.placeShipsAutomatically(1);
+        client.setMockUpResponse(new PlaceShipsAutomaticallyResponse(1, ships, new ArrayList<>(), true));
+
+        // Act
+        game.removeAllShips(1);
+        client.setMockUpResponse(new RemoveAllShipsResponse(null, null, false));
+
+        // Assert
+        assertEquals("Failed to remove all ships.", application.getErrorMessage());
+    }
 }
