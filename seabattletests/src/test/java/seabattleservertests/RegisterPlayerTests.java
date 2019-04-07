@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RegisterPlayerTests {
     private ISeaBattleGameService seaBattleGameService;
-
+    private IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
     @BeforeEach
     public void setUp() {
-        IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory = new ShipFactory();
+        shipFactory = new ShipFactory();
         MessageLogger messageLogger = new MessageLogger("GAME-SERVICE");
         seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
     }

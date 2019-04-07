@@ -1,5 +1,10 @@
+package integrationtests;
+
 import common.MessageLogger;
+import domain.Ship;
+import domain.ShipCreationArgument;
 import domain.ShipFactory;
+import domain.interfaces.IFactoryWithArgument;
 import interfaces.ISeaBattleGameService;
 import interfaces.ISeaBattleServerRest;
 import mocks.MockSeaBattleApplication;
@@ -25,13 +30,15 @@ public class IntegrationTests {
     private ISeaBattleGameService gameService;
     private Client client;
     private Server server;
+    private IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
 
     @SuppressWarnings("Duplicates")
     @BeforeEach
     public void setUp() {
         // Start up server
         rest = new SeaBattleServerRest();
-        gameService = new SeaBattleGameService(new ShipFactory(), new MessageLogger("GAME-SERVICE"));
+        shipFactory = new ShipFactory();
+        gameService = new SeaBattleGameService(shipFactory, new MessageLogger("GAME-SERVICE"));
 
         ExecutorService exService = Executors.newSingleThreadExecutor();
         Runnable task = () -> {

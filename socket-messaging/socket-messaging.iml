@@ -9,9 +9,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="socket-messaging" />
     <orderEntry type="module" module-name="seabattlecommon" />
     <orderEntry type="module" module-name="seabattledomain" />
-    <orderEntry type="module" module-name="seabattledtos" />
   </component>
 </module>

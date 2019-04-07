@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/seabattle-start-master.iml" filepath="$PROJECT_DIR$/.idea/seabattle-start-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/seabattle.iml" filepath="$PROJECT_DIR$/.idea/seabattle.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattleclient/seabattleclient.iml" filepath="$PROJECT_DIR$/seabattleclient/seabattleclient.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattlecommon/seabattlecommon.iml" filepath="$PROJECT_DIR$/seabattlecommon/seabattlecommon.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattledal/seabattledal.iml" filepath="$PROJECT_DIR$/seabattledal/seabattledal.iml" />
@@ -10,7 +10,8 @@
       <module fileurl="file://$PROJECT_DIR$/seabattledtos/seabattledtos.iml" filepath="$PROJECT_DIR$/seabattledtos/seabattledtos.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattlerest/seabattlerest.iml" filepath="$PROJECT_DIR$/seabattlerest/seabattlerest.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattleserver/seabattleserver.iml" filepath="$PROJECT_DIR$/seabattleserver/seabattleserver.iml" />
-      <module fileurl="file://$PROJECT_DIR$/socket-messaging/socketmessaging.iml" filepath="$PROJECT_DIR$/socket-messaging/socketmessaging.iml" />
+      <module fileurl="file://$PROJECT_DIR$/seabattletests/seabattletests.iml" filepath="$PROJECT_DIR$/seabattletests/seabattletests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/socket-messaging/socket-messaging.iml" filepath="$PROJECT_DIR$/socket-messaging/socket-messaging.iml" />
     </modules>
   </component>
 </project>

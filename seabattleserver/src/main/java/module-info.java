@@ -3,4 +3,5 @@ module seabattleserver {
     requires seabattledomain;
     requires seabattledtos;
     requires seabattlecommon;
+    exports interfaces;
 }
