@@ -1,16 +1,16 @@
 package rest;
 
+import common.MessageLogger;
 import dal.UserDataAccess;
 import daldtos.UserResultDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/seabattle")
 public class SeaBattleRESTService{
-    private static final Logger log = LoggerFactory.getLogger(SeaBattleRESTService.class);
+    private static final MessageLogger messageLogger = new MessageLogger("REST-SERVICE");
 
     public SeaBattleRESTService() {
 
@@ -23,7 +23,7 @@ public class SeaBattleRESTService{
         String username = input.username;
         String password = input.password;
 
-        log.info("[Server login]");
+        messageLogger.info("Login request");
 
         if (username == null || password == null) {
             // Client error 400 - Bad Request
@@ -44,7 +44,7 @@ public class SeaBattleRESTService{
         String username = input.username;
         String password = input.password;
 
-        log.info("[Server register]");
+        messageLogger.info("Register request");
         // Check request
         if (username == null || password == null) {
             // Client error 400 - Bad Request
@@ -63,7 +63,7 @@ public class SeaBattleRESTService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserNameInUse(@PathParam("username") String username) {
 
-        log.info("get username");
+        messageLogger.info("Username request");
 
         if (username == null) {
             // Client error 400 - Bad Request

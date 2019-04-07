@@ -1,5 +1,6 @@
 package dal;
 
+import common.MessageLogger;
 import jdbcproperties.JDBCPropertiesGetter;
 
 import java.sql.Connection;
@@ -7,11 +8,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UserDataTable {
-
+    private static MessageLogger messageLogger = new MessageLogger("USER-DATA-TABLE");
     public static void main(String[] args) {
         createPersonDataTable();
     }
@@ -42,7 +41,7 @@ public class UserDataTable {
             } catch (SQLException ex) {
                 // if the error message is "out of memory",
                 // it probably means no database file is found
-                Logger.getLogger(UserDataAccess.class.getName()).log(Level.SEVERE, null, ex);
+                messageLogger.error(ex.getMessage());
             } finally {
                 try {
                     if (connection != null) {
@@ -50,11 +49,11 @@ public class UserDataTable {
                     }
                 } catch (SQLException e) {
                     // connection close failed.
-                    System.err.println(e);
+                    messageLogger.error(e.getMessage());
                 }
             }
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            messageLogger.error(e.getMessage());
         }
     }
 }

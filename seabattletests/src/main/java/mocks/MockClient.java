@@ -15,7 +15,7 @@ import static java.lang.String.format;
 public class MockClient implements ObservableClientSocket {
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final MessageLogger messageLogger = new MessageLogger("MOCK-CLIENT");
-    private final List<Message> messages = Collections.synchronizedList(new ArrayList<>());
+    private final List<Message> messages = Collections.synchronizedList(new ArrayList<Message>());
 
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {

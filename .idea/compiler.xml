@@ -13,19 +13,21 @@
         <module name="seabattledtos" />
         <module name="seabattlerest" />
         <module name="seabattleserver" />
+        <module name="seabattletests" />
         <module name="socket-messaging" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="seabattle" target="1.5" />
-      <module name="seabattleclient" target="1.5" />
-      <module name="seabattlecommon" target="1.5" />
-      <module name="seabattledal" target="1.5" />
-      <module name="seabattledomain" target="1.5" />
-      <module name="seabattledtos" target="1.5" />
-      <module name="seabattlerest" target="1.5" />
-      <module name="seabattleserver" target="1.5" />
-      <module name="socket-messaging" target="1.5" />
+      <module name="seabattle" target="11" />
+      <module name="seabattleclient" target="11" />
+      <module name="seabattlecommon" target="11" />
+      <module name="seabattledal" target="11" />
+      <module name="seabattledomain" target="11" />
+      <module name="seabattledtos" target="11" />
+      <module name="seabattlerest" target="11" />
+      <module name="seabattleserver" target="11" />
+      <module name="seabattletests" target="11" />
+      <module name="socket-messaging" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,6 +1,6 @@
 module seabattledal {
-    requires java.logging;
     requires java.sql;
+    requires seabattlecommon;
     exports dal;
     exports daldtos;
 }

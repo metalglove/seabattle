@@ -1,12 +1,11 @@
 package rest;
 
 import com.google.gson.Gson;
+import common.MessageLogger;
 import daldtos.UserResultDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class RestResponseHelper {
-    private static final Logger log = LoggerFactory.getLogger(SeaBattleRESTService.class);
+    private static final MessageLogger messageLogger = new MessageLogger("REST-RESPONSE-HELPER");
     private static final Gson gson = new Gson();
 
     static String getErrorResponseString()
@@ -14,7 +13,7 @@ class RestResponseHelper {
         SeaBattleResponse response = new SeaBattleResponse();
         response.setSuccess(false);
         String output = gson.toJson(response);
-        log.info("[Server response] " + output);
+        messageLogger.info(output);
         return output;
     }
 
@@ -22,7 +21,7 @@ class RestResponseHelper {
         SeaBattleResponse response = new SeaBattleResponse();
         response.setSuccess(success);
         String output = gson.toJson(response);
-        log.info("[Server response] " + output);
+        messageLogger.info(output);
         return output;
     }
     static String getRegisterResponse(boolean success)
@@ -31,7 +30,7 @@ class RestResponseHelper {
         response.setSuccess(success);
         response.setResponse("Register test triggered");
         String output = gson.toJson(response);
-        log.info("[Server response] " + output);
+        messageLogger.info(output);
         return output;
     }
     static String getLoginResponse(UserResultDto user)
@@ -40,7 +39,7 @@ class RestResponseHelper {
         response.setSuccess(true);
         response.setResponse("Login test triggered");
         String output = gson.toJson(response);
-        log.info("[Server response] " + output);
+        messageLogger.info(output);
         return output;
     }
 
@@ -49,7 +48,7 @@ class RestResponseHelper {
         response.setSuccess(inUse);
         response.setResponse("Username in use triggered");
         String output = gson.toJson(response);
-        log.info("[Server response] " + output);
+        messageLogger.info(output);
         return output;
     }
 }

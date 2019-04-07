@@ -8,20 +8,16 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>socket-messaging</artifactId>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <artifactId>seabattletests</artifactId>
     <dependencies>
+         <!--JUnit 5-->
+         <!--https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>nl.fhict.s3</groupId>
             <artifactId>seabattlecommon</artifactId>
@@ -29,7 +25,17 @@
         </dependency>
         <dependency>
             <groupId>nl.fhict.s3</groupId>
-            <artifactId>seabattledomain</artifactId>
+            <artifactId>socket-messaging</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.fhict.s3</groupId>
+            <artifactId>seabattleclient</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.fhict.s3</groupId>
+            <artifactId>seabattleserver</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

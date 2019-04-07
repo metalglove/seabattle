@@ -17,10 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class PlaceShipTests {
     private ISeaBattleGameService seaBattleGameService;
+    private IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
 
     @BeforeEach
     public void setUp() {
-        IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory = new ShipFactory();
+        shipFactory = new ShipFactory();
         MessageLogger messageLogger = new MessageLogger("GAME-SERVICE");
         seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
         Player player = new Player("Henk", "Karel32", 1);

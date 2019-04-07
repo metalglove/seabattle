@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/seabattlecommon/pom.xml" />
         <option value="$PROJECT_DIR$/seabattledtos/pom.xml" />
+        <option value="$PROJECT_DIR$/seabattletests/pom.xml" />
       </list>
     </option>
   </component>

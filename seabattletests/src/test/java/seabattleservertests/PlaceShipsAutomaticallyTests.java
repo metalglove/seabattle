@@ -16,10 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PlaceShipsAutomaticallyTests {
     private ISeaBattleGameService seaBattleGameService;
+    private IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
 
+    @SuppressWarnings("Duplicates")
     @BeforeEach
     public void setUp() {
-        IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory = new ShipFactory();
+        shipFactory = new ShipFactory();
         MessageLogger messageLogger = new MessageLogger("GAME-SERVICE");
         seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
         Player player = new Player("Henk", "Karel32", 1);
