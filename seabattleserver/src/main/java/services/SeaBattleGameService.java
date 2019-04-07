@@ -163,12 +163,14 @@ public class SeaBattleGameService implements ISeaBattleGameService {
 
     @Override
     public SetReadyResultDto setReady(int playerNumber) {
-        SetReadyResultDto setReadyResultDto = null;
+        SetReadyResultDto setReadyResultDto = new SetReadyResultDto(null, null, false, false);
         synchronized (games) {
             for (Game game : games) {
                 if (game.containsPlayer(playerNumber)) {
-                    ReadyUpAction readyUpAction = game.readyUp(playerNumber);
-                    setReadyResultDto = new SetReadyResultDto(readyUpAction.getPlayerNumber(), readyUpAction.getOpponentNumber(), readyUpAction.isBothReady());
+                    if(game.getPlayerFromNumber(playerNumber).getShips().size() == 5){
+                        ReadyUpAction readyUpAction = game.readyUp(playerNumber);
+                        setReadyResultDto = new SetReadyResultDto(readyUpAction.getPlayerNumber(), readyUpAction.getOpponentNumber(), readyUpAction.isBothReady(), true);
+                    }
                     break;
                 }
             }
