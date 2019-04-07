@@ -3,8 +3,7 @@ package domain;
 import domain.interfaces.IFactoryWithArgument;
 import domain.ships.*;
 
-
-public class ShipFactory implements IFactoryWithArgument<Ship, ShipCreationArgument> {
+public final class ShipFactory implements IFactoryWithArgument<Ship, ShipCreationArgument> {
     @Override
     public Ship create(ShipCreationArgument shipCreationArgument) {
         Ship ship;
