@@ -8,180 +8,101 @@
     <module>seabattleserver</module>
     <module>seabattledomain</module>
     <module>socket-messaging</module>
-      <module>seabattlerest</module>
-      <module>seabattledal</module>
+    <module>seabattlerest</module>
+    <module>seabattledal</module>
   </modules>
   <packaging>pom</packaging>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <openfxVersion>11.0.2</openfxVersion>
-    <junit.version>4.12</junit.version>
-    <jersey-server.version>2.7</jersey-server.version>
-    <gson.version>2.8.2</gson.version>
-    <httpclient.version>4.5.3</httpclient.version>
-    <jetty-server.version>9.4.7.v20170914</jetty-server.version>
-    <javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
-    <logback-classic.version>1.2.3</logback-classic.version>
-    <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
-    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <junit-jupiter-api.version>5.3.2</junit-jupiter-api.version>
+    <!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+    <!--<openfxVersion>11.0.2</openfxVersion>-->
+    <!--<junit.version>4.12</junit.version>-->
+    <!--<jersey-server.version>2.7</jersey-server.version>-->
+    <!--<gson.version>2.8.2</gson.version>-->
+    <!--<httpclient.version>4.5.3</httpclient.version>-->
+    <!--<jetty-server.version>9.4.7.v20170914</jetty-server.version>-->
+    <!--<javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>-->
+    <!--<logback-classic.version>1.2.3</logback-classic.version>-->
+    <!--<maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>-->
+    <!--<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>-->
+    <!--<maven.compiler.source>11</maven.compiler.source>-->
+    <!--<maven.compiler.target>11</maven.compiler.target>-->
+    <!--<junit-jupiter-api.version>5.3.2</junit-jupiter-api.version>-->
   </properties>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven-surefire-plugin.version}</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin.version}</version>
-        <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
-          <compilerArguments>
-            <bootclasspath>${sun.boot.class.path}${path.separator}${java.home}/lib/jfxrt.jar
-            </bootclasspath>
-          </compilerArguments>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.9</version>
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>default-report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+    <!--<plugins>-->
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-surefire-plugin</artifactId>-->
+        <!--<version>${maven-surefire-plugin.version}</version>-->
+      <!--</plugin>-->
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-compiler-plugin</artifactId>-->
+        <!--<version>${maven-compiler-plugin.version}</version>-->
+        <!--<configuration>-->
+          <!--<source>${maven.compiler.source}</source>-->
+          <!--<target>${maven.compiler.target}</target>-->
+          <!--<compilerArguments>-->
+            <!--<bootclasspath>${sun.boot.class.path}${path.separator}${java.home}/lib/jfxrt.jar-->
+            <!--</bootclasspath>-->
+          <!--</compilerArguments>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
+      <!--<plugin>-->
+        <!--<groupId>org.jacoco</groupId>-->
+        <!--<artifactId>jacoco-maven-plugin</artifactId>-->
+        <!--<version>0.7.9</version>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<id>default-prepare-agent</id>-->
+            <!--<goals>-->
+              <!--<goal>prepare-agent</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+          <!--<execution>-->
+            <!--<id>default-report</id>-->
+            <!--<phase>prepare-package</phase>-->
+            <!--<goals>-->
+              <!--<goal>report</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
+    <!--</plugins>-->
   </build>
   <dependencies>
-    <!--&lt;!&ndash; Unit testing &ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>junit</groupId>-->
-      <!--<artifactId>junit</artifactId>-->
-      <!--<version>${junit.version}</version>-->
-      <!--<scope>test</scope>-->
-      <!--<type>jar</type>-->
-    <!--</dependency>-->
-
-    <!--&lt;!&ndash; JAX-RS: Java API for RESTful Web Services &ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>javax.ws.rs</groupId>-->
-      <!--<artifactId>javax.ws.rs-api</artifactId>-->
-      <!--<version>${javax.ws.rs-api.version}</version>-->
-      <!--<type>jar</type>-->
-    <!--</dependency>-->
-
-    <!--&lt;!&ndash; Jetty server-->
-         <!--Note by Nico Kuijpers-->
-         <!--Use version jetty-9.3.12 or higher for WebSockets-->
-         <!--to avoid java.lang.NoClassDefFoundError, see-->
-         <!--https://stackoverflow.com/questions/28170244/-->
-         <!--jetty-throws-noclassdeffounderror-org-eclipse-jetty-util-futurecallback-on-shut-->
-    <!--&ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>org.eclipse.jetty</groupId>-->
-      <!--<artifactId>jetty-server</artifactId>-->
-      <!--<version>${jetty-server.version}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.eclipse.jetty</groupId>-->
-      <!--<artifactId>jetty-servlet</artifactId>-->
-      <!--<version>${jetty-server.version}</version>-->
-    <!--</dependency>-->
-
-    <!--&lt;!&ndash; Jersey &ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>org.glassfish.jersey.core</groupId>-->
-      <!--<artifactId>jersey-server</artifactId>-->
-      <!--<version>${jersey-server.version}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.glassfish.jersey.containers</groupId>-->
-      <!--<artifactId>jersey-container-servlet-core</artifactId>-->
-      <!--<version>${jersey-server.version}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.glassfish.jersey.containers</groupId>-->
-      <!--<artifactId>jersey-container-jetty-http</artifactId>-->
-      <!--<version>${jersey-server.version}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.glassfish.jersey.media</groupId>-->
-      <!--<artifactId>jersey-media-moxy</artifactId>-->
-      <!--<version>${jersey-server.version}</version>-->
-    <!--</dependency>-->
-
-    <!--&lt;!&ndash;  Gson: Java to Json conversion &ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>com.google.code.gson</groupId>-->
-      <!--<artifactId>gson</artifactId>-->
-      <!--<version>${gson.version}</version>-->
-      <!--<scope>compile</scope>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.apache.httpcomponents</groupId>-->
-      <!--<artifactId>httpclient</artifactId>-->
-      <!--<version>${httpclient.version}</version>-->
-    <!--</dependency>-->
-
-    <!-- Logback -->
-    <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>${logback-classic.version}</version>
-    </dependency>
-
     <!-- JUnit 5 -->
     <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit-jupiter-api.version}</version>
-      <scope>test</scope>
-    </dependency>
-      <dependency>
-          <groupId>nl.fhict.s3</groupId>
-          <artifactId>seabattlecommon</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>compile</scope>
-      </dependency>
-    <dependency>
-      <groupId>nl.fhict.s3</groupId>
-      <artifactId>socket-messaging</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-      <dependency>
-          <groupId>nl.fhict.s3</groupId>
-          <artifactId>seabattleclient</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>compile</scope>
-      </dependency>
-    <dependency>
-      <groupId>nl.fhict.s3</groupId>
-      <artifactId>seabattleserver</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-
+    <!--<dependency>-->
+      <!--<groupId>org.junit.jupiter</groupId>-->
+      <!--<artifactId>junit-jupiter-engine</artifactId>-->
+      <!--<version>${junit-jupiter-api.version}</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
+      <!--<dependency>-->
+          <!--<groupId>nl.fhict.s3</groupId>-->
+          <!--<artifactId>seabattlecommon</artifactId>-->
+          <!--<version>1.0-SNAPSHOT</version>-->
+          <!--<scope>compile</scope>-->
+      <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>nl.fhict.s3</groupId>-->
+      <!--<artifactId>socket-messaging</artifactId>-->
+      <!--<version>1.0-SNAPSHOT</version>-->
+      <!--<scope>compile</scope>-->
+    <!--</dependency>-->
+      <!--<dependency>-->
+          <!--<groupId>nl.fhict.s3</groupId>-->
+          <!--<artifactId>seabattleclient</artifactId>-->
+          <!--<version>1.0-SNAPSHOT</version>-->
+          <!--<scope>compile</scope>-->
+      <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>nl.fhict.s3</groupId>-->
+      <!--<artifactId>seabattleserver</artifactId>-->
+      <!--<version>1.0-SNAPSHOT</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
   </dependencies>
 </project>

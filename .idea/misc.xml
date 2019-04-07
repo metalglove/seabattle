@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ExcludeFromValidation">
-    <file url="file://$PROJECT_DIR$/src/test/java/IntegrationTests.java" />
-  </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
@@ -10,19 +7,10 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/seabattledomain/pom.xml" />
-        <option value="$PROJECT_DIR$/seabattledtos/pom.xml" />
         <option value="$PROJECT_DIR$/seabattlecommon/pom.xml" />
+        <option value="$PROJECT_DIR$/seabattledtos/pom.xml" />
       </list>
     </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/restserver/pom.xml" />
-        <option value="$PROJECT_DIR$/seabattledomain/pom.xml" />
-      </set>
-    </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_10" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/classes" />
-  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
