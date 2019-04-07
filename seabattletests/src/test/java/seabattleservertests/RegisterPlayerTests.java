@@ -52,4 +52,21 @@ public class RegisterPlayerTests {
         assertTrue(registerPlayerResultDto.isSuccess());
         assertNull(registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is not null, which means AI got registered and thus is a SinglePlayer game.");
     }
+
+    //TODO: Not testable because this is already pre-checked in the RegisterRequestHandler
+//    @Test
+//    public void should_Fail__When_Registering_Player_Henk_With_Password_Karel32_To_A_MultiPlayer_Game_When_Player_With_Same_Player_Name_Already_Registered() {
+//        // Arrange
+//        Player player1 = new Player("Henk", "Karel32", 1);
+//        Player player2 = new Player("Henk", "Karel32", 1);
+//        boolean multiPlayer = true;
+//
+//        // Act
+//        RegisterPlayerResultDto registerPlayerResultDto1 = seaBattleGameService.registerPlayer(player1, multiPlayer);
+//        RegisterPlayerResultDto registerPlayerResultDto2 = seaBattleGameService.registerPlayer(player2, multiPlayer);
+//
+//        // Assert
+//        assertTrue(registerPlayerResultDto1.isSuccess());
+//        assertFalse(registerPlayerResultDto2.isSuccess());
+//    }
 }
