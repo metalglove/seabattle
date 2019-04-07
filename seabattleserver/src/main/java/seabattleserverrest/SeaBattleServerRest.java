@@ -1,97 +1,39 @@
 package seabattleserverrest;
 
+import common.MessageLogger;
 import domain.Player;
 import interfaces.ISeaBattleServerRest;
-
+import rest.SeaBattleResponse;
+import rest.SeaBattleRestService;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SeaBattleServerRest implements ISeaBattleServerRest {
     private Map<Integer, Player> players = new HashMap<>();
     private Integer counter = 0;
-    //TODO: Add export in seabattlerest.
-    // private SeaBattleRESTService seaBattleRESTService;
-
-
-    //    public boolean getUserInUse(int petId) {
-    //        String query (url of RESTService method) = "/getUsername";
-    //        SeaBattleResponse response = executeQueryGet(query);
-    //        return response.isSuccess();
-    //    }
-    //
-    //    private PetStoreResponse executeQueryGet(String queryGet) {
-    //
-    //        // Build the query for the REST service
-    //        final String query = url + queryGet;
-    //        log.info("[Query Get] : " + query);
-    //
-    //        // Execute the HTTP GET request
-    //        HttpGet httpGet = new HttpGet(query);
-    //        return executeHttpUriRequest(httpGet);
-    //    }
-    //  private PetStoreResponse executeQueryPost(PetDTO petRequest, String queryPost) {
-    //
-    //        // Build the query for the REST service
-    //        final String query = url + queryPost;
-    //        log.info("[Query Post] : " + query);
-    //
-    //        // Execute the HTTP POST request
-    //        HttpPost httpPost = new HttpPost(query);
-    //        httpPost.addHeader("content-type", "application/json");
-    //        StringEntity params;
-    //        try {
-    //            params = new StringEntity(gson.toJson(petRequest));
-    //            httpPost.setEntity(params);
-    //        } catch (UnsupportedEncodingException ex) {
-    //            Logger.getLogger(PetStoreClient.class.getName()).log(Level.SEVERE, null, ex);
-    //        }
-    //        return executeHttpUriRequest(httpPost);
-    //    }
-    //
-    //    private PetStoreResponse executeQueryPut(PetDTO petRequest, String queryPut) {
-    //
-    //        // Build the query for the REST service
-    //        final String query = url + queryPut;
-    //        log.info("[Query Put] : " + query);
-    //
-    //        // Execute the HTTP PUT request
-    //        HttpPut httpPut = new HttpPut(query);
-    //        httpPut.addHeader("content-type", "application/json");
-    //        StringEntity params;
-    //        try {
-    //            params = new StringEntity(gson.toJson(petRequest));
-    //            httpPut.setEntity(params);
-    //        } catch (UnsupportedEncodingException ex) {
-    //            Logger.getLogger(PetStoreClient.class.getName()).log(Level.SEVERE, null, ex);
-    //        }
-    //        return executeHttpUriRequest(httpPut);
-    //    }
-    //
-    //    private PetStoreResponse executeHttpUriRequest(HttpUriRequest httpUriRequest) {
-    //
-    //        // Execute the HttpUriRequest
-    //        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-    //                CloseableHttpResponse response = httpClient.execute(httpUriRequest)) {
-    //            log.info("[Status Line] : " + response.getStatusLine());
-    //            HttpEntity entity = response.getEntity();
-    //            final String entityString = EntityUtils.toString(entity);
-    //            log.info("[Entity] : " + entityString);
-    //            PetStoreResponse petStoreResponse = gson.fromJson(entityString, PetStoreResponse.class);
-    //            return petStoreResponse;
-    //        } catch (IOException e) {
-    //            log.info("IOException : " + e.toString());
-    //            PetStoreResponse petStoreResponse = new PetStoreResponse();
-    //            petStoreResponse.setSuccess(false);
-    //            return petStoreResponse;
-    //        } catch (JsonSyntaxException e) {
-    //            log.info("JsonSyntaxException : " + e.toString());
-    //            PetStoreResponse petStoreResponse = new PetStoreResponse();
-    //            petStoreResponse.setSuccess(false);
-    //            return petStoreResponse;
-    //        }
-    //    }
+    private final String url = "/seabattle";
+    private SeaBattleRestService seaBattleRestService;
+    //private final MessageLogger messageLogger;
+    //TODO: Finish REST implementation
     @Override
     public boolean register(String username, String password) {
+//        if(seaBattleRestService.getUserNameInUse(username))
+//            SeaBattleResponse response =
         if (players.containsValue(username))
             return false;
         counter++;
@@ -118,5 +60,30 @@ public class SeaBattleServerRest implements ISeaBattleServerRest {
             }
         }
         return null;
+    }
+
+    private SeaBattleResponse executeHttpUriRequest(HttpUriRequest httpUriRequest) {
+
+        // Execute the HttpUriRequest
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(httpUriRequest)) {
+            //logger.info("[Status Line] : " + response.getStatusLine());
+            HttpEntity entity = response.getEntity();
+            final String entityString = EntityUtils.toString(entity);
+            //log.info("[Entity] : " + entityString);
+            Gson gson = new Gson();
+            SeaBattleResponse seaBattleResponse = gson.fromJson(entityString, SeaBattleResponse.class);
+            return seaBattleResponse;
+        } catch (IOException e) {
+            // log.info("IOException : " + e.toString());
+            SeaBattleResponse seaBattleResponse = new SeaBattleResponse();
+            seaBattleResponse.setSuccess(false);
+            return seaBattleResponse;
+        } catch (JsonSyntaxException e) {
+            // log.info("JsonSyntaxException : " + e.toString());
+            SeaBattleResponse petStoreResponse = new SeaBattleResponse();
+            petStoreResponse.setSuccess(false);
+            return petStoreResponse;
+        }
     }
 }

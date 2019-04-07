@@ -9,10 +9,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/seabattle")
-public class SeaBattleRESTService{
+public class SeaBattleRestService {
     private static final MessageLogger messageLogger = new MessageLogger("REST-SERVICE");
 
-    public SeaBattleRESTService() {
+    public SeaBattleRestService() {
 
     }
 

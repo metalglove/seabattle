@@ -28,7 +28,7 @@ class RestResponseHelper {
     {
         SeaBattleResponse response = new SeaBattleResponse();
         response.setSuccess(success);
-        response.setResponse("Register test triggered");
+        response.setResponse("Registered with name: " + response.user.username);
         String output = gson.toJson(response);
         messageLogger.info(output);
         return output;
@@ -37,7 +37,7 @@ class RestResponseHelper {
     {
         SeaBattleResponse response = new SeaBattleResponse();
         response.setSuccess(true);
-        response.setResponse("Login test triggered");
+        response.setResponse("Login with name: " + user.username);
         String output = gson.toJson(response);
         messageLogger.info(output);
         return output;
@@ -46,7 +46,7 @@ class RestResponseHelper {
     static String getUsernameInUseResponse(boolean inUse) {
         SeaBattleResponse response = new SeaBattleResponse();
         response.setSuccess(inUse);
-        response.setResponse("Username in use triggered");
+        response.setResponse("Username in use: " + inUse);
         String output = gson.toJson(response);
         messageLogger.info(output);
         return output;

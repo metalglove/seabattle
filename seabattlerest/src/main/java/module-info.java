@@ -6,4 +6,5 @@ module seabattlerest {
     requires org.eclipse.jetty.server;
     requires jersey.container.servlet.core;
     requires javax.ws.rs.api;
+    exports rest;
 }
