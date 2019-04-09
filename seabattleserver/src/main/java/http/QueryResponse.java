@@ -26,7 +26,7 @@ public class QueryResponse<TResponse> {
     if (response instanceof LinkedHashMap) {
       System.out.println("FOUND LinkedHashMap");
     }
-    return response;
+    return (TResponse)response;
   }
 
   public boolean isSuccess() {

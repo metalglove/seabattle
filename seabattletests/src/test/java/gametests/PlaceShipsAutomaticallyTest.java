@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PlaceShipsAutomaticallyTest {
 
   @Test
-  public void should_Place_All_Ships() {
+  public void should_Place_All_Ships_Test() {
     Game game = new Game(new ShipFactory(), new MessageLogger("GAME"));
     game.registerPlayer(new Player("Jan", 1));
     game.registerPlayer(new Player("Henk", 2));
