@@ -13,20 +13,20 @@ import restserver.interfaces.IUserService;
 @RequestMapping("/user")
 public class UserController {
 
-    private final IUserService userService;
+  private final IUserService userService;
 
-    @Autowired
-    public UserController(@Qualifier("userService") IUserService userService) {
-        this.userService = userService;
-    }
+  @Autowired
+  public UserController(@Qualifier("userService") IUserService userService) {
+    this.userService = userService;
+  }
 
-    @PutMapping(value = "/login", consumes = "application/x-yaml", produces = "application/x-yaml")
-    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
-        return userService.login(loginRequestDto);
-    }
+  @PutMapping(value = "/login", consumes = "application/x-yaml", produces = "application/x-yaml")
+  public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
+    return userService.login(loginRequestDto);
+  }
 
-    @PostMapping(value = "/register", consumes = "application/x-yaml", produces = "application/x-yaml")
-    public RegisterResponseDto register(@RequestBody RegisterRequestDto registerRequestDto) {
-        return userService.register(registerRequestDto);
-    }
+  @PostMapping(value = "/register", consumes = "application/x-yaml", produces = "application/x-yaml")
+  public RegisterResponseDto register(@RequestBody RegisterRequestDto registerRequestDto) {
+    return userService.register(registerRequestDto);
+  }
 }

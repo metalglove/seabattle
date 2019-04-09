@@ -15,41 +15,41 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlaceShipsAutomaticallyTests {
-    private ISeaBattleGameService seaBattleGameService;
-    private IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
+  private ISeaBattleGameService seaBattleGameService;
+  private IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
 
-    @SuppressWarnings("Duplicates")
-    @BeforeEach
-    public void setUp() {
-        shipFactory = new ShipFactory();
-        MessageLogger messageLogger = new MessageLogger("GAME-SERVICE");
-        seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
-        Player player = new Player("Henk", "Karel32", 1);
-        seaBattleGameService.registerPlayer(player, false);
-    }
+  @SuppressWarnings("Duplicates")
+  @BeforeEach
+  public void setUp() {
+    shipFactory = new ShipFactory();
+    MessageLogger messageLogger = new MessageLogger("GAME-SERVICE");
+    seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
+    Player player = new Player("Henk", "Karel32", 1);
+    seaBattleGameService.registerPlayer(player, false);
+  }
 
-    @Test
-    public void should_Place_Ships_Automatically_Successfully(){
-        // Act
-        PlaceShipsAutomaticallyResultDto placeShipsAutomaticallyResultDto = seaBattleGameService.placeShipsAutomatically(1);
+  @Test
+  public void should_Place_Ships_Automatically_Successfully() {
+    // Act
+    PlaceShipsAutomaticallyResultDto placeShipsAutomaticallyResultDto = seaBattleGameService.placeShipsAutomatically(1);
 
-        // Assert
-        assertTrue(placeShipsAutomaticallyResultDto.isSuccess());
-    }
+    // Assert
+    assertTrue(placeShipsAutomaticallyResultDto.isSuccess());
+  }
 
-    @Test
-    public void should_Remove_Ships_Automatically_Then_Place_Ships_Automatically_Successfully(){
-        // Arrange
-        List<Ship> oldShipPlacement = new ArrayList<>();
-        oldShipPlacement.add(seaBattleGameService.placeShip(1, ShipType.MINESWEEPER,2,2,false).getShip());
-        oldShipPlacement.add(seaBattleGameService.placeShip(1, ShipType.SUBMARINE,3,2,false).getShip());
-        oldShipPlacement.add(seaBattleGameService.placeShip(1, ShipType.BATTLESHIP,4,2,false).getShip());
+  @Test
+  public void should_Remove_Ships_Automatically_Then_Place_Ships_Automatically_Successfully() {
+    // Arrange
+    List<Ship> oldShipPlacement = new ArrayList<>();
+    oldShipPlacement.add(seaBattleGameService.placeShip(1, ShipType.MINESWEEPER, 2, 2, false).getShip());
+    oldShipPlacement.add(seaBattleGameService.placeShip(1, ShipType.SUBMARINE, 3, 2, false).getShip());
+    oldShipPlacement.add(seaBattleGameService.placeShip(1, ShipType.BATTLESHIP, 4, 2, false).getShip());
 
-        // Act
-        PlaceShipsAutomaticallyResultDto placeShipsAutomaticallyResultDto = seaBattleGameService.placeShipsAutomatically(1);
+    // Act
+    PlaceShipsAutomaticallyResultDto placeShipsAutomaticallyResultDto = seaBattleGameService.placeShipsAutomatically(1);
 
-        // Assert
-        assertEquals(oldShipPlacement.toString(), placeShipsAutomaticallyResultDto.getShipsToRemove().toString());
-        assertNotEquals(placeShipsAutomaticallyResultDto.getShipsToAdd().toString(), oldShipPlacement.toString());
-    }
+    // Assert
+    assertEquals(oldShipPlacement.toString(), placeShipsAutomaticallyResultDto.getShipsToRemove().toString());
+    assertNotEquals(placeShipsAutomaticallyResultDto.getShipsToAdd().toString(), oldShipPlacement.toString());
+  }
 }

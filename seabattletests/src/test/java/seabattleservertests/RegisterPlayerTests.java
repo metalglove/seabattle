@@ -15,45 +15,46 @@ import services.SeaBattleGameService;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RegisterPlayerTests {
-    private ISeaBattleGameService seaBattleGameService;
-    private IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
-    @BeforeEach
-    public void setUp() {
-        shipFactory = new ShipFactory();
-        MessageLogger messageLogger = new MessageLogger("GAME-SERVICE");
-        seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
-    }
+  private ISeaBattleGameService seaBattleGameService;
+  private IFactoryWithArgument<Ship, ShipCreationArgument> shipFactory;
 
-    //TODO: More register tests needed?
-    @Test
-    public void should_Register_Player_Henk_With_Password_Karel32_To_A_SinglePlayer_Game_When_MultiPlayer_Is_False() {
-        // Arrange
-        Player player = new Player("Henk", "Karel32", 1);
-        boolean multiPlayer = false;
+  @BeforeEach
+  public void setUp() {
+    shipFactory = new ShipFactory();
+    MessageLogger messageLogger = new MessageLogger("GAME-SERVICE");
+    seaBattleGameService = new SeaBattleGameService(shipFactory, messageLogger);
+  }
 
-        // Act
-        RegisterPlayerResultDto registerPlayerResultDto = seaBattleGameService.registerPlayer(player, multiPlayer);
+  //TODO: More register tests needed?
+  @Test
+  public void should_Register_Player_Henk_With_Password_Karel32_To_A_SinglePlayer_Game_When_MultiPlayer_Is_False() {
+    // Arrange
+    Player player = new Player("Henk", "Karel32", 1);
+    boolean multiPlayer = false;
 
-        // Assert
-        assertTrue(registerPlayerResultDto.isSuccess());
-        assertEquals(0, (int)registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is higher than 0 and thus is not an AI which rules out it being a SinglePlayer game.");
-    }
+    // Act
+    RegisterPlayerResultDto registerPlayerResultDto = seaBattleGameService.registerPlayer(player, multiPlayer);
 
-    @Test
-    public void should_Throw_Null_Pointer_Error_When_Registering_Player_Henk_With_Password_Karel32_To_A_MultiPlayer_Game_When_MultiPlayer_Is_True_And_No_Opponent_Registers() {
-        // Arrange
-        Player player = new Player("Henk", "Karel32", 1);
-        boolean multiPlayer = true;
+    // Assert
+    assertTrue(registerPlayerResultDto.isSuccess());
+    assertEquals(0, (int) registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is higher than 0 and thus is not an AI which rules out it being a SinglePlayer game.");
+  }
 
-        // Act
-        RegisterPlayerResultDto registerPlayerResultDto = seaBattleGameService.registerPlayer(player, multiPlayer);
+  @Test
+  public void should_Throw_Null_Pointer_Error_When_Registering_Player_Henk_With_Password_Karel32_To_A_MultiPlayer_Game_When_MultiPlayer_Is_True_And_No_Opponent_Registers() {
+    // Arrange
+    Player player = new Player("Henk", "Karel32", 1);
+    boolean multiPlayer = true;
 
-        // Assert
-        assertTrue(registerPlayerResultDto.isSuccess());
-        assertNull(registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is not null, which means AI got registered and thus is a SinglePlayer game.");
-    }
+    // Act
+    RegisterPlayerResultDto registerPlayerResultDto = seaBattleGameService.registerPlayer(player, multiPlayer);
 
-    //TODO: Not testable because this is already pre-checked in the RegisterRequestHandler
+    // Assert
+    assertTrue(registerPlayerResultDto.isSuccess());
+    assertNull(registerPlayerResultDto.getOpponentPlayerNumber(), "The opponents ID is not null, which means AI got registered and thus is a SinglePlayer game.");
+  }
+
+  //TODO: Not testable because this is already pre-checked in the RegisterRequestHandler
 //    @Test
 //    public void should_Fail__When_Registering_Player_Henk_With_Password_Karel32_To_A_MultiPlayer_Game_When_Player_With_Same_Player_Name_Already_Registered() {
 //        // Arrange

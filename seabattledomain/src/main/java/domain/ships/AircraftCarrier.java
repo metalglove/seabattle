@@ -4,8 +4,8 @@ import domain.Point;
 import domain.Ship;
 
 public class AircraftCarrier extends Ship {
-    public AircraftCarrier(Point startingPoint, boolean horizontal) {
-        super(startingPoint, horizontal);
-        setLength(5);
-    }
+  public AircraftCarrier(Point startingPoint, boolean horizontal) {
+    super(startingPoint, horizontal);
+    setLength(5);
+  }
 }

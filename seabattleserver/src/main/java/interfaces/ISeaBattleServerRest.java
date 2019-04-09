@@ -5,7 +5,9 @@ import dtos.requests.RegisterRequestDto;
 import dtos.responses.RegisterResponseDto;
 
 public interface ISeaBattleServerRest {
-    RegisterResponseDto register(RegisterRequestDto registerRequestDto);
-    int getPlayerNumber(String username);
-    Player getPlayer(String username);
+  RegisterResponseDto register(RegisterRequestDto registerRequestDto);
+
+  int getPlayerNumber(String username);
+
+  Player getPlayer(String username);
 }

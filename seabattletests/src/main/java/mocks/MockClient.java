@@ -13,42 +13,42 @@ import java.util.List;
 import static java.lang.String.format;
 
 public class MockClient implements ObservableClientSocket {
-    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-    private final MessageLogger messageLogger = new MessageLogger("MOCK-CLIENT");
-    private final List<Message> messages = Collections.synchronizedList(new ArrayList<Message>());
+  private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+  private final MessageLogger messageLogger = new MessageLogger("MOCK-CLIENT");
+  private final List<Message> messages = Collections.synchronizedList(new ArrayList<Message>());
 
-    @Override
-    public void addListener(String eventName, PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(eventName, listener);
-        messageLogger.info(format("New listener count after adding {%s}, count: %s", listener.getClass().getSimpleName(), propertyChangeSupport.getPropertyChangeListeners().length));
-    }
+  @Override
+  public void addListener(String eventName, PropertyChangeListener listener) {
+    propertyChangeSupport.addPropertyChangeListener(eventName, listener);
+    messageLogger.info(format("New listener count after adding {%s}, count: %s", listener.getClass().getSimpleName(), propertyChangeSupport.getPropertyChangeListeners().length));
+  }
 
-    @Override
-    public void removeListener(String eventName, PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(eventName, listener);
-        messageLogger.info(format("New listener count after removing {%s}, count: %s", listener.getClass().getSimpleName(), propertyChangeSupport.getPropertyChangeListeners().length));
-    }
+  @Override
+  public void removeListener(String eventName, PropertyChangeListener listener) {
+    propertyChangeSupport.removePropertyChangeListener(eventName, listener);
+    messageLogger.info(format("New listener count after removing {%s}, count: %s", listener.getClass().getSimpleName(), propertyChangeSupport.getPropertyChangeListeners().length));
+  }
 
-    @Override
-    public void startReading() {
-        messageLogger.info("Started reading...");
-    }
+  @Override
+  public void startReading() {
+    messageLogger.info("Started reading...");
+  }
 
-    @Override
-    public void addMessage(Message message) {
-        String messageType = message.getClass().getSimpleName();
-        propertyChangeSupport.firePropertyChange(messageType, null, message);
-        messageLogger.info(format("Successfully received {%s} message!", messageType));
-        messages.add(message);
-    }
+  @Override
+  public void addMessage(Message message) {
+    String messageType = message.getClass().getSimpleName();
+    propertyChangeSupport.firePropertyChange(messageType, null, message);
+    messageLogger.info(format("Successfully received {%s} message!", messageType));
+    messages.add(message);
+  }
 
-    @Override
-    public void startWriting(Message message) {
-        messageLogger.info("Started writing...");
-        messageLogger.info(format("Sent {%s}", message.getClass().getSimpleName()));
-    }
+  @Override
+  public void startWriting(Message message) {
+    messageLogger.info("Started writing...");
+    messageLogger.info(format("Sent {%s}", message.getClass().getSimpleName()));
+  }
 
-    public void setMockUpResponse(Message response) {
-        addMessage(response);
-    }
+  public void setMockUpResponse(Message response) {
+    addMessage(response);
+  }
 }

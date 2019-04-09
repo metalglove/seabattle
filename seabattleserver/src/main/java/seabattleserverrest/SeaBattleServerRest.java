@@ -8,17 +8,16 @@ import http.QueryResponse;
 import http.ServiceBase;
 import interfaces.ISeaBattleServerRest;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SeaBattleServerRest extends ServiceBase implements ISeaBattleServerRest {
-    private Map<Integer, Player> players = new HashMap<>();
+  private Map<Integer, Player> players = new HashMap<>();
 
-    public SeaBattleServerRest(MessageLogger messageLogger) {
-        super(messageLogger);
-    }
+  public SeaBattleServerRest(MessageLogger messageLogger) {
+    super(messageLogger);
+  }
 
 //    public LoginResultDto login(LoginRequestDto loginRequestDto) {
 //        final QueryResponse<LoginResultDto> queryResponse = executeQuery(loginRequestDto, LoginResultDto.class, "/user/login", new HttpPut());
@@ -28,34 +27,34 @@ public class SeaBattleServerRest extends ServiceBase implements ISeaBattleServer
 //        return queryResponse.getResponse();
 //    }
 
-    @Override
-    public RegisterResponseDto register(RegisterRequestDto registerRequestDto) {
-        final QueryResponse<RegisterResponseDto> queryResponse = executeQuery(registerRequestDto, RegisterResponseDto.class, "/user/register", new HttpPost());
-        if (queryResponse.isSuccess()) {
-            messageLogger.info(String.format("Register failed: %s", queryResponse.getReasonIfFailed()));
-            RegisterResponseDto registerResponseDto = queryResponse.getResponse();
-            players.put(registerResponseDto.getId(), new Player(registerResponseDto.getUsername(), registerResponseDto.getId()));
-        }
-        return queryResponse.getResponse();
+  @Override
+  public RegisterResponseDto register(RegisterRequestDto registerRequestDto) {
+    final QueryResponse<RegisterResponseDto> queryResponse = executeQuery(registerRequestDto, RegisterResponseDto.class, "/user/register", new HttpPost());
+    if (queryResponse.isSuccess()) {
+      messageLogger.info(String.format("Register failed: %s", queryResponse.getReasonIfFailed()));
+      RegisterResponseDto registerResponseDto = queryResponse.getResponse();
+      players.put(registerResponseDto.getId(), new Player(registerResponseDto.getUsername(), registerResponseDto.getId()));
     }
+    return queryResponse.getResponse();
+  }
 
-    @Override
-    public int getPlayerNumber(String username) {
-        for (Player player : players.values()) {
-            if (player.equals(username)) {
-                return player.getPlayerNumber();
-            }
-        }
-        return -1;
+  @Override
+  public int getPlayerNumber(String username) {
+    for (Player player : players.values()) {
+      if (player.equals(username)) {
+        return player.getPlayerNumber();
+      }
     }
+    return -1;
+  }
 
-    @Override
-    public Player getPlayer(String username) {
-        for (Player player : players.values()) {
-            if (player.equals(username)) {
-                return player;
-            }
-        }
-        return null;
+  @Override
+  public Player getPlayer(String username) {
+    for (Player player : players.values()) {
+      if (player.equals(username)) {
+        return player;
+      }
     }
+    return null;
+  }
 }

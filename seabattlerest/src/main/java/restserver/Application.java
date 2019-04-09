@@ -16,13 +16,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "domain")
 public class Application extends SpringBootServletInitializer {
 
-    //TODO: mvn spring-boot:run
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+  //TODO: mvn spring-boot:run
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(Application.class);
-    }
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+    return builder.sources(Application.class);
+  }
 }

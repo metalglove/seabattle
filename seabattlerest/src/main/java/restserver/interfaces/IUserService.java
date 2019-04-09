@@ -6,6 +6,7 @@ import dtos.responses.LoginResponseDto;
 import dtos.responses.RegisterResponseDto;
 
 public interface IUserService {
-    LoginResponseDto login(LoginRequestDto loginRequestDto);
-    RegisterResponseDto register(RegisterRequestDto registerRequestDto);
+  LoginResponseDto login(LoginRequestDto loginRequestDto);
+
+  RegisterResponseDto register(RegisterRequestDto registerRequestDto);
 }

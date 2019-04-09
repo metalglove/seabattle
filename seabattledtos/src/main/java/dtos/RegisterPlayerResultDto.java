@@ -1,25 +1,25 @@
 package dtos;
 
 public class RegisterPlayerResultDto {
-    private final Integer opponentPlayerNumber;
-    private final String opponentName;
-    private final boolean success;
+  private final Integer opponentPlayerNumber;
+  private final String opponentName;
+  private final boolean success;
 
-    public RegisterPlayerResultDto(Integer opponentPlayerNumber, String opponentName, boolean success) {
-        this.opponentPlayerNumber = opponentPlayerNumber;
-        this.opponentName = opponentName;
-        this.success = success;
-    }
+  public RegisterPlayerResultDto(Integer opponentPlayerNumber, String opponentName, boolean success) {
+    this.opponentPlayerNumber = opponentPlayerNumber;
+    this.opponentName = opponentName;
+    this.success = success;
+  }
 
-    public boolean isSuccess() {
-        return success;
-    }
+  public boolean isSuccess() {
+    return success;
+  }
 
-    public String getOpponentName() {
-        return opponentName;
-    }
+  public String getOpponentName() {
+    return opponentName;
+  }
 
-    public Integer getOpponentPlayerNumber() {
-        return opponentPlayerNumber;
-    }
+  public Integer getOpponentPlayerNumber() {
+    return opponentPlayerNumber;
+  }
 }

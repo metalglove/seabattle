@@ -2,7 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>nl.fhict.s3</groupId>
   <artifactId>SeaBattleStart</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${project.version}</version>
+  <properties>
+    <project.version>1.0-SNAPSHOT</project.version>
+  </properties>
   <modules>
     <module>seabattleclient</module>
     <module>seabattleserver</module>
@@ -27,6 +30,5 @@
     </plugins>
   </build>
   <dependencies>
-
   </dependencies>
 </project>

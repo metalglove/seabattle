@@ -12,24 +12,24 @@ import messaging.sockets.AsyncIdentifiableClientSocket;
 
 public class RemoveAllShipsRequestHandler implements RequestHandler<RemoveAllShipsRequest> {
 
-    private final WritingSocket serverSocket;
-    private final ISeaBattleGameService gameService;
-    private final MessageLogger messageLogger;
+  private final WritingSocket serverSocket;
+  private final ISeaBattleGameService gameService;
+  private final MessageLogger messageLogger;
 
-    public RemoveAllShipsRequestHandler(WritingSocket serverSocket, ISeaBattleGameService gameService, MessageLogger messageLogger) {
-        this.serverSocket = serverSocket;
-        this.gameService = gameService;
-        this.messageLogger = messageLogger;
-    }
+  public RemoveAllShipsRequestHandler(WritingSocket serverSocket, ISeaBattleGameService gameService, MessageLogger messageLogger) {
+    this.serverSocket = serverSocket;
+    this.gameService = gameService;
+    this.messageLogger = messageLogger;
+  }
 
-    @Override
-    public void handle(RemoveAllShipsRequest request, AsyncIdentifiableClientSocket client) {
-        RemoveAllShipsResponse response = new RemoveAllShipsResponse(request.getPlayerNumber(), null, false);
-        RemoveAllShipsResultDto removeAllShipsResultDto = gameService.removeAllShips(request.getPlayerNumber());
-        AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
-        if(removeAllShipsResultDto.isSuccess())
-            response = new RemoveAllShipsResponse(request.getPlayerNumber(), removeAllShipsResultDto.getShipsToRemove() ,true);
+  @Override
+  public void handle(RemoveAllShipsRequest request, AsyncIdentifiableClientSocket client) {
+    RemoveAllShipsResponse response = new RemoveAllShipsResponse(request.getPlayerNumber(), null, false);
+    RemoveAllShipsResultDto removeAllShipsResultDto = gameService.removeAllShips(request.getPlayerNumber());
+    AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
+    if (removeAllShipsResultDto.isSuccess())
+      response = new RemoveAllShipsResponse(request.getPlayerNumber(), removeAllShipsResultDto.getShipsToRemove(), true);
 
-        requestMessageHandler.completed(response, request);
-    }
+    requestMessageHandler.completed(response, request);
+  }
 }

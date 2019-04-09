@@ -1,7 +1,7 @@
 module seabattledtos {
-    requires seabattledomain;
+  requires seabattledomain;
 
-    exports dtos;
-    exports dtos.requests;
-    exports dtos.responses;
+  exports dtos;
+  exports dtos.requests;
+  exports dtos.responses;
 }

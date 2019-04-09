@@ -7,63 +7,64 @@ import java.util.List;
 import static java.lang.String.format;
 
 public abstract class Ship implements Serializable {
-    private final Point startingPoint;
-    private final boolean horizontal;
-    private List<Point> points = new ArrayList<>();
-    private List<Point> pointsHit = new ArrayList<>();
+  private final Point startingPoint;
+  private final boolean horizontal;
+  private List<Point> points = new ArrayList<>();
+  private List<Point> pointsHit = new ArrayList<>();
 
-    public Ship(Point startingPoint, boolean horizontal) {
-        this.startingPoint = startingPoint;
-        this.horizontal = horizontal;
-    }
+  public Ship(Point startingPoint, boolean horizontal) {
+    this.startingPoint = startingPoint;
+    this.horizontal = horizontal;
+  }
 
-    protected void setLength(int length) {
-        points.add(startingPoint);
-        if (horizontal) {
-            for (int i = 1; i < length; i++) {
-                points.add(new Point(startingPoint.getX() + i, startingPoint.getY()));
-            }
-        } else {
-            for (int i = 1; i < length; i++) {
-                points.add(new Point(startingPoint.getX(), startingPoint.getY() + i));
-            }
-        }
+  protected void setLength(int length) {
+    points.add(startingPoint);
+    if (horizontal) {
+      for (int i = 1; i < length; i++) {
+        points.add(new Point(startingPoint.getX() + i, startingPoint.getY()));
+      }
+    } else {
+      for (int i = 1; i < length; i++) {
+        points.add(new Point(startingPoint.getX(), startingPoint.getY() + i));
+      }
     }
-    public int getLength() {
-        return points.size();
-    }
+  }
 
-    public List<Point> getPoints() {
-        return List.copyOf(points);
-    }
+  public int getLength() {
+    return points.size();
+  }
 
-    public List<Point> getPointsHit() {
-        return List.copyOf(pointsHit);
-    }
+  public List<Point> getPoints() {
+    return List.copyOf(points);
+  }
 
-    public boolean containsPoint(Point point) {
-        return points.stream().anyMatch(o -> o.equals(point));
-    }
+  public List<Point> getPointsHit() {
+    return List.copyOf(pointsHit);
+  }
 
-    public boolean isWithinBounds() {
-        return points.stream().noneMatch(point -> !boundCheck(point.getX()) || !boundCheck(point.getY()));
-    }
+  public boolean containsPoint(Point point) {
+    return points.stream().anyMatch(o -> o.equals(point));
+  }
 
-    public boolean isSunk() {
-        return points.size() == 0;
-    }
+  public boolean isWithinBounds() {
+    return points.stream().noneMatch(point -> !boundCheck(point.getX()) || !boundCheck(point.getY()));
+  }
 
-    public void removePoint(Point point) {
-        points.remove(point);
-        pointsHit.add(point);
-    }
+  public boolean isSunk() {
+    return points.size() == 0;
+  }
 
-    private boolean boundCheck(int bound) {
-        return bound >= 0 && bound <= 9;
-    }
+  public void removePoint(Point point) {
+    points.remove(point);
+    pointsHit.add(point);
+  }
 
-    @Override
-    public String toString() {
-        return format("ShipType: %s, Horizontal: %s, Points: %s", getClass().getSimpleName(), horizontal, points);
-    }
+  private boolean boundCheck(int bound) {
+    return bound >= 0 && bound <= 9;
+  }
+
+  @Override
+  public String toString() {
+    return format("ShipType: %s, Horizontal: %s, Points: %s", getClass().getSimpleName(), horizontal, points);
+  }
 }

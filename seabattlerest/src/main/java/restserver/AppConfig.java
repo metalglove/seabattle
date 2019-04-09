@@ -10,9 +10,9 @@ import java.util.List;
 @Configuration
 public class AppConfig extends WebMvcConfigurerAdapter {
 
-    @Override
-    public void extendMessageConverters (List<HttpMessageConverter<?>> converters) {
-        converters.add(new YamlJackson2HttpMessageConverter());
-        System.out.println("YAML MESSAGE CONVERTER REGISTERED");
-    }
+  @Override
+  public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+    converters.add(new YamlJackson2HttpMessageConverter());
+    System.out.println("YAML MESSAGE CONVERTER REGISTERED");
+  }
 }

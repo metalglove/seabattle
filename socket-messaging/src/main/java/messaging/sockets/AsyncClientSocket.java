@@ -10,18 +10,18 @@ import java.net.InetSocketAddress;
 import java.nio.channels.AsynchronousSocketChannel;
 
 public abstract class AsyncClientSocket implements ReadableSocket, WritableSocket {
-    protected final AsynchronousSocketChannel channel;
-    private final String host;
-    private final int port;
-    protected MessageLogger socketMessageLogger = new MessageLogger("SOCKET-HANDLER");
+  protected final AsynchronousSocketChannel channel;
+  private final String host;
+  private final int port;
+  protected MessageLogger socketMessageLogger = new MessageLogger("SOCKET-HANDLER");
 
-    public AsyncClientSocket(String host, int port) throws IOException {
-        this.host = host;
-        this.port = port;
-        channel = AsynchronousSocketChannel.open();
-    }
+  public AsyncClientSocket(String host, int port) throws IOException {
+    this.host = host;
+    this.port = port;
+    channel = AsynchronousSocketChannel.open();
+  }
 
-    public void connect() {
-        channel.connect(new InetSocketAddress(host, port), channel, new AsyncConnectionHandler(socketMessageLogger));
-    }
+  public void connect() {
+    channel.connect(new InetSocketAddress(host, port), channel, new AsyncConnectionHandler(socketMessageLogger));
+  }
 }
