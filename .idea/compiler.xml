@@ -6,22 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="seabattleclient" />
         <module name="seabattlecommon" />
-        <module name="seabattledal" />
-        <module name="seabattledomain" />
-        <module name="seabattledtos" />
-        <module name="seabattlerest" />
         <module name="seabattleserver" />
         <module name="seabattletests" />
+        <module name="seabattlerest" />
         <module name="socket-messaging" />
+        <module name="seabattledtos" />
+        <module name="seabattledomain" />
+        <module name="seabattleclient" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="seabattle" target="11" />
       <module name="seabattleclient" target="11" />
       <module name="seabattlecommon" target="11" />
-      <module name="seabattledal" target="11" />
       <module name="seabattledomain" target="11" />
       <module name="seabattledtos" target="11" />
       <module name="seabattlerest" target="11" />
@@ -29,5 +27,10 @@
       <module name="seabattletests" target="11" />
       <module name="socket-messaging" target="11" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="seabattlerest" options="-parameters" />
+    </option>
   </component>
 </project>

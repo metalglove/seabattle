@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/seabattle.iml" filepath="$PROJECT_DIR$/.idea/seabattle.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattleclient/seabattleclient.iml" filepath="$PROJECT_DIR$/seabattleclient/seabattleclient.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattlecommon/seabattlecommon.iml" filepath="$PROJECT_DIR$/seabattlecommon/seabattlecommon.iml" />
-      <module fileurl="file://$PROJECT_DIR$/seabattledal/seabattledal.iml" filepath="$PROJECT_DIR$/seabattledal/seabattledal.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattledomain/seabattledomain.iml" filepath="$PROJECT_DIR$/seabattledomain/seabattledomain.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattledtos/seabattledtos.iml" filepath="$PROJECT_DIR$/seabattledtos/seabattledtos.iml" />
       <module fileurl="file://$PROJECT_DIR$/seabattlerest/seabattlerest.iml" filepath="$PROJECT_DIR$/seabattlerest/seabattlerest.iml" />

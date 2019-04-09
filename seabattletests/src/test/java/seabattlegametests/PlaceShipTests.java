@@ -49,7 +49,7 @@ public class PlaceShipTests {
         // Create the game
         game = new SeaBattleGame(application, client);
         game.registerPlayer("Henk", "Karel32", false);
-        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU"));
+        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU", duplicate));
     }
 
     @Test

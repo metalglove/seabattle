@@ -8,10 +8,12 @@ C:\projects\seabattle\seabattledomain\src\main\java\domain\ShotType.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\Ship.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\ships\Submarine.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\actions\ReadyUpAction.java
+C:\projects\seabattle\seabattledomain\src\main\java\domain\cryptography\PBKDF2.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\ShipFactory.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\ShipType.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\interfaces\IFactoryWithArgument.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\actions\FireShotAction.java
+C:\projects\seabattle\seabattledomain\src\main\java\domain\User.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\ships\BattleShip.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\ships\MineSweeper.java
 C:\projects\seabattle\seabattledomain\src\main\java\domain\ships\Cruiser.java

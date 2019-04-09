@@ -1,5 +1,0 @@
-#Wed Apr 03 09:50:38 CEST 2019
-jdbc.password=na
-jdbc.username=na
-jdbc.url=jdbc\:sqlite\:seabattle.db
-jdbc.drivers=org.sqlite.JDBC

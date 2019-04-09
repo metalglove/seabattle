@@ -10,11 +10,13 @@ handlers\GameCrashHandler.class
 handlers\StartNewGameRequestHandler.class
 module-info.class
 seabattleserver\SeaBattleServer.class
+http\ServiceBase.class
 services\SeaBattleGameAI.class
 interfaces\ISeaBattleGameAI.class
 interfaces\ISeaBattleServerRest.class
 interfaces\RequestHandler.class
 seabattleserverrest\SeaBattleServerRest.class
+http\QueryResponse.class
 handlers\PlaceShipsAutomaticallyRequestHandler.class
 interfaces\IFactory.class
 services\SeaBattleGameService.class

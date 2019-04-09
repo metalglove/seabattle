@@ -10,8 +10,6 @@
     <module>socket-messaging</module>
     <module>seabattlecommon</module>
     <module>seabattledtos</module>
-    <module>seabattlerest</module>
-    <module>seabattledal</module>
     <module>seabattletests</module>
   </modules>
   <packaging>pom</packaging>

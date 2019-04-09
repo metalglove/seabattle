@@ -35,7 +35,7 @@ public class ErrorTests {
         String password = "Karel32";
         final boolean multiPlayerMode = true;
         game.registerPlayer(name, password, multiPlayerMode);
-        client.setMockUpResponse(new RegisterResponse(1, true, null, null));
+        client.setMockUpResponse(new RegisterResponse(1, true, null, null, duplicate));
 
         // Act
         client.setMockUpResponse(new ErrorResponse(null, "Henk", 1));
@@ -51,7 +51,7 @@ public class ErrorTests {
         String password = "Karel32";
         final boolean multiPlayerMode = true;
         game.registerPlayer(name, password, multiPlayerMode);
-        client.setMockUpResponse(new RegisterResponse(1, true, null, null));
+        client.setMockUpResponse(new RegisterResponse(1, true, null, null, duplicate));
 
         // Act
         client.setMockUpResponse(new ErrorResponse("The opponent crashed.", "Henk", 1));

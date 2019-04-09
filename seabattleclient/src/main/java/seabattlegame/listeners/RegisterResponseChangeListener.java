@@ -29,8 +29,13 @@ public class RegisterResponseChangeListener implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         RegisterResponse response = (RegisterResponse) evt.getNewValue();
         if (!response.isSuccess()) {
-            application.showErrorMessage("Failed to register!");
-            messageLogger.error("Failed to register!");
+            if (response.getIsDuplicate()) {
+                application.showErrorMessage("Username is already taken!");
+                messageLogger.error("Username is already taken!");
+            } else {
+                application.showErrorMessage("Failed to register!");
+                messageLogger.error("Failed to register!");
+            }
         } else {
             application.setPlayerNumber(response.getPlayerNumber(), name);
             game.setPlayerName(name);

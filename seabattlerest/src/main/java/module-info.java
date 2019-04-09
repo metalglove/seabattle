@@ -1,9 +1,12 @@
 module seabattlerest {
-    requires seabattledal;
-    requires seabattlecommon;
-    requires gson;
-    requires org.eclipse.jetty.servlet;
-    requires org.eclipse.jetty.server;
-    requires jersey.container.servlet.core;
-    requires javax.ws.rs.api;
+    requires seabattledtos;
+    requires spring.web;
+    requires spring.beans;
+    requires spring.context;
+    requires spring.webmvc;
+    requires spring.data.jpa;
+    requires spring.boot;
+    requires spring.boot.autoconfigure;
+    requires seabattledomain;
+    requires jackson.dataformat.yaml;
 }

@@ -9,16 +9,14 @@ import java.util.stream.Stream;
 
 public class Player {
     private final String username;
-    private final String password;
     private final Integer number;
     private List<Ship> ships = new CopyOnWriteArrayList<>();
     private boolean gameHasStarted = false;
     private boolean _isReady = false;
 
-    public Player(String username, String password, Integer number) {
+    public Player(String username, Integer number) {
 
         this.username = username;
-        this.password = password;
         this.number = number;
     }
 
@@ -54,10 +52,6 @@ public class Player {
 
     public Integer getPlayerNumber() {
         return number;
-    }
-
-    public boolean verifyPassword(String password) {
-        return this.password.equals(password);
     }
 
     @Override

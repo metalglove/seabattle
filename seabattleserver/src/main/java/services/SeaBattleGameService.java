@@ -112,7 +112,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
                 game.registerPlayer(player);
                 int aiId = (int)aiIDCounter.getAndIncrement() * -1;
                 messageLogger.info("SinglePlayer AI ID: " + aiId);
-                game.registerPlayer(new Player("CPU", "", aiId));
+                game.registerPlayer(new Player("CPU", aiId));
                 game.placeShipsAutomatically(aiId);
                 game.readyUp(aiId);
                 Player opponent = game.getOpponentPlayer(player.getPlayerNumber());

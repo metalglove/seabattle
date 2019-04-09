@@ -11,7 +11,8 @@ import java.io.IOException;
 
 public class SeaBattleServer {
     public static void main(String[] args) throws IOException {
-        ISeaBattleServerRest rest = new SeaBattleServerRest();
+        MessageLogger messageLogger1 = new MessageLogger("REST");
+        ISeaBattleServerRest rest = new SeaBattleServerRest(messageLogger1);
         MessageLogger messageLogger = new MessageLogger("SERVER");
         MessageLogger messageLogger2 = new MessageLogger("GAME-SERVICE");
         ISeaBattleGameService gameService = new SeaBattleGameService(new ShipFactory(), messageLogger2);

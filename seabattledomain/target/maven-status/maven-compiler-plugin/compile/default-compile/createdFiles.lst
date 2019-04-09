@@ -13,7 +13,9 @@ domain\interfaces\IFactoryWithArgument.class
 domain\Player.class
 domain\ShipType.class
 domain\Ship.class
+domain\User.class
 domain\Point.class
 domain\ships\MineSweeper.class
+domain\cryptography\PBKDF2.class
 domain\ShotType.class
 domain\ships\AircraftCarrier.class
