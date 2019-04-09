@@ -785,7 +785,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             client.connect();
             client.ensureConnection();
             game = new SeaBattleGame(this, client);
-            game.registerPlayer(playerName, playerPassword, !singlePlayerMode);
+            game.loginPlayer(playerName, playerPassword, !singlePlayerMode);
         } catch (IOException e) {
             messageLogger.error(e.getMessage());
             showMessage("Connecting with server failed try again later..");

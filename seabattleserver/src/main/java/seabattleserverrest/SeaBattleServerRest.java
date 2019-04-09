@@ -2,7 +2,9 @@ package seabattleserverrest;
 
 import common.MessageLogger;
 import domain.Player;
+import dtos.requests.LoginRequestDto;
 import dtos.requests.RegisterRequestDto;
+import dtos.responses.LoginResponseDto;
 import dtos.responses.RegisterResponseDto;
 import http.QueryResponse;
 import http.ServiceBase;
@@ -35,6 +37,15 @@ public class SeaBattleServerRest extends ServiceBase implements ISeaBattleServer
             messageLogger.info(String.format("Register failed: %s", queryResponse.getReasonIfFailed()));
             RegisterResponseDto registerResponseDto = queryResponse.getResponse();
             players.put(registerResponseDto.getId(), new Player(registerResponseDto.getUsername(), registerResponseDto.getId()));
+        }
+        return queryResponse.getResponse();
+    }
+
+    @Override
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+        final QueryResponse<LoginResponseDto> queryResponse = executeQuery(loginRequestDto, LoginResponseDto.class, "/user/login", new HttpPut());
+        if(queryResponse.isSuccess()){
+            messageLogger.info(String.format("Login failed: %s", queryResponse.getReasonIfFailed()));
         }
         return queryResponse.getResponse();
     }
