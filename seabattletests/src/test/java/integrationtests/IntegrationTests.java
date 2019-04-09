@@ -36,7 +36,7 @@ public class IntegrationTests {
     @BeforeEach
     public void setUp() {
         // Start up server
-        rest = new SeaBattleServerRest();
+        rest = new SeaBattleServerRest(new MessageLogger("REST"));
         shipFactory = new ShipFactory();
         gameService = new SeaBattleGameService(shipFactory, new MessageLogger("GAME-SERVICE"));
 
