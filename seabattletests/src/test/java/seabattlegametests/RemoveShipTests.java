@@ -5,7 +5,7 @@ import domain.ShipType;
 import domain.ships.*;
 import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.PlaceShipResponse;
-import messaging.messages.responses.RegisterResponse;
+import messaging.messages.responses.AddPlayerResponse;
 import messaging.messages.responses.RemoveShipResponse;
 import mocks.MockClient;
 import mocks.MockSeaBattleApplication;
@@ -42,7 +42,7 @@ public class RemoveShipTests {
         // Create the game
         game = new SeaBattleGame(application, client);
         game.registerPlayer("Henk", "Karel32", false);
-        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU", duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(1, true, -1, "CPU", duplicate));
     }
 
     @Test

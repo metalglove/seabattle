@@ -1,7 +1,7 @@
 package seabattlegametests;
 
 import messaging.messages.responses.ErrorResponse;
-import messaging.messages.responses.RegisterResponse;
+import messaging.messages.responses.AddPlayerResponse;
 import mocks.MockClient;
 import mocks.MockSeaBattleApplication;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ public class ErrorTests {
         String password = "Karel32";
         final boolean multiPlayerMode = true;
         game.registerPlayer(name, password, multiPlayerMode);
-        client.setMockUpResponse(new RegisterResponse(1, true, null, null, duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(1, true, null, null, duplicate));
 
         // Act
         client.setMockUpResponse(new ErrorResponse(null, "Henk", 1));
@@ -51,7 +51,7 @@ public class ErrorTests {
         String password = "Karel32";
         final boolean multiPlayerMode = true;
         game.registerPlayer(name, password, multiPlayerMode);
-        client.setMockUpResponse(new RegisterResponse(1, true, null, null, duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(1, true, null, null, duplicate));
 
         // Act
         client.setMockUpResponse(new ErrorResponse("The opponent crashed.", "Henk", 1));

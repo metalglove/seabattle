@@ -45,7 +45,7 @@ public class StartNewGameTests {
         game = new SeaBattleGame(application, client);
 
         game.registerPlayer("Mario", "password",false);
-        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU", duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(1, true, -1, "CPU", duplicate));
         AircraftCarrier aircraftCarrier = new AircraftCarrier(new Point(1, 1), true);
         BattleShip battleShip = new BattleShip(new Point(1, 2), true);
         Cruiser cruiser = new Cruiser(new Point(1, 3), true);

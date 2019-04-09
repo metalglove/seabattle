@@ -2,7 +2,7 @@ package handlers;
 
 import common.MessageLogger;
 import domain.Player;
-import dtos.RegisterPlayerResultDto;
+import dtos.AddPlayerResultDto;
 import interfaces.ISeaBattleGameService;
 import interfaces.ISeaBattleServerRest;
 import interfaces.RequestHandler;
@@ -33,16 +33,15 @@ public class StartNewGameRequestHandler implements RequestHandler<StartNewGameRe
         AsyncRequestMessageHandler requestMessageHandler = new AsyncRequestMessageHandler(serverSocket, client, messageLogger);
         Player player = rest.getPlayer(client.getName());
         if (player != null) {
-            RegisterPlayerResultDto registerPlayerResultDto = gameService.registerPlayer(player, request.isMultiPlayer());
-            if (registerPlayerResultDto.isSuccess()) {
-                response = new StartNewGameResponse(request.getPlayerNumber(), true, registerPlayerResultDto.getOpponentName(), registerPlayerResultDto.getOpponentPlayerNumber());
-                if (registerPlayerResultDto.getOpponentName() != null && registerPlayerResultDto.getOpponentPlayerNumber() > 0) {
-                    AsyncIdentifiableClientSocket opponent = serverSocket.getClientById(registerPlayerResultDto.getOpponentPlayerNumber());
+            AddPlayerResultDto addPlayerResultDto = gameService.addPlayer(player, request.isMultiPlayer());
+            if (addPlayerResultDto.isSuccess()) {
+                response = new StartNewGameResponse(request.getPlayerNumber(), true, addPlayerResultDto.getOpponentName(), addPlayerResultDto.getOpponentPlayerNumber());
+                if (addPlayerResultDto.getOpponentName() != null && addPlayerResultDto.getOpponentPlayerNumber() > 0) {
+                    AsyncIdentifiableClientSocket opponent = serverSocket.getClientById(addPlayerResultDto.getOpponentPlayerNumber());
                     serverSocket.startWriting(opponent, new OpponentRegisterResponse(player.getUsername(), player.getPlayerNumber(), true));
                 }
             }
         }
-
         requestMessageHandler.completed(response, request);
     }
 }

@@ -41,7 +41,7 @@ public class SeaBattleGame implements ISeaBattleGame {
     }
 
     @Override
-    public void registerPlayer(String name, String password, boolean multiPlayer) {
+    public void addPlayer(String name, String password, boolean multiPlayer) {
         if (Objects.isNull(name) || Objects.isNull(password) || Objects.isNull(multiPlayer))
             throw new IllegalArgumentException("Parameters can not be null");
         if (name.isBlank())
@@ -54,9 +54,9 @@ public class SeaBattleGame implements ISeaBattleGame {
             application.showErrorMessage("You are not allowed to be named CPU, this is reserved for the AI in SinglePlayer Mode.");
             return;
         }
-        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, this, client, handlerMessageLogger));
+        client.addListener(AddPlayerResponse.class.getSimpleName(), new AddPlayerResponseChangeListener(application, name, this, client, handlerMessageLogger));
         client.addListener(ErrorResponse.class.getSimpleName(), new ErrorResponseChangeListener(application, this, client, handlerMessageLogger));
-        client.startWriting(new RegisterRequest(name, password, multiPlayer));
+        client.startWriting(new AddPlayerRequest(name, password, multiPlayer));
     }
 
     @Override

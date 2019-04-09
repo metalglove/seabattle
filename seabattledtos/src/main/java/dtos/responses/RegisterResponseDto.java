@@ -1,7 +1,7 @@
 package dtos.responses;
 
 public class RegisterResponseDto {
-    private int id;
+    private Integer id;
     private String username;
     private boolean success;
     private String message;
@@ -9,7 +9,7 @@ public class RegisterResponseDto {
     public RegisterResponseDto() {
     }
 
-    public RegisterResponseDto(int id, String username, boolean success, String message) {
+    public RegisterResponseDto(Integer id, String username, boolean success, String message) {
         this.id = id;
         this.username = username;
         this.success = success;
@@ -24,11 +24,11 @@ public class RegisterResponseDto {
         this.username = username;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

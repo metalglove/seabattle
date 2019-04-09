@@ -7,7 +7,7 @@ import domain.ships.*;
 import messaging.messages.responses.NotifyWhenReadyResponse;
 import messaging.messages.responses.PlaceShipResponse;
 import messaging.messages.responses.PlaceShipsAutomaticallyResponse;
-import messaging.messages.responses.RegisterResponse;
+import messaging.messages.responses.AddPlayerResponse;
 import mocks.MockClient;
 import mocks.MockSeaBattleApplication;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ public class NotifyWhenReadyTests {
         game = new SeaBattleGame(application, client);
 
         game.registerPlayer("Mario", "password",false);
-        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU", duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(1, true, -1, "CPU", duplicate));
         AircraftCarrier aircraftCarrier = new AircraftCarrier(new Point(1, 1), true);
         BattleShip battleShip = new BattleShip(new Point(1, 2), true);
         Cruiser cruiser = new Cruiser(new Point(1, 3), true);

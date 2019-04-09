@@ -125,7 +125,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     private RadioButton radioVertical;
 
     // Buttons to register player, start the game, and place or remove ships
-    private Button buttonRegisterPlayer;
+    private Button buttonRegisterLoginPlayer;
     Button buttonPlaceAllShips;
     Button buttonRemoveAllShips;
     Button buttonReadyToPlay;
@@ -290,21 +290,21 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         grid.add(radioMultiPlayer, 1, 12, 1, 2);
 
         // Button to register the player
-        buttonRegisterPlayer = new Button("Register");
-        buttonRegisterPlayer.setMinWidth(BUTTONWIDTH);
+        buttonRegisterLoginPlayer = new Button("Login/Register");
+        buttonRegisterLoginPlayer.setMinWidth(BUTTONWIDTH);
         Tooltip tooltipRegisterParticipant =
-                new Tooltip("Press this button to register as player");
-        buttonRegisterPlayer.setTooltip(tooltipRegisterParticipant);
-        buttonRegisterPlayer.setOnAction(
+                new Tooltip("Press this button to register or login as player");
+        buttonRegisterLoginPlayer.setTooltip(tooltipRegisterParticipant);
+        buttonRegisterLoginPlayer.setOnAction(
                 (EventHandler<ActionEvent>) event -> {
                     try {
-                        registerPlayer();
+                        addPlayer();
                     } catch (Exception e) {
                         e.printStackTrace();
                         messageLogger.error(format("Register Player error: %s", e.getMessage()));
                     }
                 });
-        grid.add(buttonRegisterPlayer, 1, 14, 1, 3);
+        grid.add(buttonRegisterLoginPlayer, 1, 14, 1, 3);
 
         // Button to place the player's ships automatically
         buttonPlaceAllShips = new Button("Place ships for me");
@@ -527,7 +527,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
                 passwordFieldPlayerPassword.setDisable(true);
                 radioSinglePlayer.setDisable(true);
                 radioMultiPlayer.setDisable(true);
-                buttonRegisterPlayer.setDisable(true);
+                buttonRegisterLoginPlayer.setDisable(true);
                 labelHorizontalVertical.setDisable(false);
                 radioHorizontal.setDisable(false);
                 radioVertical.setDisable(false);
@@ -769,7 +769,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     /**
      * Register the player at the game server.
      */
-    private void registerPlayer() {
+    private void addPlayer() {
         playerName = textFieldPlayerName.getText();
         if ("".equals(playerName) || playerName == null) {
             showMessage("Enter your name before registering");
@@ -785,7 +785,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
             client.connect();
             client.ensureConnection();
             game = new SeaBattleGame(this, client);
-            game.registerPlayer(playerName, playerPassword, !singlePlayerMode);
+            game.addPlayer(playerName, playerPassword, !singlePlayerMode);
         } catch (IOException e) {
             messageLogger.error(e.getMessage());
             showMessage("Connecting with server failed try again later..");

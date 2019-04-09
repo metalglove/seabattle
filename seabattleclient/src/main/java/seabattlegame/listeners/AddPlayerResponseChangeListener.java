@@ -3,21 +3,21 @@ package seabattlegame.listeners;
 import common.MessageLogger;
 import messaging.interfaces.ObservableClientSocket;
 import messaging.messages.responses.OpponentRegisterResponse;
-import messaging.messages.responses.RegisterResponse;
+import messaging.messages.responses.AddPlayerResponse;
 import seabattlegame.ISeaBattleGame;
 import seabattlegui.ISeaBattleGUI;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class RegisterResponseChangeListener implements PropertyChangeListener {
+public class AddPlayerResponseChangeListener implements PropertyChangeListener {
     private final ISeaBattleGUI application;
     private final String name;
     private final ISeaBattleGame game;
     private final ObservableClientSocket client;
     private final MessageLogger messageLogger;
 
-    public RegisterResponseChangeListener(ISeaBattleGUI application, String name, ISeaBattleGame game, ObservableClientSocket client, MessageLogger messageLogger) {
+    public AddPlayerResponseChangeListener(ISeaBattleGUI application, String name, ISeaBattleGame game, ObservableClientSocket client, MessageLogger messageLogger) {
         this.application = application;
         this.name = name;
         this.game = game;
@@ -27,7 +27,7 @@ public class RegisterResponseChangeListener implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        RegisterResponse response = (RegisterResponse) evt.getNewValue();
+        AddPlayerResponse response = (AddPlayerResponse) evt.getNewValue();
         if (!response.isSuccess()) {
             if (response.getIsDuplicate()) {
                 application.showErrorMessage("Username is already taken!");
@@ -45,6 +45,6 @@ public class RegisterResponseChangeListener implements PropertyChangeListener {
                 client.addListener(OpponentRegisterResponse.class.getSimpleName(), new OpponentRegisterResponseListener(application, client, messageLogger));
             }
         }
-        client.removeListener(RegisterResponse.class.getSimpleName(), this);
+        client.removeListener(AddPlayerResponse.class.getSimpleName(), this);
     }
 }

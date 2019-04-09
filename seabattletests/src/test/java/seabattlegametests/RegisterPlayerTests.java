@@ -1,7 +1,7 @@
 package seabattlegametests;
 
 import messaging.messages.responses.OpponentRegisterResponse;
-import messaging.messages.responses.RegisterResponse;
+import messaging.messages.responses.AddPlayerResponse;
 import mocks.MockClient;
 import mocks.MockSeaBattleApplication;
 import org.junit.jupiter.api.Assertions;
@@ -55,7 +55,7 @@ public class RegisterPlayerTests {
 
         // Act
         game.registerPlayer(name, password, multiPlayerMode);
-        client.setMockUpResponse(new RegisterResponse(1, true, -1, "CPU", duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(1, true, -1, "CPU", duplicate));
 
         // Assert
         assertEquals("Henk", application.getPlayerName());
@@ -68,7 +68,7 @@ public class RegisterPlayerTests {
         String password = "Karel32";
         final boolean multiPlayerMode = true;
         game.registerPlayer(name, password, multiPlayerMode);
-        client.setMockUpResponse(new RegisterResponse(1, true, null, null, duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(1, true, null, null, duplicate));
 
         // Act
         client.setMockUpResponse(new OpponentRegisterResponse("Jan", 2, true));
@@ -137,7 +137,7 @@ public class RegisterPlayerTests {
 
         // act
         game.registerPlayer(name, password, multiPlayerMode);
-        client.setMockUpResponse(new RegisterResponse(null, false, null, null, duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(null, false, null, null, duplicate));
 
         // Assert
         assertEquals("Failed to register!", application.getErrorMessage());
@@ -151,7 +151,7 @@ public class RegisterPlayerTests {
 
         // act
         game.registerPlayer(name, password, multiPlayerMode);
-        client.setMockUpResponse(new RegisterResponse(1, true, null, null, duplicate));
+        client.setMockUpResponse(new AddPlayerResponse(1, true, null, null, duplicate));
 
         client.setMockUpResponse(new OpponentRegisterResponse("Jan", 2, false));
 

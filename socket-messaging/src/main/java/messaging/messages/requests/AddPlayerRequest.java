@@ -2,12 +2,12 @@ package messaging.messages.requests;
 
 import messaging.messages.Message;
 
-public class RegisterRequest extends Message {
+public class AddPlayerRequest extends Message {
     private final String playerName;
     private final String password;
     private final boolean multiPlayer;
 
-    public RegisterRequest(String playerName, String password, boolean multiPlayer) {
+    public AddPlayerRequest(String playerName, String password, boolean multiPlayer) {
         this.playerName = playerName;
         this.password = password;
         this.multiPlayer = multiPlayer;

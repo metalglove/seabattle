@@ -56,7 +56,7 @@ public class Server implements AcceptingSocket, MessageHandlingSocket, ClientAwa
         messageLogger.info("Started server socket on: " + server.getLocalAddress().toString());
         startAccepting();
 
-        requestHandlerMapping.put(RegisterRequest.class, () -> new RegisterRequestHandler(this, rest, gameService, requestMessageLogger));
+        requestHandlerMapping.put(AddPlayerRequest.class, () -> new AddPlayerRequestHandler(this, rest, gameService, requestMessageLogger));
         requestHandlerMapping.put(FireShotRequest.class, () -> new FireShotRequestHandler(this, gameService, new SeaBattleGameAI(gameService), requestMessageLogger));
         requestHandlerMapping.put(NotifyWhenReadyRequest.class, () -> new NotifyWhenReadyRequestHandler(this, gameService, requestMessageLogger));
         requestHandlerMapping.put(PlaceShipRequest.class, () -> new PlaceShipRequestHandler(this, gameService, requestMessageLogger));

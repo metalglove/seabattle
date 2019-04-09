@@ -104,7 +104,7 @@ public class SeaBattleGameService implements ISeaBattleGameService {
     }
 
     @Override
-    public RegisterPlayerResultDto registerPlayer(Player player, boolean multiPlayer) {
+    public AddPlayerResultDto addPlayer(Player player, boolean multiPlayer) {
         MessageLogger gameMessageLogger = new MessageLogger("GAME");
         synchronized (games) {
             if (!multiPlayer) {
@@ -117,19 +117,19 @@ public class SeaBattleGameService implements ISeaBattleGameService {
                 game.readyUp(aiId);
                 Player opponent = game.getOpponentPlayer(player.getPlayerNumber());
                 games.add(game);
-                return new RegisterPlayerResultDto(opponent.getPlayerNumber(), opponent.getUsername(), true);
+                return new AddPlayerResultDto(opponent.getPlayerNumber(), opponent.getUsername(), true);
             }
             for (Game game : games) {
                 if (game.registerPlayer(player)) {
                     Player opponent = game.getOpponentPlayer(player.getPlayerNumber());
-                    return new RegisterPlayerResultDto(opponent.getPlayerNumber(), opponent.getUsername(), true);
+                    return new AddPlayerResultDto(opponent.getPlayerNumber(), opponent.getUsername(), true);
                 }
             }
         }
         Game game = new Game(shipFactory, gameMessageLogger);
         game.registerPlayer(player);
         games.add(game);
-        return new RegisterPlayerResultDto(null, null, true);
+        return new AddPlayerResultDto(null, null, true);
     }
 
     @Override

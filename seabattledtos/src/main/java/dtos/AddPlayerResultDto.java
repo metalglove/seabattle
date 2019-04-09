@@ -1,11 +1,11 @@
 package dtos;
 
-public class RegisterPlayerResultDto {
+public class AddPlayerResultDto {
     private final Integer opponentPlayerNumber;
     private final String opponentName;
     private final boolean success;
 
-    public RegisterPlayerResultDto(Integer opponentPlayerNumber, String opponentName, boolean success) {
+    public AddPlayerResultDto(Integer opponentPlayerNumber, String opponentName, boolean success) {
         this.opponentPlayerNumber = opponentPlayerNumber;
         this.opponentName = opponentName;
         this.success = success;
