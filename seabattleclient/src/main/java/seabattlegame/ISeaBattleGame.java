@@ -13,7 +13,7 @@ import domain.ShipType;
 public interface ISeaBattleGame {
 
     /**
-     * Login player with given name and password. The player number will be
+     * Register player with given name and password. The player number will be
      * set at the player's application by a call-back of method setPlayerNumber().
      *
      * @param name     Name of the player to be registered
@@ -27,7 +27,7 @@ public interface ISeaBattleGame {
      *                                  number of players exceeds two in multi-player mode or
      *                                  name is already registered.
      */
-    void loginPlayer(String name, String password, boolean multiPlayer);
+    void registerPlayer(String name, String password, boolean multiPlayer);
 
     /**
      * Place ships automatically. Ships that are already placed will be removed.

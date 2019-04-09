@@ -41,7 +41,7 @@ public class SeaBattleGame implements ISeaBattleGame {
     }
 
     @Override
-    public void loginPlayer(String name, String password, boolean multiPlayer) {
+    public void registerPlayer(String name, String password, boolean multiPlayer) {
         if (Objects.isNull(name) || Objects.isNull(password) || Objects.isNull(multiPlayer))
             throw new IllegalArgumentException("Parameters can not be null");
         if (name.isBlank())
@@ -54,28 +54,10 @@ public class SeaBattleGame implements ISeaBattleGame {
             application.showErrorMessage("You are not allowed to be named CPU, this is reserved for the AI in SinglePlayer Mode.");
             return;
         }
-        client.addListener(LoginResponse.class.getSimpleName(), new LoginResponseChangeListener(application, name, this, client, handlerMessageLogger));
+        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, this, client, handlerMessageLogger));
         client.addListener(ErrorResponse.class.getSimpleName(), new ErrorResponseChangeListener(application, this, client, handlerMessageLogger));
-        client.startWriting(new LoginRequest(name, password, multiPlayer));
+        client.startWriting(new RegisterRequest(name, password, multiPlayer));
     }
-//    @Override
-//    public void registerPlayer(String name, String password, boolean multiPlayer) {
-//        if (Objects.isNull(name) || Objects.isNull(password) || Objects.isNull(multiPlayer))
-//            throw new IllegalArgumentException("Parameters can not be null");
-//        if (name.isBlank())
-//            throw new IllegalArgumentException("Name may not be blank.");
-//        if (password.isBlank())
-//            throw new IllegalArgumentException("Password may not be blank.");
-//
-//        gameMessageLogger.info(format("Register Player %s - password %s - Mode %s", name, password, multiPlayer ? "Multi-Player" : "Single-Player"));
-//        if ("CPU".equals(name)) {
-//            application.showErrorMessage("You are not allowed to be named CPU, this is reserved for the AI in SinglePlayer Mode.");
-//            return;
-//        }
-//        client.addListener(RegisterResponse.class.getSimpleName(), new RegisterResponseChangeListener(application, name, this, client, handlerMessageLogger));
-//        client.addListener(ErrorResponse.class.getSimpleName(), new ErrorResponseChangeListener(application, this, client, handlerMessageLogger));
-//        client.startWriting(new RegisterRequest(name, password, multiPlayer));
-//    }
 
     @Override
     public void placeShipsAutomatically(int playerNr) {
