@@ -4,11 +4,11 @@ C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\Oppo
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\RemoveAllShipsResponseChangeListener.java
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegui\ISeaBattleGUI.java
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\FireShotResponseChangeListener.java
-C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\RegisterResponseChangeListener.java
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\PlaceShipsAutomaticallyResponseChangeListener.java
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\ISeaBattleGame.java
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\PlaceShipResponseChangeListener.java
 C:\projects\seabattle\seabattleclient\src\main\java\module-info.java
+C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\AddPlayerResponseChangeListener.java
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\StartNewGameResponseChangeListener.java
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegame\listeners\OpponentFireShotResponseListener.java
 C:\projects\seabattle\seabattleclient\src\main\java\seabattlegui\SeaBattleApplication.java

@@ -2,8 +2,10 @@ C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\response
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\sockets\AsyncClientSocket.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\handlers\AsyncCrashHandler.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\handlers\AsyncWriteHandler.java
+C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\responses\AddPlayerResponse.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\utilities\MessageConverter.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\handlers\AsyncReadForHandlingMessageHandler.java
+C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\requests\AddPlayerRequest.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\responses\OpponentRegisterResponse.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\handlers\AsyncAcceptHandler.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\requests\StartNewGameRequest.java
@@ -30,9 +32,7 @@ C:\projects\seabattle\socket-messaging\src\main\java\messaging\handlers\AsyncRea
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\responses\ErrorResponse.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\responses\NotifyWhenReadyResponse.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\requests\RemoveShipRequest.java
-C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\responses\RegisterResponse.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\interfaces\ObservableClientSocket.java
-C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\requests\RegisterRequest.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\sockets\AsyncIdentifiableClientSocket.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\messages\responses\RemoveAllShipsResponse.java
 C:\projects\seabattle\socket-messaging\src\main\java\messaging\interfaces\MessageHandlingSocket.java

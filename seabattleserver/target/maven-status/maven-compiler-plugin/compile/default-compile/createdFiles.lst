@@ -1,11 +1,11 @@
 handlers\NotifyWhenReadyRequestHandler.class
-handlers\RegisterRequestHandler.class
 handlers\FireShotRequestHandler.class
 handlers\PlaceShipRequestHandler.class
 seabattleserver\Server.class
 interfaces\ISeaBattleGameService.class
 handlers\RemoveShipRequestHandler.class
 handlers\RemoveAllShipsRequestHandler.class
+handlers\AddPlayerRequestHandler.class
 handlers\GameCrashHandler.class
 handlers\StartNewGameRequestHandler.class
 module-info.class

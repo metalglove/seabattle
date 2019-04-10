@@ -18,7 +18,6 @@ seabattlegui\SeaBattleApplication$8.class
 seabattlegame\listeners\PlaceShipResponseChangeListener.class
 seabattlegui\SeaBattleApplication$14.class
 seabattlegame\listeners\PlaceShipsAutomaticallyResponseChangeListener.class
-seabattlegame\listeners\RegisterResponseChangeListener.class
 seabattlegui\SeaBattleApplication$19.class
 seabattlegame\listeners\OpponentFireShotResponseListener.class
 seabattlegui\SeaBattleApplication$5.class
@@ -26,6 +25,7 @@ seabattlegui\SeaBattleApplication$12.class
 seabattlegui\SeaBattleApplication.class
 seabattlegame\SeaBattleGame.class
 seabattlegui\SeaBattleApplication$9.class
+seabattlegame\listeners\AddPlayerResponseChangeListener.class
 seabattlegui\SeaBattleApplication$16.class
 seabattlegame\listeners\FireShotResponseChangeListener.class
 seabattlegui\SeaBattleApplication$20.class

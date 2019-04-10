@@ -13,8 +13,8 @@ C:\projects\seabattle\seabattleserver\src\main\java\http\ServiceBase.java
 C:\projects\seabattle\seabattleserver\src\main\java\interfaces\ISeaBattleGameService.java
 C:\projects\seabattle\seabattleserver\src\main\java\services\SeaBattleGameService.java
 C:\projects\seabattle\seabattleserver\src\main\java\handlers\PlaceShipRequestHandler.java
-C:\projects\seabattle\seabattleserver\src\main\java\handlers\RegisterRequestHandler.java
 C:\projects\seabattle\seabattleserver\src\main\java\seabattleserver\SeaBattleServer.java
+C:\projects\seabattle\seabattleserver\src\main\java\handlers\AddPlayerRequestHandler.java
 C:\projects\seabattle\seabattleserver\src\main\java\interfaces\RequestHandler.java
 C:\projects\seabattle\seabattleserver\src\main\java\handlers\NotifyWhenReadyRequestHandler.java
 C:\projects\seabattle\seabattleserver\src\main\java\interfaces\IFactory.java

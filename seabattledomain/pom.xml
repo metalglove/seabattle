@@ -26,7 +26,7 @@
         <dependency>
             <groupId>nl.fhict.s3</groupId>
             <artifactId>seabattlecommon</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>

@@ -14,9 +14,8 @@ messaging\messages\responses\FireShotResponse.class
 messaging\messages\responses\PlaceShipsAutomaticallyResponse.class
 module-info.class
 messaging\interfaces\ClientAwareWritingSocket.class
-messaging\messages\requests\RegisterRequest.class
+messaging\messages\responses\AddPlayerResponse.class
 messaging\messages\requests\RemoveShipRequest.class
-messaging\messages\responses\RegisterResponse.class
 messaging\sockets\AsyncClientSocket.class
 messaging\messages\responses\ErrorResponse.class
 messaging\handlers\AsyncReadHandler.class
@@ -28,6 +27,7 @@ messaging\interfaces\CrashHandler.class
 messaging\messages\responses\OpponentRegisterResponse.class
 messaging\interfaces\ObservableClientSocket.class
 messaging\handlers\AsyncReadForHandlingMessageHandler.class
+messaging\messages\requests\AddPlayerRequest.class
 messaging\handlers\AsyncWriteHandler.class
 messaging\interfaces\MessageHandlingSocket.class
 messaging\messages\requests\RemoveAllShipsRequest.class

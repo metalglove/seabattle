@@ -28,11 +28,12 @@ public class SeaBattleServerRest extends ServiceBase implements ISeaBattleServer
         final QueryResponse<LoginResponseDto> queryResponse = executeQuery(loginRequestDto, LoginResponseDto.class, "/user/login", new HttpPut());
         if (queryResponse.isSuccess()) {
             LoginResponseDto loginResponseDto = queryResponse.getResponse();
-
-                if (players.containsValue(loginResponseDto.getUsername())){
-                    return queryResponse.getResponse();
+                if (loginResponseDto.getSuccess()) {
+                    if (players.containsValue(loginResponseDto.getUsername())){
+                        return queryResponse.getResponse();
+                    }
+                    players.put(loginResponseDto.getId().intValue(), new Player(loginResponseDto.getUsername(), loginResponseDto.getId().intValue()));
                 }
-            players.put(loginResponseDto.getId().intValue(), new Player(loginResponseDto.getUsername(), loginResponseDto.getId().intValue()));
         }else {
             messageLogger.info(String.format("Login failed:  %s", queryResponse.getReasonIfFailed()));
         }
@@ -43,9 +44,11 @@ public class SeaBattleServerRest extends ServiceBase implements ISeaBattleServer
     public RegisterResponseDto register(RegisterRequestDto registerRequestDto) {
         final QueryResponse<RegisterResponseDto> queryResponse = executeQuery(registerRequestDto, RegisterResponseDto.class, "/user/register", new HttpPost());
         if (queryResponse.isSuccess()) {
-            messageLogger.info("Register success");
             RegisterResponseDto registerResponseDto = queryResponse.getResponse();
-            players.put(registerResponseDto.getId(), new Player(registerResponseDto.getUsername(), registerResponseDto.getId()));
+            if (registerResponseDto.getSuccess()) {
+                messageLogger.info("Register success");
+                players.put(registerResponseDto.getId(), new Player(registerResponseDto.getUsername(), registerResponseDto.getId()));
+            }
         } else {
             messageLogger.info(String.format("Register failed: %s", queryResponse.getReasonIfFailed()));
         }

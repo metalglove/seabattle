@@ -12,6 +12,9 @@
     <module>seabattledtos</module>
     <module>seabattletests</module>
   </modules>
+  <properties>
+    <project.version>1.0-SNAPSHOT</project.version>
+  </properties>
   <packaging>pom</packaging>
   <build>
     <plugins>
